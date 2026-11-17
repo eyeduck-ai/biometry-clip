@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Biometry 懸浮視窗 · 合成流程驗證</title>
+  <style>
+    :root{font:14px/1.6 "Segoe UI","Microsoft JhengHei",sans-serif;color:#28433c;background:#f3f6f0}*{box-sizing:border-box}body{margin:0;padding:30px 410px 40px 36px}header{max-width:900px}h1{font-size:27px;font-weight:600;line-height:1.5;margin:9px 0}h2{font-size:18px;margin:0}p{color:#75836e;font-size:12px;margin:7px 0 18px}.eyebrow{font:10px Consolas,monospace;letter-spacing:1.2px;color:#87977a}.qa-banner{border:1px solid #d9cba5;background:#faf4df;padding:12px 15px;border-radius:7px;color:#8b743a;font-size:12px;margin-bottom:24px}.tools{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0}button{font:inherit;font-size:12px;border:1px solid #c9d5c0;border-radius:6px;padding:9px 13px;background:white;color:#4d6743;cursor:pointer}button.active{background:#244f49;color:white;border-color:#244f49}button:hover{border-color:#688759}button:focus-visible,input:focus-visible{outline:2px solid #65805a;outline-offset:2px}.calculator{max-width:900px;background:white;border:1px solid #d9e2d2;border-radius:10px;padding:25px;margin-top:16px}.calculator[hidden]{display:none}.calc-heading{display:flex;justify-content:space-between;gap:12px;align-items:center;padding-bottom:17px;border-bottom:1px solid #e2e8dc}.badge{font-size:10px;color:#819572;background:#eff5e9;padding:4px 8px;border-radius:5px}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(90px,1fr));gap:15px;margin:22px 0}.field{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#77896b}input,select{font:14px Consolas,monospace;border:1px solid #bac9b0;padding:10px;border-radius:5px;width:100%;color:#345638;background:#fbfdf7}.eye-radios{display:flex;align-items:center;gap:12px;font-size:12px;margin-top:15px}.eye-radios input{width:auto}.small-note{font-size:10px;color:#8a9b7d;margin-bottom:0}.audit{max-width:900px;padding:20px 0}.audit h2{font-size:14px}.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.audit pre{white-space:pre-wrap;word-break:break-word;font:11px/1.7 Consolas,monospace;background:#eaf0e2;border:1px solid #dbe5cf;padding:13px;border-radius:6px;min-height:115px}.flow{font-size:12px;color:#6a805a;background:#edf4e6;border:1px solid #d3e2c7;border-radius:6px;padding:13px 15px}.status{font-size:11px;color:#708663;min-height:20px}details{margin-top:18px;font-size:11px;color:#869777}.os-note{font-size:10px;color:#9baa8c}@media(max-width:1050px){body{padding-right:390px;padding-left:20px}.form-grid{grid-template-columns:1fr 1fr}.audit-grid{grid-template-columns:1fr}h1{font-size:22px}}@media(max-width:720px){body{padding:20px}.form-grid{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="qa-banner">合成軟體測試 · Chrome API 模擬。此頁不連線至計算網站、不執行臨床計算，也不使用病人資料。</div>
+    <div class="eyebrow">REAL PANEL · REAL STORE · REAL FIELD BRIDGE</div>
+    <h1>跨分頁資料接續，保留原網站空間。</h1>
+    <p>右側使用正式懸浮外殼與面板程式。下方兩個虛擬分頁保留正式網站欄位 ID，以驗證複製、核對、共用儲存與貼上。</p>
+    <div class="tools">
+      <button type="button" id="switch-source" class="active">A · Barrett 來源分頁</button>
+      <button type="button" id="switch-destination">B · EVO 目的分頁</button>
+      <button type="button" id="toggle-extension">點選 Extension 圖示</button>
+      <button type="button" id="simulate-srcdoc">模擬空白 srcdoc 覆蓋</button>
+      <button type="button" id="reset-test">重設合成測試</button>
+    </div>
+    <div class="flow">操作順序：在 A 選擇「OD+OS」讀取並核對 → 保存為測量 → 新增第二筆或第二位合成病人 → 重新選取測量 → 切到 B，以 OD 或 OS 預覽並貼上。</div>
+  </header>
+  <section id="source-form" class="calculator" aria-label="合成 Barrett 來源表單">
+    <div class="calc-heading"><h2>Barrett Universal II · A</h2><span class="badge">101 / 來源</span></div>
+    <p>明確標記的合成資料；不是病人量測。</p>
+    <div class="form-grid">
+      <label class="field">Patient name<input id="MainContent_PatientName" value="DEMO — SYNTHETIC ONLY"></label>
+      <label class="field">Patient ID<input id="MainContent_PatientNo" value="DEMO-ONLY"></label>
+      <label class="field">A constant<input id="MainContent_Aconstant" value="118.7"></label>
+      <label class="field">AL · OD (mm)<input id="MainContent_Axlength" value="23.45"></label>
+      <label class="field">ACD · OD (mm)<input id="MainContent_OpticalACD" value="3.20"></label>
+      <label class="field">LT · OD (mm)<input id="MainContent_LensThickness" value="4.20"></label>
+      <label class="field">K1 · OD (D)<input id="MainContent_MeasuredK1" value="43.20"></label>
+      <label class="field">K2 · OD (D)<input id="MainContent_MeasuredK2" value="44.10"></label>
+      <label class="field">WTW · OD (mm)<input id="MainContent_WTW" value="11.80"></label>
+      <label class="field">Target · OD (D)<input id="MainContent_Refraction" value="0.00"></label>
+      <label class="field">AL · OS (mm)<input id="MainContent_Axlength0" value="24.10"></label>
+      <label class="field">ACD · OS (mm)<input id="MainContent_OpticalACD0" value="3.45"></label>
+      <label class="field">LT · OS (mm)<input id="MainContent_LensThickness0" value="4.50"></label>
+      <label class="field">K1 · OS (D)<input id="MainContent_MeasuredK10" value="42.75"></label>
+      <label class="field">K2 · OS (D)<input id="MainContent_MeasuredK20" value="43.65"></label>
+      <label class="field">WTW · OS (mm)<input id="MainContent_WTW0" value="12.10"></label>
+      <label class="field">Target · OS (D)<input id="MainContent_Refraction0" value="-0.50"></label>
+    </div>
+    <p class="os-note">OD 與 OS 各欄數值不同，A Constant 為網站共用欄位；可驗證雙眼一次讀取／貼上，或只操作單眼。</p>
+  </section>
+  <section id="destination-form" class="calculator" aria-label="合成 EVO 目的表單" hidden>
+    <div class="calc-heading"><h2>EVO 2.0 · B</h2><span class="badge">202 / 目的</span></div>
+    <div class="eye-radios"><label><input type="radio" id="RadioButtonRLEye_0" name="demo-eye" checked> OD 右眼</label><label><input type="radio" id="RadioButtonRLEye_1" name="demo-eye"> OS 左眼</label></div>
+    <div class="form-grid">
+      <label class="field">Patient name<input id="TextBoxName"></label>
+      <label class="field">Patient ID<input id="TextBoxID"></label>
+      <label class="field">A constant<input id="txtAConstant"></label>
+      <label class="field">AL · 目前眼 (mm)<input id="txtAL"></label>
+      <label class="field">ACD · 目前眼 (mm)<input id="txtACD"></label>
+      <label class="field">LT · 目前眼 (mm)<input id="txtLT"></label>
+      <label class="field">K1 · 目前眼 (D)<input id="txtK1"></label>
+      <label class="field">K2 · 目前眼 (D)<input id="txtK2"></label>
+      <label class="field">Target · 目前眼 (D)<input id="txtRefraction"></label>
+    </div>
+    <p class="small-note">目的頁不提供 WTW；貼上只處理此頁已驗證且可見的欄位。</p>
+  </section>
+  <section class="audit" aria-label="合成驗證記錄">
+    <h2>流程驗證</h2><p class="status" id="qa-status" role="status">正在初始化測試…</p>
+    <div class="audit-grid"><div><strong>共用工作階段</strong><pre id="shared-data">尚未儲存</pre></div><div><strong>EVO 目的欄位讀回</strong><pre id="destination-readback">尚未貼上</pre></div></div>
+    <div><strong>病人與多次測量資料庫</strong><pre id="library-readback">尚無保存測量</pre></div>
+    <details><summary>測試範圍</summary><p>使用正式 createFloatingShell、createSessionStore、createLibraryStore、createLibraryService、app.js、editor-state.js、platform.js 與 siteBridge。Chrome API、儲存空間與網站網址環境在此開發頁模擬；資料可跨模擬分頁保留，重新載入此測試頁即清除。不代表安裝後 extension-origin CSP 或正式網站端的寫入驗收。「重設合成測試」清空工作副本並還原表單，保留此頁已保存的病人與測量，便於驗證重新帶入。「模擬空白 srcdoc 覆蓋」只在本機 HTTP 測試 iframe 加入空白 srcdoc；等外框顯示逾時後可重新載入，確認清除覆蓋、面板回報就緒且保存的合成資料保持不變。這不是正式擴充功能中的故障注入入口，也不會改變正式來源檢查。</p></details>
+  </section>
+  <script type="module" src="./floating-preview.js"></script>
+</body>
+</html>

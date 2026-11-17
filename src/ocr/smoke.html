@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Local OCR smoke check</title></head>
+<body>
+  <h1>本機 OCR 合成資料檢查</h1>
+  <p>此頁只讀取同專案的合成資料，不使用病人資訊或雲端 API。</p>
+  <button type="button" data-fixture="png" data-model="tiny">PNG · tiny</button>
+  <button type="button" data-fixture="png" data-model="small">PNG · small</button>
+  <button type="button" data-fixture="pdf" data-model="tiny">PDF · tiny</button>
+  <button type="button" data-fixture="pdf" data-model="small">PDF · small</button>
+  <p id="status" role="status">尚未執行</p>
+  <pre id="result"></pre>
+  <script type="module" src="./smoke.js"></script>
+</body>
+</html>

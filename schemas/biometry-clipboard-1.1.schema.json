@@ -1,0 +1,2307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:biometry-clipboard:interchange:1.1",
+  "title": "Biometry Clipboard interchange 1.1 (accepts 1.0)",
+  "description": "Portable case or patient-library document. Version 1.1 adds independent planned SE IOL power in D. Version 1.0 retains its exact original field and unit vocabulary. Runtime validation additionally checks duplicate IDs, finite decimals, positive core measurements, and axis bounds. No clinical inference or unit conversion.",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schemaVersion",
+        "kind",
+        "exportedAt",
+        "units",
+        "case"
+      ],
+      "properties": {
+        "format": {
+          "const": "biometry-clipboard"
+        },
+        "schemaVersion": {
+          "const": "1.1"
+        },
+        "exportedAt": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 40
+        },
+        "units": {
+          "const": {
+            "al": "mm",
+            "k1": "D",
+            "k1Axis": "deg",
+            "k2": "D",
+            "k2Axis": "deg",
+            "acd": "mm",
+            "lt": "mm",
+            "cct": "um",
+            "wtw": "mm",
+            "target": "D",
+            "aConstant": "1",
+            "lensFactor": "1",
+            "sia": "D",
+            "incisionAxis": "deg",
+            "tk1": "D",
+            "tk1Axis": "deg",
+            "tk2": "D",
+            "tk2Axis": "deg",
+            "pk1": "D",
+            "pk1Axis": "deg",
+            "pk2": "D",
+            "pk2Axis": "deg",
+            "pca": "D",
+            "pcaAxis": "deg",
+            "preLasikK": "D",
+            "preLasikRefraction": "D",
+            "postLasikRefraction": "D",
+            "kIndex": "1",
+            "preLvcRadius": "mm",
+            "correctedAmetropia": "D",
+            "posteriorRadius": "mm",
+            "totalK": "D",
+            "tcrp": "D",
+            "plannedIolPower": "D",
+            "refractionSphere": "D",
+            "refractionCylinder": "D",
+            "refractionAxis": "deg",
+            "implantedIolPower": "D",
+            "implantedIolCylinder": "D",
+            "implantedIolAxis": "deg",
+            "desiredIolAxis": "deg",
+            "preOpK1": "D",
+            "preOpK1Axis": "deg",
+            "preOpK2": "D",
+            "preOpK2Axis": "deg",
+            "postOpK1": "D",
+            "postOpK1Axis": "deg",
+            "postOpK2": "D",
+            "postOpK2Axis": "deg",
+            "exchangeLensFactor": "1",
+            "exchangeAConstant": "1",
+            "fellowAl": "mm",
+            "fellowAcd": "mm",
+            "fellowLt": "mm",
+            "fellowCct": "um",
+            "fellowK1": "D",
+            "fellowK2": "D",
+            "fellowIolPower": "D",
+            "fellowRefraction": "D",
+            "patient.age": "year"
+          }
+        },
+        "kind": {
+          "const": "case"
+        },
+        "case": {
+          "$ref": "#/$defs/case"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schemaVersion",
+        "kind",
+        "exportedAt",
+        "units",
+        "patients"
+      ],
+      "properties": {
+        "format": {
+          "const": "biometry-clipboard"
+        },
+        "schemaVersion": {
+          "const": "1.1"
+        },
+        "exportedAt": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 40
+        },
+        "units": {
+          "const": {
+            "al": "mm",
+            "k1": "D",
+            "k1Axis": "deg",
+            "k2": "D",
+            "k2Axis": "deg",
+            "acd": "mm",
+            "lt": "mm",
+            "cct": "um",
+            "wtw": "mm",
+            "target": "D",
+            "aConstant": "1",
+            "lensFactor": "1",
+            "sia": "D",
+            "incisionAxis": "deg",
+            "tk1": "D",
+            "tk1Axis": "deg",
+            "tk2": "D",
+            "tk2Axis": "deg",
+            "pk1": "D",
+            "pk1Axis": "deg",
+            "pk2": "D",
+            "pk2Axis": "deg",
+            "pca": "D",
+            "pcaAxis": "deg",
+            "preLasikK": "D",
+            "preLasikRefraction": "D",
+            "postLasikRefraction": "D",
+            "kIndex": "1",
+            "preLvcRadius": "mm",
+            "correctedAmetropia": "D",
+            "posteriorRadius": "mm",
+            "totalK": "D",
+            "tcrp": "D",
+            "plannedIolPower": "D",
+            "refractionSphere": "D",
+            "refractionCylinder": "D",
+            "refractionAxis": "deg",
+            "implantedIolPower": "D",
+            "implantedIolCylinder": "D",
+            "implantedIolAxis": "deg",
+            "desiredIolAxis": "deg",
+            "preOpK1": "D",
+            "preOpK1Axis": "deg",
+            "preOpK2": "D",
+            "preOpK2Axis": "deg",
+            "postOpK1": "D",
+            "postOpK1Axis": "deg",
+            "postOpK2": "D",
+            "postOpK2Axis": "deg",
+            "exchangeLensFactor": "1",
+            "exchangeAConstant": "1",
+            "fellowAl": "mm",
+            "fellowAcd": "mm",
+            "fellowLt": "mm",
+            "fellowCct": "um",
+            "fellowK1": "D",
+            "fellowK2": "D",
+            "fellowIolPower": "D",
+            "fellowRefraction": "D",
+            "patient.age": "year"
+          }
+        },
+        "kind": {
+          "const": "library"
+        },
+        "patients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/patient"
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schemaVersion",
+        "kind",
+        "exportedAt",
+        "units",
+        "case"
+      ],
+      "properties": {
+        "format": {
+          "const": "biometry-clipboard"
+        },
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "exportedAt": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 40
+        },
+        "units": {
+          "const": {
+            "al": "mm",
+            "k1": "D",
+            "k1Axis": "deg",
+            "k2": "D",
+            "k2Axis": "deg",
+            "acd": "mm",
+            "lt": "mm",
+            "cct": "um",
+            "wtw": "mm",
+            "target": "D",
+            "aConstant": "1",
+            "lensFactor": "1",
+            "sia": "D",
+            "incisionAxis": "deg",
+            "tk1": "D",
+            "tk1Axis": "deg",
+            "tk2": "D",
+            "tk2Axis": "deg",
+            "pk1": "D",
+            "pk1Axis": "deg",
+            "pk2": "D",
+            "pk2Axis": "deg",
+            "pca": "D",
+            "pcaAxis": "deg",
+            "preLasikK": "D",
+            "preLasikRefraction": "D",
+            "postLasikRefraction": "D",
+            "kIndex": "1",
+            "preLvcRadius": "mm",
+            "correctedAmetropia": "D",
+            "posteriorRadius": "mm",
+            "totalK": "D",
+            "tcrp": "D",
+            "refractionSphere": "D",
+            "refractionCylinder": "D",
+            "refractionAxis": "deg",
+            "implantedIolPower": "D",
+            "implantedIolCylinder": "D",
+            "implantedIolAxis": "deg",
+            "desiredIolAxis": "deg",
+            "preOpK1": "D",
+            "preOpK1Axis": "deg",
+            "preOpK2": "D",
+            "preOpK2Axis": "deg",
+            "postOpK1": "D",
+            "postOpK1Axis": "deg",
+            "postOpK2": "D",
+            "postOpK2Axis": "deg",
+            "exchangeLensFactor": "1",
+            "exchangeAConstant": "1",
+            "fellowAl": "mm",
+            "fellowAcd": "mm",
+            "fellowLt": "mm",
+            "fellowCct": "um",
+            "fellowK1": "D",
+            "fellowK2": "D",
+            "fellowIolPower": "D",
+            "fellowRefraction": "D",
+            "patient.age": "year"
+          }
+        },
+        "kind": {
+          "const": "case"
+        },
+        "case": {
+          "$ref": "#/$defs/caseV1_0"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schemaVersion",
+        "kind",
+        "exportedAt",
+        "units",
+        "patients"
+      ],
+      "properties": {
+        "format": {
+          "const": "biometry-clipboard"
+        },
+        "schemaVersion": {
+          "const": "1.0"
+        },
+        "exportedAt": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 40
+        },
+        "units": {
+          "const": {
+            "al": "mm",
+            "k1": "D",
+            "k1Axis": "deg",
+            "k2": "D",
+            "k2Axis": "deg",
+            "acd": "mm",
+            "lt": "mm",
+            "cct": "um",
+            "wtw": "mm",
+            "target": "D",
+            "aConstant": "1",
+            "lensFactor": "1",
+            "sia": "D",
+            "incisionAxis": "deg",
+            "tk1": "D",
+            "tk1Axis": "deg",
+            "tk2": "D",
+            "tk2Axis": "deg",
+            "pk1": "D",
+            "pk1Axis": "deg",
+            "pk2": "D",
+            "pk2Axis": "deg",
+            "pca": "D",
+            "pcaAxis": "deg",
+            "preLasikK": "D",
+            "preLasikRefraction": "D",
+            "postLasikRefraction": "D",
+            "kIndex": "1",
+            "preLvcRadius": "mm",
+            "correctedAmetropia": "D",
+            "posteriorRadius": "mm",
+            "totalK": "D",
+            "tcrp": "D",
+            "refractionSphere": "D",
+            "refractionCylinder": "D",
+            "refractionAxis": "deg",
+            "implantedIolPower": "D",
+            "implantedIolCylinder": "D",
+            "implantedIolAxis": "deg",
+            "desiredIolAxis": "deg",
+            "preOpK1": "D",
+            "preOpK1Axis": "deg",
+            "preOpK2": "D",
+            "preOpK2Axis": "deg",
+            "postOpK1": "D",
+            "postOpK1Axis": "deg",
+            "postOpK2": "D",
+            "postOpK2Axis": "deg",
+            "exchangeLensFactor": "1",
+            "exchangeAConstant": "1",
+            "fellowAl": "mm",
+            "fellowAcd": "mm",
+            "fellowLt": "mm",
+            "fellowCct": "um",
+            "fellowK1": "D",
+            "fellowK2": "D",
+            "fellowIolPower": "D",
+            "fellowRefraction": "D",
+            "patient.age": "year"
+          }
+        },
+        "kind": {
+          "const": "library"
+        },
+        "patients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/patientV1_0"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "patientId": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "name": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "surgeonId": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "surgeonName": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "gender": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "age": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "eye": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "al": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "acd": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "lt": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "cct": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "wtw": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "target": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "aConstant": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "lensFactor": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "sia": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "incisionAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pca": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pcaAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preLasikK": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preLasikRefraction": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postLasikRefraction": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "kIndex": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preLvcRadius": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "correctedAmetropia": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "posteriorRadius": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "totalK": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tcrp": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "refractionSphere": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "refractionCylinder": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "refractionAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "implantedIolPower": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "implantedIolCylinder": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "implantedIolAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "desiredIolAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "exchangeLensFactor": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "exchangeAConstant": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowAl": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowAcd": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowLt": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowCct": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowK1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowK2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowIolPower": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowRefraction": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "toric": {
+          "type": "boolean"
+        },
+        "lvcType": {
+          "enum": [
+            "",
+            "none",
+            "myopic",
+            "hyperopic",
+            "rk",
+            "keratoconus"
+          ]
+        },
+        "biometer": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "argos": {
+          "enum": [
+            "",
+            "yes",
+            "no"
+          ]
+        },
+        "plannedIolPower": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Planned spherical-equivalent IOL power in D, supplied by another calculation or explicit user entry. Independent from implanted/fellow IOL power and target refraction."
+        }
+      }
+    },
+    "eyes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "OD",
+        "OS"
+      ],
+      "properties": {
+        "OD": {
+          "$ref": "#/$defs/eye"
+        },
+        "OS": {
+          "$ref": "#/$defs/eye"
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "patient",
+        "eyes",
+        "activeEye"
+      ],
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "patient": {
+          "$ref": "#/$defs/identity"
+        },
+        "eyes": {
+          "$ref": "#/$defs/eyes"
+        },
+        "activeEye": {
+          "enum": [
+            "OD",
+            "OS"
+          ]
+        }
+      }
+    },
+    "patient": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "patient",
+        "createdAt",
+        "updatedAt",
+        "measurements"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "patient": {
+          "$ref": "#/$defs/identity"
+        },
+        "createdAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "updatedAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "measurements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/measurement"
+          }
+        }
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "measuredAt",
+        "source",
+        "patient",
+        "eyes",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "label": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "measuredAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 500
+        },
+        "patient": {
+          "$ref": "#/$defs/identity"
+        },
+        "eyes": {
+          "$ref": "#/$defs/eyes"
+        },
+        "createdAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "updatedAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        }
+      }
+    },
+    "identityV1_0": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "patientId": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "name": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "surgeonId": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "surgeonName": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "gender": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "age": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        }
+      }
+    },
+    "eyeV1_0": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "al": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "k2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "acd": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "lt": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "cct": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "wtw": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "target": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "aConstant": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "lensFactor": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "sia": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "incisionAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tk2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pk2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pca": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "pcaAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preLasikK": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preLasikRefraction": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postLasikRefraction": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "kIndex": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preLvcRadius": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "correctedAmetropia": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "posteriorRadius": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "totalK": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "tcrp": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "refractionSphere": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "refractionCylinder": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "refractionAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "implantedIolPower": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "implantedIolCylinder": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "implantedIolAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "desiredIolAxis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "preOpK2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK1Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "postOpK2Axis": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "exchangeLensFactor": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "exchangeAConstant": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowAl": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowAcd": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowLt": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowCct": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowK1": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowK2": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowIolPower": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "fellowRefraction": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 100,
+              "pattern": "^(?:|[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+))$"
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "toric": {
+          "type": "boolean"
+        },
+        "lvcType": {
+          "enum": [
+            "",
+            "none",
+            "myopic",
+            "hyperopic",
+            "rk",
+            "keratoconus"
+          ]
+        },
+        "biometer": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "argos": {
+          "enum": [
+            "",
+            "yes",
+            "no"
+          ]
+        }
+      }
+    },
+    "eyesV1_0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "OD",
+        "OS"
+      ],
+      "properties": {
+        "OD": {
+          "$ref": "#/$defs/eyeV1_0"
+        },
+        "OS": {
+          "$ref": "#/$defs/eyeV1_0"
+        }
+      }
+    },
+    "caseV1_0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "patient",
+        "eyes",
+        "activeEye"
+      ],
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "patient": {
+          "$ref": "#/$defs/identityV1_0"
+        },
+        "eyes": {
+          "$ref": "#/$defs/eyesV1_0"
+        },
+        "activeEye": {
+          "enum": [
+            "OD",
+            "OS"
+          ]
+        }
+      }
+    },
+    "patientV1_0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "patient",
+        "createdAt",
+        "updatedAt",
+        "measurements"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "patient": {
+          "$ref": "#/$defs/identityV1_0"
+        },
+        "createdAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "updatedAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "measurements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/measurementV1_0"
+          }
+        }
+      }
+    },
+    "measurementV1_0": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "measuredAt",
+        "source",
+        "patient",
+        "eyes",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "label": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "measuredAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 500
+        },
+        "patient": {
+          "$ref": "#/$defs/identityV1_0"
+        },
+        "eyes": {
+          "$ref": "#/$defs/eyesV1_0"
+        },
+        "createdAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "updatedAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        }
+      }
+    }
+  }
+}

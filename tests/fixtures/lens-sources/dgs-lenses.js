@@ -1,0 +1,3 @@
+// Published menu arrays; fixture only, never executed.
+IOLModelItems:[{type:"Finevision",text:"Finevision",aconst:118.9},{type:"Other_Men",text:"Other IOL Model"},{type:"Panoptix",text:"Panoptix",aconst:119.2},{type:"Vivinex",text:"Vivinex",aconst:119.2},{type:"SN60WF",text:"SN60WF",aconst:119.1},{type:"PCB",text:"PCB00/ZCB00",aconst:119.35},{type:"MX60",text:"Envista MX60",aconst:119.3},{type:"SA60AT",text:"SA60AT",aconst:118.85},{type:"Asphina",text:"Asphina",aconst:117.95},{type:"60MA",text:"MA/MN60MA"},{type:"A1-UV",text:"A1-UV",aconst:119.2},{type:"AR40",text:"AR40",aconst:118.4},{type:"RayOne",text:"RayOne",aconst:118.6}]
+style:[{type:"Anterior",text:"Anterior"},{type:"Posterior",text:"Posterior"},{type:"Bitoric",text:"Bitoric"}]

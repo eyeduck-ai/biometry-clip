@@ -1,0 +1,25 @@
+{
+  "totalRows": 645,
+  "collectedRows": 645,
+  "fullyCollectedRows": 645,
+  "totalParameterSlots": 4515,
+  "statuses": {
+    "observed": 4363,
+    "blank": 152,
+    "not-exposed": 0,
+    "not-collected": 0
+  },
+  "complete": true,
+  "duplicateLabelGroups": 7,
+  "duplicateSourceRows": 14,
+  "byMode": {
+    "non-toric": {
+      "totalRows": 465,
+      "collectedRows": 465
+    },
+    "toric": {
+      "totalRows": 180,
+      "collectedRows": 180
+    }
+  }
+}

@@ -1,0 +1,596 @@
+<!doctype html>
+<!-- Public calculator form/menu excerpts. Remote scripts and image sources omitted. -->
+<html lang="en"><body>
+<form method="get" action="#" id="calculate-form" class="calculate-form">
+      <div class="row">
+        <div class="col-7 noprint">
+          <div class="card bg-light-grey mb-2 mt-2">
+            <div class="card-header bg-dark text-light">
+              <div class="row">
+                <span class="col-auto" data-bs-toggle="tooltip" data-bs-original-title="Click here for additional help.">
+                  <div class="patient-info-title" data-bs-toggle="modal" data-bs-target="#patientInformationModal">
+                    Surgeon and Patient Information <svg class="octicon octicon-info" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>
+                  </div>
+                </span>
+                <div class="col-4 default"></div>
+                <a href="#notesModal" class="col-auto btn btn-default btn-light text-dark js-notes pe-2" data-bs-toggle="modal" margin-left="auto">
+                  Notes...
+                </a>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="mb-2 row align-items-center">
+                <label class="col-3 col-form-label" for="surgeonName">
+                  Surgeon Name
+                </label>
+                <div class="col-4">
+                  <input class="form-control" id="surgeonName" name="surgeonName" type="text" maxlength="25" tabindex="1">
+                </div>
+                <label class="col-1 col-form-label ps-2 pe-2" for="date">Date</label>
+                <div class="col-4">
+                  <div class="input-group">
+                    <input class="form-control date-input js-date-input" id="date" name="date" placeholder="Date" type="text" formnovalidate="formnovalidate" tabindex="2">
+                    <div class="input-group-append">
+                      <a href="#" class="input-group-text js-date-calendar" tabindex="-1"><svg class="octicon octicon-calendar" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM2.5 7.5v6.75c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25V7.5Zm10.75-4H2.75a.25.25 0 0 0-.25.25V6h11V3.75a.25.25 0 0 0-.25-.25Z"></path></svg></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-2 row align-items-center">
+                <label class="col-3 col-form-label" for="patientInfo">
+                  Patient Information
+                </label>
+                <div class="col-4 mb-2">
+                  <input class="form-control" id="patientInfo" name="patientInfo" type="text" maxlength="25" tabindex="3">
+                </div>
+                <label class="col-2 col-form-label ps-2 pe-2 pt-lg-2" for="age">
+                  Patient Age
+                </label>
+                <div class="mb-2 col-3">
+                  <input class="form-control integer" id="age" name="age" type="text" tabindex="4">
+                </div>
+              </div>
+              <div class="row eye-side">
+                <div class="col">
+                  <div>Eye Selection</div>
+                </div>
+                <div class="col">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="eyeSelection" checked="checked" value="right" id="eyeSelection1" tabindex="5">
+                    <label class="form-check-label" for="eyeSelection1">OD (Right)</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="eyeSelection" value="left" id="eyeSelection2" tabindex="6">
+                    <label class="form-check-label" for="eyeSelection2">OS (Left)</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div>K Notation</div>
+                </div>
+                <div class="col">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="kNotation" checked="checked" value="D" id="kNotationDiopters" tabindex="7">
+                    <label class="form-check-label" for="kNotationDiopters">D</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="kNotation" value="mm" id="kNotationMillimeters" tabindex="8">
+                    <label class="form-check-label" for="kNotationMillimeters">mm</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card bg-light-grey mb-2 keratometry-card">
+            <div class="card-header bg-dark text-light">
+              <div class="row">
+                <span class="col-auto" data-bs-toggle="tooltip" title="Click here for additional help.">
+                  <div data-bs-toggle="modal" data-bs-target="#keratometryInformationModal">
+                    Keratometry <svg class="octicon octicon-info" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="mb-2 row align-items-center">
+                <label class="col col-form-label pt-0 pb-0 pe-0" for="sia">
+                  Surgically Induced Astigmatism (SIA)
+                </label>
+                <div class="col">
+                  <input type="text" class="form-control numeral" data-bs-toggle="tooltip" id="sia" name="sia" tabindex="9">
+                  <span class="units js-units mt-2">D</span>
+                </div>
+
+                <label class="col col-form-label pt-0 pb-0 pe-0" for="incisionLocation">
+                  @ Meridian (Incision Location)
+                </label>
+                <div class="col">
+                  <input class="form-control integer" data-bs-toggle="tooltip" id="incisionLocation" name="incisionLocation" type="text" tabindex="10">
+                  <span class="units js-units">°</span>
+                </div>
+              </div>
+              <div class="mb-2 row align-items-center">
+                <label class="col col-form-label pe-0" for="flatK1">
+                  Flat K1
+                </label>
+                <div class="col">
+                  <input type="text" class="form-control numeral" data-bs-toggle="tooltip" id="flatK1" name="flatK1" tabindex="11">
+                  <span class="units js-units mt-2"></span>
+                </div>
+
+                <label class="col col-form-label pe-0" for="flatK1M">
+                  Flat K1 @ Meridian
+                </label>
+                <div class="col">
+                  <input type="text" class="form-control integer" data-bs-toggle="tooltip" id="flatK1M" name="flatK1M" tabindex="12">
+                  <span class="units js-units">°</span>
+                </div>
+              </div>
+              <div class="mb-2 row align-items-center">
+                <label class="col col-form-label pe-0" for="steepK2">
+                  Steep K2
+                </label>
+                <div class="col">
+                  <input type="text" class="form-control numeral" data-bs-toggle="tooltip" id="steepK2" name="steepK2" tabindex="13">
+                  <span class="units js-units mt-2"></span>
+                </div>
+
+                <label class="col col-form-label pe-0" for="steepK2M">
+                  Steep K2 @ Meridian
+                </label>
+                <div class="col">
+                  <input type="text" class="form-control" id="steepK2M" name="steepK2M" disabled="">
+                  <span class="units js-units">°</span>
+                </div>
+              </div>
+              <div class="row align-items-center">
+                <label class="col-3 col-form-label pe-0" for="preoperativeCornealAstigmatism">
+                  Preop Corneal Astigmatism
+                </label>
+                <div class="col-3">
+                  <input type="text" class="form-control" id="preoperativeCornealAstigmatism" name="preoperativeCornealAstigmatism" disabled="">
+                  <div class="units js-units mt-2">D</div>
+                </div>
+                <div class="col">
+                  <input class="form-check-input" type="checkbox" id="includePCA" name="includePCA" tabindex="14">
+                  <label class="form-check-label" for="includePCA">
+                    Include Posterior Corneal Astigmatism
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <!-- Eye Graph -->
+          <div class="col">
+            <div class="row mt-2 align-items-center">
+              <div class="col eye-selection-text-container">
+                <h3 class="eye-selection-text text-warning">
+                  <span class="js-eye-selection-text noprint">OD</span><span class="js-eye-selection-text-side print-only">OD (Right)</span>
+                </h3>
+              </div>
+
+              <div class="col face-image-container">
+                <a href="#" class="eye-selection float-end js-eye-selection" tabindex="-1">
+                </a>
+                <img alt="Eye Selection" class="facial-orientation float-end js-facial-orientation">
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col text-center eye-image-container">
+                <div class="orientation-indicator js-orientation-indicator">
+                  Temporal
+                </div>
+                <div class="compass">
+                  <svg id="orientationSVG" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 309.99999 287.81116" width="355" height="340">
+                    <!-- Orientation Text -->
+                    <text id="orientationText" x="50%" y="50%" display="none" text-anchor="middle" dominant-baseline="middle" stroke="black" font-size="24" dx="10">
+                      133°
+                    </text>
+
+                    <!-- Orientation Compass -->
+                    <image id="orientationCompass" href="/images/compass.svg" alt="Lens Compass"></image>
+
+                    <!-- Incision Indicator -->
+                    <image id="incisionIndicator" href="/images/incision.svg" alt="Incision Indicator" x="265" y="123" display="none" transform="rotate(225, 162.5, 144)"></image>
+
+                    <!-- Base IOL -->
+                    <image id="baseIOL" href="/images/Non-ToricIOL.svg" alt="Base IOL" x="72" y="64" display="none" transform="rotate(227, 162.5, 144)"></image>
+
+                    <!-- Toric Alignment Dots -->
+                    <image id="toricAlignmentDots" href="/images/ToricAlignmentDots.svg" alt="Toric Alignment Dots" x="72" y="64" display="none" transform="rotate(227, 162.5, 144)"></image>
+                  </svg>
+                </div>
+                <div class="orientation-indicator js-orientation-indicator rtext">
+                  Nasal
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2 legend-container print-only">
+              <legend>
+                <img class="legend-incision" alt="Incision Legend">
+                (Incision Location)
+                <span class="pr-incision-location-text"></span>°<br>
+                <img alt="Orientation Legend">
+                Calculated Orientation
+              </legend>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-7 noprint">
+          <div class="row">
+            <div class="col">
+              <div class="card bg-light-grey biometry-card">
+                <div class="card-header bg-dark text-light">
+                  <div class="row">
+                    <span class="col-auto" data-bs-toggle="tooltip" title="Click here for additional help.">
+                      <div data-bs-toggle="modal" data-bs-target="#biometryModal">
+                        Biometry <svg class="octicon octicon-info" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="form-group row mb-2 align-items-center">
+                    <label class="col-auto col-form-label pe-0" for="axialLength">
+                      Axial Length
+                    </label>
+                    <div class="col-auto">
+                      <input type="text" class="form-control numeral" data-bs-toggle="tooltip" id="axialLength" name="axialLength" tabindex="15">
+                      <span class="col-auto">
+                        <span class="units js-units-metric mt-2" for="axialLength">
+                          mm
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="mb-2 row align-items-center">
+                    <label for="method" class="col-3 col-form-label pe-0">
+                      Method
+                    </label>
+                    <div class="col-9">
+                      <select class="form-select" id="method" name="method" tabindex="16">
+                        <option value="Optical or Immersion" selected="">
+                          Optical or Immersion
+                        </option>
+                        <option value="Ultrasound/Contact">
+                          Ultrasound/Contact
+                        </option>
+                        <option value="Personalized Aconst">
+                          Personalized Aconst
+                        </option>
+                        <option value="Personalized SF">
+                          Personalized SF
+                        </option>
+                        <option value="Personalized ACD">
+                          Personalized ACD
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="col-5 col-form-label" for="constantFactor" id="constantFactorLabel"></label>
+                    <div class="col-7">
+                      <input class="form-control numeral" id="constantFactor" name="constantFactor" data-bs-toggle="tooltip">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="card bg-light-grey calc-preferences-card">
+                <div class="card-header bg-dark text-light">
+                  <div class="row">
+                    <span class="col-auto" data-bs-toggle="tooltip" title="Click here for additional help.">
+                      <div data-bs-toggle="modal" data-bs-target="#calcPreferencesInformationModal">
+                        Calculation Preferences <svg class="octicon octicon-info" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="form-group row mb-2 align-items-center">
+                    <label class="col-auto col-form-label pe-0" for="seIOLPower">
+                      SE IOL Power
+                    </label>
+                    <div class="col-auto">
+                      <select class="form-select" name="seIOLPower" id="seIOLPower" tabindex="18">
+                        <option value="-Select-">
+                          -Select-
+                        </option>
+                      </select>
+                    </div>
+                    <span class="col-auto">
+                      <span class="units js-units mt-2" for="seIOLPower">D</span>
+                    </span>
+                  </div>
+
+                  <div class="mb-2 row align-items-center">
+                    <label class="col col-form-label pe-0" for="kIndex">
+                      K Index
+                    </label>
+                    <div class="col">
+                      <select class="form-select" name="kIndex" id="kIndex" tabindex="19">
+                        <option value="-Select-">
+                          -Select-
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col">
+                      Refractive Cylinder Convention
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="rcc" id="rccPlus" value="Plus" checked="checked" tabindex="20">
+                        <label class="form-check-label" for="rccPlus">Plus</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="rcc" value="Minus" id="rccMinus" tabindex="21">
+                        <label class="form-check-label" for="rccMinus">Minus</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col">
+              <div class="row">
+                <div class="col mb-1">
+                  <button class="btn btn-secondary calculate-btn" type="submit" disabled="disabled" tabindex="22">
+                    Calculate Results
+                  </button>
+                </div>
+                <div class="col mb-1">
+                  <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#clearEntriesModal" tabindex="23">
+                    Clear Entries
+                  </button>
+                </div>
+                <div class="col mb-1">
+                  <button class="btn btn-secondary js-print-btn" type="button" disabled="" tabindex="24">
+                    Print Results
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <!-- © Johnson & Johnson and its affiliates 2018-2025 -->
+<table class="table table-sm table-bordered print-only">
+  <thead>
+    <tr class="pr-large-title bg-dark print-table-head">
+      <th class="text-light" colspan="2" scope="col">
+        IOL Details
+      </th>
+      <th class="text-light" colspan="2" scope="col">
+        Residual Refraction
+      </th>
+    </tr>
+    <tr class="pr-medium-title">
+      <th scope="col">IOL Model</th>
+      <th scope="col">Orientation</th>
+      <th scope="col">Cylinder</th>
+      <th scope="col">Axis</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="pr-small-title">
+      <td class="pr-chosenModel"></td>
+      <td class="pr-chosenOrientation"></td>
+      <td class="pr-chosenCylinder"></td>
+      <td class="pr-chosenAxis"></td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="table table-sm table-bordered print-only">
+  <thead>
+    <tr class="pr-large-title">
+      <th colspan="3" class="card-header bg-dark text-light print-table-head" scope="col">
+        Calculation Details
+      </th>
+    </tr>
+    <tr class="pr-medium-title">
+      <th scope="col">SE IOL Power</th>
+      <th scope="col">K Index</th>
+      <th scope="col">Refractive Cylinder Convention</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="pr-seIOLPower"></td>
+      <!-- select -->
+      <td class="pr-kIndex"></td>
+      <!-- select -->
+      <td class="pr-rcc"></td>
+      <!-- radio -->
+    </tr>
+  </tbody>
+</table>
+<table class="table table-sm table-bordered print-only">
+  <thead>
+    <tr class="pr-medium-title">
+      <th colspan="7" class="card-header bg-dark text-light print-table-head print" scope="col">
+        Keratometry and Biometry
+      </th>
+    </tr>
+    <tr class="pr-small-title">
+      <th scope="col">Flat K1 @ Meridian</th>
+      <th scope="col">Steep K2</th>
+      <th scope="col">SIA @ Meridian</th>
+      <th scope="col">AxL Length</th>
+      <th scope="col">Biometry Method</th>
+      <th class="pr-constant-factor-label" scope="col">
+        A-constant
+      </th>
+      <th scope="col">PCA</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="pr-flatK1M"></span>°</td>
+      <td><span class="pr-steepK2M"></span>°</td>
+      <td><span class="pr-incisionLocation"></span>°</td>
+      <td class="pr-axialLength"></td>
+      <td class="pr-method"></td>
+      <td class="pr-constantFactor"></td>
+      <td class="pr-includePCA"></td>
+    </tr>
+  </tbody>
+</table>
+
+          <div class="card bg-light mb-2">
+            <div class="card-header bg-dark text-light noprint">
+              <div class="row">
+                <span class="col-auto" data-bs-toggle="tooltip" title="Click here for additional help.">
+                  <div data-bs-toggle="modal" data-bs-target="#finalResultsInformationModal">
+                    Final Results <svg class="octicon octicon-info" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div class="card-body">
+              <table class="table table-sm table-bordered text-center noprint">
+                <thead>
+                  <tr class="pr-medium-title">
+                    <th class="iol-details-header head-preview" colspan="2" scope="col">
+                      IOL Details
+                    </th>
+                    <th class="iol-details-header head-preview" colspan="2" scope="col">
+                      Residual Astigmatism
+                    </th>
+                  </tr>
+                  <tr>
+                    <th scope="col">IOL Model</th>
+                    <th scope="col">Orientation</th>
+                    <th scope="col">Cylinder</th>
+                    <th scope="col">Axis</th>
+                  </tr>
+                </thead>
+                <tbody id="results"></tbody>
+              </table>
+            </div>
+          </div>
+          <table class="table table-sm table-bordered text-center print-only">
+            <thead>
+              <tr class="pr-medium-title">
+                <th class="iol-details-header head-preview" colspan="2" scope="col">
+                  IOL Details
+                </th>
+                <th class="iol-details-header head-preview" colspan="2" scope="col">
+                  Residual Astigmatism
+                </th>
+              </tr>
+              <tr>
+                <th scope="col">IOL Model</th>
+                <th scope="col">Orientation</th>
+                <th scope="col">Cylinder</th>
+                <th scope="col">Axis</th>
+              </tr>
+            </thead>
+            <tbody id="resultsPrint"></tbody>
+          </table>
+          <!-- © Johnson & Johnson and its affiliates 2018-2025 -->
+<table class="table table-sm table-bordered print-only">
+  <thead class="card-header bg-dark">
+    <tr class="pr-medium-title">
+      <th class="text-light" scope="col">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><div class="pr-notes"></div></td>
+    </tr>
+  </tbody>
+</table>
+<div class="pr-ce-mark print-only">
+  <p>
+    <img class="pr-md-mark-image" alt="MD marking">
+    <img class="pr-ce-mark-image" alt="CE marking">
+    <img class="pr-ua-mark-image" alt="UA marking">
+    <img class="pr-udi-mark-image" alt="UDI marking">
+    (01)05050474708822(8012) - 4.11.2.0
+  </p>
+</div>
+
+        </div>
+        <!-- Hidden input for lens type -->
+        <input class="d-none" id="lens" name="lens">
+      </div>
+    </form>
+<div class="dropdown-menu lens-select" aria-labelledby="lensSelect">
+          <h6 class="dropdown-header text-dark bg-light-grey">
+            MONOFOCAL
+          </h6>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="EyhanceOptiBlue-II-Simplicity">
+            <img alt="Eyhance OptiBlue II Simplicity DIW" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Eyhance-II-Simplicity">
+            <img alt="Eyhance II Simplicity DIU" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Eyhance-II">
+            <img alt="Eyhance II ICU" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Monofocal-II">
+            <img alt="Monofocal-II ZCU" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Monofocal">
+            <img alt="Monofocal ZCT" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="OptiBlue-II">
+            <img alt="OptiBlue II ZCW" class="my-1 mx-auto d-block">
+          </a>
+          <h6 class="dropdown-header text-dark bg-light-grey">
+            PRESBYOPIA CORRECTING
+          </h6>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Odyssey-II-Simplicity">
+            <img alt="Odyssey II Simplicity DRT" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="PureSee-II-Simplicity">
+            <img alt="PureSee II Simplicity DET" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="SynergyOptiBlue-II-Simplicity">
+            <img alt="Synergy OptiBlue II Simplicity DFW" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="SynergyOptiBlue-II">
+            <img alt="Synergy OptiBlue II ZFW" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="SymfonyOptiBlue-II-Simplicity">
+            <img alt="Symfony OptiBlue II Simplicity DXW" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="SymfonyOptiBlue-II">
+            <img alt="Symfony OptiBlue II ZXW" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Symfony">
+            <img alt="Symfony ZXT" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Multifocal-II-275">
+            <img alt="Multifocal II 275 ZKU" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Multifocal-II-325">
+            <img alt="Multifocal II 325 ZLU" class="my-1 mx-auto d-block">
+          </a>
+          <a href="#" class="dropdown-item d-none" data-bs-attribute="Multifocal">
+            <img alt="Multifocal ZMT" class="my-1 mx-auto d-block">
+          </a>
+        </div>
+<form id="settings"><input type="radio" class="form-check-input" name="rccPreferences" id="rccPlusPreferences" checked="checked"></form>
+</body></html>

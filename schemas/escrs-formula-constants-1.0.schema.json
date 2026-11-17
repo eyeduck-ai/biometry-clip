@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://biometry-clipboard.local/schemas/escrs-formula-constants-1.0.schema.json",
+  "title": "ESCRS formula constant observations 1.0",
+  "type": "object",
+  "required": [
+    "format",
+    "schemaVersion",
+    "sourceUrl",
+    "capturedAt",
+    "formulas",
+    "rows",
+    "coverage"
+  ],
+  "properties": {
+    "format": {
+      "const": "biometry-escrs-formula-constants"
+    },
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "sourceUrl": {
+      "const": "https://iolcalculator.escrs.org/"
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "formulas": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "unit"
+        ],
+        "properties": {
+          "key": {
+            "enum": [
+              "barrettAConstant",
+              "cookeAConstant",
+              "evoAConstant",
+              "hillRbfAConstant",
+              "hofferPacd",
+              "kaneAConstant",
+              "pearlDgsAConstant"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "manufacturer",
+          "mode",
+          "optionIndex",
+          "label",
+          "sourceUrl",
+          "capturedAt",
+          "parameters"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "manufacturer": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mode": {
+            "enum": [
+              "non-toric",
+              "toric"
+            ]
+          },
+          "optionIndex": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceUrl": {
+            "const": "https://iolcalculator.escrs.org/"
+          },
+          "capturedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "captureMethod": {
+            "type": ["string", "null"]
+          },
+          "verifiedAfterClear": {
+            "type": "boolean"
+          },
+          "selectionContext": {
+            "const": "toric"
+          },
+          "revealedInMode": {
+            "const": "non-toric"
+          },
+          "sourceSelectionVerified": {
+            "const": true
+          },
+          "parameters": {
+            "type": "object",
+            "required": [
+              "barrettAConstant",
+              "cookeAConstant",
+              "evoAConstant",
+              "hillRbfAConstant",
+              "hofferPacd",
+              "kaneAConstant",
+              "pearlDgsAConstant"
+            ],
+            "properties": {
+              "barrettAConstant": {
+                "$ref": "#/$defs/parameter"
+              },
+              "cookeAConstant": {
+                "$ref": "#/$defs/parameter"
+              },
+              "evoAConstant": {
+                "$ref": "#/$defs/parameter"
+              },
+              "hillRbfAConstant": {
+                "$ref": "#/$defs/parameter"
+              },
+              "hofferPacd": {
+                "$ref": "#/$defs/parameter"
+              },
+              "kaneAConstant": {
+                "$ref": "#/$defs/parameter"
+              },
+              "pearlDgsAConstant": {
+                "$ref": "#/$defs/parameter"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "parameter": {
+      "type": "object",
+      "required": [
+        "rawValue",
+        "status"
+      ],
+      "properties": {
+        "rawValue": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "blank",
+            "not-exposed",
+            "not-collected"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "observed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "rawValue": {
+                "type": "string",
+                "pattern": "^[-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "rawValue": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

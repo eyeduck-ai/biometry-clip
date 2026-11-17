@@ -1,0 +1,586 @@
+{
+  "format": "biometry-escrs-duplicate-labels",
+  "schemaVersion": "1.0",
+  "sourceUrl": "https://iolcalculator.escrs.org/",
+  "groups": [
+    {
+      "manufacturer": "Ophtec",
+      "mode": "non-toric",
+      "label": "AC 205",
+      "complete": true,
+      "sourceRows": [
+        {
+          "id": "[\"non-toric\",\"Ophtec\",0,\"AC 205\"]",
+          "optionIndex": 0,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "115.7",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "115.7",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "115.7",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "115.7",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "3.62",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "115.7",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "115.7",
+              "status": "observed"
+            }
+          }
+        },
+        {
+          "id": "[\"non-toric\",\"Ophtec\",1,\"AC 205\"]",
+          "optionIndex": 1,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "116.9",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "116.9",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "116.9",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "116.9",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "4.34",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "116.9",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "116.9",
+              "status": "observed"
+            }
+          }
+        }
+      ],
+      "differingFormulaKeys": [
+        "barrettAConstant",
+        "cookeAConstant",
+        "evoAConstant",
+        "hillRbfAConstant",
+        "hofferPacd",
+        "kaneAConstant",
+        "pearlDgsAConstant"
+      ]
+    },
+    {
+      "manufacturer": "SIFI",
+      "mode": "non-toric",
+      "label": "MINI 4",
+      "complete": true,
+      "sourceRows": [
+        {
+          "id": "[\"non-toric\",\"SIFI\",2,\"MINI 4\"]",
+          "optionIndex": 2,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.63",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            }
+          }
+        },
+        {
+          "id": "[\"non-toric\",\"SIFI\",3,\"MINI 4\"]",
+          "optionIndex": 3,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "cookeAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "evoAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "hillRbfAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "hofferPacd": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "kaneAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            }
+          }
+        }
+      ],
+      "differingFormulaKeys": [
+        "barrettAConstant",
+        "cookeAConstant",
+        "evoAConstant",
+        "hillRbfAConstant",
+        "hofferPacd",
+        "kaneAConstant",
+        "pearlDgsAConstant"
+      ]
+    },
+    {
+      "manufacturer": "SIFI",
+      "mode": "non-toric",
+      "label": "MINI 4 Ready",
+      "complete": true,
+      "sourceRows": [
+        {
+          "id": "[\"non-toric\",\"SIFI\",4,\"MINI 4 Ready\"]",
+          "optionIndex": 4,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.63",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            }
+          }
+        },
+        {
+          "id": "[\"non-toric\",\"SIFI\",5,\"MINI 4 Ready\"]",
+          "optionIndex": 5,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "cookeAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "evoAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "hillRbfAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "hofferPacd": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "kaneAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            }
+          }
+        }
+      ],
+      "differingFormulaKeys": [
+        "barrettAConstant",
+        "cookeAConstant",
+        "evoAConstant",
+        "hillRbfAConstant",
+        "hofferPacd",
+        "kaneAConstant",
+        "pearlDgsAConstant"
+      ]
+    },
+    {
+      "manufacturer": "SIFI",
+      "mode": "non-toric",
+      "label": "MINI 4 Yellow Ready",
+      "complete": true,
+      "sourceRows": [
+        {
+          "id": "[\"non-toric\",\"SIFI\",6,\"MINI 4 Yellow Ready\"]",
+          "optionIndex": 6,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.63",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "119",
+              "status": "observed"
+            }
+          }
+        },
+        {
+          "id": "[\"non-toric\",\"SIFI\",7,\"MINI 4 Yellow Ready\"]",
+          "optionIndex": 7,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "cookeAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "evoAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "hillRbfAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "hofferPacd": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "kaneAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": null,
+              "status": "blank"
+            }
+          }
+        }
+      ],
+      "differingFormulaKeys": [
+        "barrettAConstant",
+        "cookeAConstant",
+        "evoAConstant",
+        "hillRbfAConstant",
+        "hofferPacd",
+        "kaneAConstant",
+        "pearlDgsAConstant"
+      ]
+    },
+    {
+      "manufacturer": "Teleon",
+      "mode": "non-toric",
+      "label": "LS-313 MF30",
+      "complete": true,
+      "sourceRows": [
+        {
+          "id": "[\"non-toric\",\"Teleon\",15,\"LS-313 MF30\"]",
+          "optionIndex": 15,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "118.4254",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "118.4254",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "118.4254",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "118.4254",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.2471",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "118.4254",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "118.4254",
+              "status": "observed"
+            }
+          }
+        },
+        {
+          "id": "[\"non-toric\",\"Teleon\",16,\"LS-313 MF30\"]",
+          "optionIndex": 16,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "118.5",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "118.5",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "118.5",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "118.5",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.21",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "118.5",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "118.5",
+              "status": "observed"
+            }
+          }
+        }
+      ],
+      "differingFormulaKeys": [
+        "barrettAConstant",
+        "cookeAConstant",
+        "evoAConstant",
+        "hillRbfAConstant",
+        "hofferPacd",
+        "kaneAConstant",
+        "pearlDgsAConstant"
+      ]
+    },
+    {
+      "manufacturer": "Teleon",
+      "mode": "toric",
+      "label": "LU-313 MF30T",
+      "complete": true,
+      "sourceRows": [
+        {
+          "id": "[\"toric\",\"Teleon\",12,\"LU-313 MF30T\"]",
+          "optionIndex": 12,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.11",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            }
+          }
+        },
+        {
+          "id": "[\"toric\",\"Teleon\",13,\"LU-313 MF30T\"]",
+          "optionIndex": 13,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.11",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            }
+          }
+        }
+      ],
+      "differingFormulaKeys": []
+    },
+    {
+      "manufacturer": "Teleon",
+      "mode": "toric",
+      "label": "LU-313 MF30TY",
+      "complete": true,
+      "sourceRows": [
+        {
+          "id": "[\"toric\",\"Teleon\",14,\"LU-313 MF30TY\"]",
+          "optionIndex": 14,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.11",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            }
+          }
+        },
+        {
+          "id": "[\"toric\",\"Teleon\",15,\"LU-313 MF30TY\"]",
+          "optionIndex": 15,
+          "parameters": {
+            "barrettAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "cookeAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "evoAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hillRbfAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "hofferPacd": {
+              "rawValue": "5.11",
+              "status": "observed"
+            },
+            "kaneAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            },
+            "pearlDgsAConstant": {
+              "rawValue": "118.2",
+              "status": "observed"
+            }
+          }
+        }
+      ],
+      "differingFormulaKeys": []
+    }
+  ]
+}

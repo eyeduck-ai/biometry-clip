@@ -1,0 +1,1438 @@
+{
+  "sources": [
+    {
+      "siteId": "barrett-universal",
+      "controlId": "primary",
+      "url": "https://calc.apacrs.org/barrett_universal2105/",
+      "capturedAt": "2026-11-15T00:00:00.000Z",
+      "control": "native-select",
+      "options": [
+        {
+          "value": "Personal Constant",
+          "label": "Personal Constant",
+          "kind": "geometry",
+          "available": true
+        },
+        {
+          "value": "Alcon SN60WF",
+          "label": "Alcon SN60WF",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6AD",
+          "label": "Alcon SN6AD",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6ATx",
+          "label": "Alcon SN6ATx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SND1Tx",
+          "label": "Alcon SND1Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SV25Tx",
+          "label": "Alcon SV25Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon TFNTx",
+          "label": "Alcon TFNTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon DFTx",
+          "label": "Alcon DFTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SA60AT",
+          "label": "Alcon SA60AT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon MN60MA",
+          "label": "Alcon MN60MA",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Rayner RayOne EMV",
+          "label": "Rayner RayOne EMV",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCB00",
+          "label": "J&J ZCB00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT",
+          "label": "J&J ZCT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT(USA)",
+          "label": "J&J ZCT(USA)",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCU",
+          "label": "J&J ZCU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J DIU",
+          "label": "J&J DIU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZKU",
+          "label": "J&J ZKU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZLU",
+          "label": "J&J ZLU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J AR40e",
+          "label": "J&J AR40e",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J AR40M",
+          "label": "J&J AR40M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXR00",
+          "label": "J&J ZXR00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXT",
+          "label": "J&J ZXT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZHR00V",
+          "label": "J&J ZHR00V",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZHW",
+          "label": "J&J ZHW",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Zeiss 409M",
+          "label": "Zeiss 409M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Zeiss 709M",
+          "label": "Zeiss 709M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 251",
+          "label": "Hoya iSert 251",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 351",
+          "label": "Hoya iSert 351",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60",
+          "label": "Bausch & Lomb MX60",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60T",
+          "label": "Bausch & Lomb MX60T",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET",
+          "label": "Bausch & Lomb MX60ET",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET(USA)",
+          "label": "Bausch & Lomb MX60ET(USA)",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb BL1UT",
+          "label": "Bausch & Lomb BL1UT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb LI60AO",
+          "label": "Bausch & Lomb LI60AO",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "MBI T302A",
+          "label": "MBI T302A",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Lenstec SBL-3",
+          "label": "Lenstec SBL-3",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "SIFI Mini WELL",
+          "label": "SIFI Mini WELL",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Ophtec 565",
+          "label": "Ophtec 565",
+          "kind": "model",
+          "available": true
+        }
+      ],
+      "selected": null,
+      "parameters": []
+    },
+    {
+      "siteId": "barrett-true-k",
+      "controlId": "primary",
+      "url": "https://calc.apacrs.org/Barrett_True_K_Universal_2105/",
+      "capturedAt": "2026-11-15T00:00:00.000Z",
+      "control": "native-select",
+      "options": [
+        {
+          "value": "Personal Constant",
+          "label": "Personal Constant",
+          "kind": "geometry",
+          "available": true
+        },
+        {
+          "value": "Alcon SN60WF",
+          "label": "Alcon SN60WF",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6AD",
+          "label": "Alcon SN6AD",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6ATx",
+          "label": "Alcon SN6ATx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SND1Tx",
+          "label": "Alcon SND1Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SV25Tx",
+          "label": "Alcon SV25Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon TFNTx",
+          "label": "Alcon TFNTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon DFTx",
+          "label": "Alcon DFTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SA60AT",
+          "label": "Alcon SA60AT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon MN60MA",
+          "label": "Alcon MN60MA",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Rayner RayOne EMV",
+          "label": "Rayner RayOne EMV",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCB00",
+          "label": "J&J ZCB00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT",
+          "label": "J&J ZCT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT(USA)",
+          "label": "J&J ZCT(USA)",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCU",
+          "label": "J&J ZCU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J DIU",
+          "label": "J&J DIU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZKU",
+          "label": "J&J ZKU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZLU",
+          "label": "J&J ZLU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J AR40e",
+          "label": "J&J AR40e",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J AR40M",
+          "label": "J&J AR40M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXR00",
+          "label": "J&J ZXR00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXT",
+          "label": "J&J ZXT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZHR00V",
+          "label": "J&J ZHR00V",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZHW",
+          "label": "J&J ZHW",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Zeiss 409M",
+          "label": "Zeiss 409M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Zeiss 709M",
+          "label": "Zeiss 709M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 251",
+          "label": "Hoya iSert 251",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 351",
+          "label": "Hoya iSert 351",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60",
+          "label": "Bausch & Lomb MX60",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60T",
+          "label": "Bausch & Lomb MX60T",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET",
+          "label": "Bausch & Lomb MX60ET",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET(USA)",
+          "label": "Bausch & Lomb MX60ET(USA)",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb BL1UT",
+          "label": "Bausch & Lomb BL1UT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb LI60AO",
+          "label": "Bausch & Lomb LI60AO",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "MBI T302A",
+          "label": "MBI T302A",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Lenstec SBL-3",
+          "label": "Lenstec SBL-3",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "SIFI Mini WELL",
+          "label": "SIFI Mini WELL",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Ophtec 565",
+          "label": "Ophtec 565",
+          "kind": "model",
+          "available": true
+        }
+      ],
+      "selected": null,
+      "parameters": []
+    },
+    {
+      "siteId": "barrett-toric",
+      "controlId": "primary",
+      "url": "https://calc.apacrs.org/toric_calculator20/Toric%20Calculator.aspx",
+      "capturedAt": "2026-11-15T00:00:00.000Z",
+      "control": "native-select",
+      "options": [
+        {
+          "value": "Personal Constant",
+          "label": "Personal Constant",
+          "kind": "geometry",
+          "available": true
+        },
+        {
+          "value": "Alcon SN60WF",
+          "label": "Alcon SN60WF",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6AD",
+          "label": "Alcon SN6AD",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6ATx",
+          "label": "Alcon SN6ATx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SND1Tx",
+          "label": "Alcon SND1Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SV25Tx",
+          "label": "Alcon SV25Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon TFNTx",
+          "label": "Alcon TFNTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon DFTx",
+          "label": "Alcon DFTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SA60AT",
+          "label": "Alcon SA60AT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon MN60MA",
+          "label": "Alcon MN60MA",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Rayner RayOne EMV",
+          "label": "Rayner RayOne EMV",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCB00",
+          "label": "J&J ZCB00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT",
+          "label": "J&J ZCT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT(USA)",
+          "label": "J&J ZCT(USA)",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCU",
+          "label": "J&J ZCU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J DIU",
+          "label": "J&J DIU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZKU",
+          "label": "J&J ZKU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZLU",
+          "label": "J&J ZLU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J AR40e",
+          "label": "J&J AR40e",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J AR40M",
+          "label": "J&J AR40M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXR00",
+          "label": "J&J ZXR00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXT",
+          "label": "J&J ZXT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZHR00V",
+          "label": "J&J ZHR00V",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZHW",
+          "label": "J&J ZHW",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Zeiss 409M",
+          "label": "Zeiss 409M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Zeiss 709M",
+          "label": "Zeiss 709M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 251",
+          "label": "Hoya iSert 251",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 351",
+          "label": "Hoya iSert 351",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60",
+          "label": "Bausch & Lomb MX60",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60T",
+          "label": "Bausch & Lomb MX60T",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET",
+          "label": "Bausch & Lomb MX60ET",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET(USA)",
+          "label": "Bausch & Lomb MX60ET(USA)",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb BL1UT",
+          "label": "Bausch & Lomb BL1UT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb LI60AO",
+          "label": "Bausch & Lomb LI60AO",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "MBI T302A",
+          "label": "MBI T302A",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Lenstec SBL-3",
+          "label": "Lenstec SBL-3",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "SIFI Mini WELL",
+          "label": "SIFI Mini WELL",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Ophtec 565",
+          "label": "Ophtec 565",
+          "kind": "model",
+          "available": true
+        }
+      ],
+      "selected": null,
+      "parameters": []
+    },
+    {
+      "siteId": "barrett-true-k-toric",
+      "controlId": "primary",
+      "url": "https://calc.apacrs.org/TrueKToricTK_preview/TrueKToricTK.aspx",
+      "capturedAt": "2026-11-15T00:00:00.000Z",
+      "control": "native-select",
+      "options": [
+        {
+          "value": "Personal Constant",
+          "label": "Personal Constant",
+          "kind": "geometry",
+          "available": true
+        },
+        {
+          "value": "Alcon SN60WF",
+          "label": "Alcon SN60WF",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6AD",
+          "label": "Alcon SN6AD",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6ATx",
+          "label": "Alcon SN6ATx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SND1Tx",
+          "label": "Alcon SND1Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SV25Tx",
+          "label": "Alcon SV25Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon TFNTx",
+          "label": "Alcon TFNTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon DFTx",
+          "label": "Alcon DFTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SA60AT",
+          "label": "Alcon SA60AT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon MN60MA",
+          "label": "Alcon MN60MA",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Rayner RayOne EMV",
+          "label": "Rayner RayOne EMV",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCB00",
+          "label": "J&J ZCB00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT",
+          "label": "J&J ZCT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT(USA)",
+          "label": "J&J ZCT(USA)",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCU",
+          "label": "J&J ZCU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J DIU",
+          "label": "J&J DIU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZKU",
+          "label": "J&J ZKU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZLU",
+          "label": "J&J ZLU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J AR40e",
+          "label": "J&J AR40e",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J AR40M",
+          "label": "J&J AR40M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXR00",
+          "label": "J&J ZXR00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXT",
+          "label": "J&J ZXT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZHR00V",
+          "label": "J&J ZHR00V",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZHW",
+          "label": "J&J ZHW",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Zeiss 409M",
+          "label": "Zeiss 409M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Zeiss 709M",
+          "label": "Zeiss 709M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 251",
+          "label": "Hoya iSert 251",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 351",
+          "label": "Hoya iSert 351",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60",
+          "label": "Bausch & Lomb MX60",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60T",
+          "label": "Bausch & Lomb MX60T",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET",
+          "label": "Bausch & Lomb MX60ET",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET(USA)",
+          "label": "Bausch & Lomb MX60ET(USA)",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb BL1UT",
+          "label": "Bausch & Lomb BL1UT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb LI60AO",
+          "label": "Bausch & Lomb LI60AO",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "MBI T302A",
+          "label": "MBI T302A",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Lenstec SBL-3",
+          "label": "Lenstec SBL-3",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "SIFI Mini WELL",
+          "label": "SIFI Mini WELL",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Ophtec 565",
+          "label": "Ophtec 565",
+          "kind": "model",
+          "available": true
+        }
+      ],
+      "selected": null,
+      "parameters": []
+    },
+    {
+      "siteId": "barrett-rx",
+      "controlId": "implanted",
+      "url": "https://calc.apacrs.org/barrett_rx105/",
+      "capturedAt": "2026-11-15T00:00:00.000Z",
+      "control": "native-select",
+      "options": [
+        {
+          "value": "Personal Constant",
+          "label": "Personal Constant",
+          "kind": "geometry",
+          "available": true
+        },
+        {
+          "value": "Alcon SN60WF",
+          "label": "Alcon SN60WF",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6AD",
+          "label": "Alcon SN6AD",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6ATx",
+          "label": "Alcon SN6ATx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SND1Tx",
+          "label": "Alcon SND1Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SV25Tx",
+          "label": "Alcon SV25Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon TFNTx",
+          "label": "Alcon TFNTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon DFTx",
+          "label": "Alcon DFTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SA60AT",
+          "label": "Alcon SA60AT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon MN60MA",
+          "label": "Alcon MN60MA",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Rayner RayOne EMV",
+          "label": "Rayner RayOne EMV",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCB00",
+          "label": "J&J ZCB00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT",
+          "label": "J&J ZCT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT(USA)",
+          "label": "J&J ZCT(USA)",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCU",
+          "label": "J&J ZCU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J DIU",
+          "label": "J&J DIU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZKU",
+          "label": "J&J ZKU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZLU",
+          "label": "J&J ZLU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J AR40e",
+          "label": "J&J AR40e",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J AR40M",
+          "label": "J&J AR40M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXR00",
+          "label": "J&J ZXR00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXT",
+          "label": "J&J ZXT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZHR00V",
+          "label": "J&J ZHR00V",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZHW",
+          "label": "J&J ZHW",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Zeiss 409M",
+          "label": "Zeiss 409M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Zeiss 709M",
+          "label": "Zeiss 709M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 251",
+          "label": "Hoya iSert 251",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 351",
+          "label": "Hoya iSert 351",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60",
+          "label": "Bausch & Lomb MX60",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60T",
+          "label": "Bausch & Lomb MX60T",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET",
+          "label": "Bausch & Lomb MX60ET",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET(USA)",
+          "label": "Bausch & Lomb MX60ET(USA)",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb BL1UT",
+          "label": "Bausch & Lomb BL1UT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb LI60AO",
+          "label": "Bausch & Lomb LI60AO",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "MBI T302A",
+          "label": "MBI T302A",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Lenstec SBL-3",
+          "label": "Lenstec SBL-3",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "SIFI Mini WELL",
+          "label": "SIFI Mini WELL",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Ophtec 565",
+          "label": "Ophtec 565",
+          "kind": "model",
+          "available": true
+        }
+      ],
+      "selected": null,
+      "parameters": []
+    },
+    {
+      "siteId": "barrett-rx",
+      "controlId": "exchange",
+      "url": "https://calc.apacrs.org/barrett_rx105/",
+      "capturedAt": "2026-11-15T00:00:00.000Z",
+      "control": "native-select",
+      "options": [
+        {
+          "value": "Personal Constant",
+          "label": "Personal Constant",
+          "kind": "geometry",
+          "available": true
+        },
+        {
+          "value": "Alcon SN60WF",
+          "label": "Alcon SN60WF",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6AD",
+          "label": "Alcon SN6AD",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SN6ATx",
+          "label": "Alcon SN6ATx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SND1Tx",
+          "label": "Alcon SND1Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SV25Tx",
+          "label": "Alcon SV25Tx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon TFNTx",
+          "label": "Alcon TFNTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon DFTx",
+          "label": "Alcon DFTx",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Alcon SA60AT",
+          "label": "Alcon SA60AT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Alcon MN60MA",
+          "label": "Alcon MN60MA",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Rayner RayOne EMV",
+          "label": "Rayner RayOne EMV",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCB00",
+          "label": "J&J ZCB00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT",
+          "label": "J&J ZCT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCT(USA)",
+          "label": "J&J ZCT(USA)",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZCU",
+          "label": "J&J ZCU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J DIU",
+          "label": "J&J DIU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZKU",
+          "label": "J&J ZKU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZLU",
+          "label": "J&J ZLU",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J AR40e",
+          "label": "J&J AR40e",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J AR40M",
+          "label": "J&J AR40M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXR00",
+          "label": "J&J ZXR00",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZXT",
+          "label": "J&J ZXT",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "J&J ZHR00V",
+          "label": "J&J ZHR00V",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "J&J ZHW",
+          "label": "J&J ZHW",
+          "kind": "family",
+          "available": true
+        },
+        {
+          "value": "Zeiss 409M",
+          "label": "Zeiss 409M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Zeiss 709M",
+          "label": "Zeiss 709M",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 251",
+          "label": "Hoya iSert 251",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Hoya iSert 351",
+          "label": "Hoya iSert 351",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60",
+          "label": "Bausch & Lomb MX60",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60T",
+          "label": "Bausch & Lomb MX60T",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET",
+          "label": "Bausch & Lomb MX60ET",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb MX60ET(USA)",
+          "label": "Bausch & Lomb MX60ET(USA)",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb BL1UT",
+          "label": "Bausch & Lomb BL1UT",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Bausch & Lomb LI60AO",
+          "label": "Bausch & Lomb LI60AO",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "MBI T302A",
+          "label": "MBI T302A",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Lenstec SBL-3",
+          "label": "Lenstec SBL-3",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "SIFI Mini WELL",
+          "label": "SIFI Mini WELL",
+          "kind": "model",
+          "available": true
+        },
+        {
+          "value": "Ophtec 565",
+          "label": "Ophtec 565",
+          "kind": "model",
+          "available": true
+        }
+      ],
+      "selected": null,
+      "parameters": []
+    }
+  ]
+}

@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://biometry-clipboard.local/schemas/biometry-lens-catalog-1.0.schema.json",
+  "title": "Biometry Clipboard lens catalog 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "schemaVersion",
+    "exportedAt",
+    "sources",
+    "entries"
+  ],
+  "properties": {
+    "format": {
+      "const": "biometry-lens-catalog"
+    },
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "exportedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sources": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "entries": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://[^?#]+$",
+      "maxLength": 500
+    },
+    "option": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "label",
+        "kind",
+        "available"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/text"
+        },
+        "label": {
+          "$ref": "#/$defs/text"
+        },
+        "kind": {
+          "enum": [
+            "model",
+            "family",
+            "geometry"
+          ]
+        },
+        "available": {
+          "type": "boolean"
+        }
+      }
+    },
+    "selected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "label",
+        "kind"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/text"
+        },
+        "label": {
+          "$ref": "#/$defs/text"
+        },
+        "kind": {
+          "enum": [
+            "model",
+            "family",
+            "geometry"
+          ]
+        }
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "value",
+        "unit",
+        "sourceControl"
+      ],
+      "properties": {
+        "key": {
+          "$ref": "#/$defs/text"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[+-]?(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)$",
+          "maxLength": 100
+        },
+        "unit": {
+          "$ref": "#/$defs/text"
+        },
+        "sourceControl": {
+          "$ref": "#/$defs/text"
+        },
+        "method": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "siteId",
+        "url",
+        "capturedAt",
+        "control",
+        "options",
+        "selected",
+        "parameters"
+      ],
+      "properties": {
+        "siteId": {
+          "$ref": "#/$defs/text"
+        },
+        "url": {
+          "$ref": "#/$defs/url"
+        },
+        "capturedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "control": {
+          "enum": [
+            "native-select",
+            "custom-family"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2000,
+          "items": {
+            "$ref": "#/$defs/option"
+          }
+        },
+        "selected": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/selected"
+            }
+          ]
+        },
+        "parameters": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "$ref": "#/$defs/parameter"
+          }
+        }
+      }
+    },
+    "alias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "siteId",
+        "value",
+        "label",
+        "evidenceUrl",
+        "verifiedAt"
+      ],
+      "properties": {
+        "siteId": {
+          "$ref": "#/$defs/text"
+        },
+        "value": {
+          "$ref": "#/$defs/text"
+        },
+        "label": {
+          "$ref": "#/$defs/text"
+        },
+        "evidenceUrl": {
+          "$ref": "#/$defs/url"
+        },
+        "verifiedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "manufacturer",
+        "modelCode",
+        "name",
+        "kind",
+        "aliases"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/text"
+        },
+        "manufacturer": {
+          "$ref": "#/$defs/text"
+        },
+        "modelCode": {
+          "$ref": "#/$defs/text"
+        },
+        "name": {
+          "$ref": "#/$defs/text"
+        },
+        "kind": {
+          "enum": [
+            "model",
+            "family"
+          ]
+        },
+        "aliases": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 100,
+          "items": {
+            "$ref": "#/$defs/alias"
+          }
+        }
+      }
+    }
+  }
+}

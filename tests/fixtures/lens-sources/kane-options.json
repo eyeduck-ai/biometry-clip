@@ -1,0 +1,321 @@
+{
+  "url": "https://www.iolformula.com/",
+  "checkedAt": "2026-11-15T07:49:49.535Z",
+  "selects": [
+    {
+      "eye": "OD",
+      "selector": "select.d-block[name=\"ioltype_1\"]",
+      "options": [
+        {
+          "value": "0",
+          "label": "IOL Type",
+          "disabled": false
+        },
+        {
+          "value": "3",
+          "label": "Alcon MN60MA",
+          "disabled": false
+        },
+        {
+          "value": "2",
+          "label": "Alcon SA60AT",
+          "disabled": false
+        },
+        {
+          "value": "1",
+          "label": "Alcon SN60WF",
+          "disabled": false
+        },
+        {
+          "value": "7",
+          "label": "Alcon SN6ATx",
+          "disabled": false
+        },
+        {
+          "value": "33",
+          "label": "AST Asqelio Monofocal Toric",
+          "disabled": false
+        },
+        {
+          "value": "36",
+          "label": "AST Asqelio Pluris Toric",
+          "disabled": false
+        },
+        {
+          "value": "34",
+          "label": "AST Asqelio EDOF Toric",
+          "disabled": false
+        },
+        {
+          "value": "35",
+          "label": "AST Asqelio Trifocal Toric",
+          "disabled": false
+        },
+        {
+          "value": "24",
+          "label": "B+L enVista",
+          "disabled": false
+        },
+        {
+          "value": "25",
+          "label": "B+L enVista Toric",
+          "disabled": false
+        },
+        {
+          "value": "27",
+          "label": "B+L enVista Aspire",
+          "disabled": false
+        },
+        {
+          "value": "28",
+          "label": "B+L enVista Aspire Toric",
+          "disabled": false
+        },
+        {
+          "value": "29",
+          "label": "B+L enVista Envy",
+          "disabled": false
+        },
+        {
+          "value": "30",
+          "label": "B+L enVista Envy Toric",
+          "disabled": false
+        },
+        {
+          "value": "20",
+          "label": "B+L LuxGood",
+          "disabled": false
+        },
+        {
+          "value": "21",
+          "label": "B+L LuxGood Toric",
+          "disabled": false
+        },
+        {
+          "value": "31",
+          "label": "B+L LuxLife",
+          "disabled": false
+        },
+        {
+          "value": "32",
+          "label": "B+L LuxLife Toric",
+          "disabled": false
+        },
+        {
+          "value": "22",
+          "label": "B+L LuxSmart",
+          "disabled": false
+        },
+        {
+          "value": "23",
+          "label": "B+L LuxSmart Toric",
+          "disabled": false
+        },
+        {
+          "value": "13",
+          "label": "HumanOptics TORICA",
+          "disabled": false
+        },
+        {
+          "value": "26",
+          "label": "HumanOptics TrivaT",
+          "disabled": false
+        },
+        {
+          "value": "5",
+          "label": "J+J AR40e",
+          "disabled": false
+        },
+        {
+          "value": "4",
+          "label": "J+J ZCB00",
+          "disabled": false
+        },
+        {
+          "value": "10",
+          "label": "J+J ZCTx",
+          "disabled": false
+        },
+        {
+          "value": "14",
+          "label": "Primus-HD Toric",
+          "disabled": false
+        },
+        {
+          "value": "11",
+          "label": "SIFI Mini Toric",
+          "disabled": false
+        },
+        {
+          "value": "12",
+          "label": "SIFI Mini WELL Toric",
+          "disabled": false
+        },
+        {
+          "value": "6",
+          "label": "Zeiss 409M",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "eye": "OS",
+      "selector": "select.d-block[name=\"ioltype_2\"]",
+      "options": [
+        {
+          "value": "0",
+          "label": "IOL Type",
+          "disabled": false
+        },
+        {
+          "value": "3",
+          "label": "Alcon MN60MA",
+          "disabled": false
+        },
+        {
+          "value": "2",
+          "label": "Alcon SA60AT",
+          "disabled": false
+        },
+        {
+          "value": "1",
+          "label": "Alcon SN60WF",
+          "disabled": false
+        },
+        {
+          "value": "7",
+          "label": "Alcon SN6ATx",
+          "disabled": false
+        },
+        {
+          "value": "33",
+          "label": "AST Asqelio Monofocal Toric",
+          "disabled": false
+        },
+        {
+          "value": "36",
+          "label": "AST Asqelio Pluris Toric",
+          "disabled": false
+        },
+        {
+          "value": "34",
+          "label": "AST Asqelio EDOF Toric",
+          "disabled": false
+        },
+        {
+          "value": "35",
+          "label": "AST Asqelio Trifocal Toric",
+          "disabled": false
+        },
+        {
+          "value": "24",
+          "label": "B+L enVista",
+          "disabled": false
+        },
+        {
+          "value": "25",
+          "label": "B+L enVista Toric",
+          "disabled": false
+        },
+        {
+          "value": "27",
+          "label": "B+L enVista Aspire",
+          "disabled": false
+        },
+        {
+          "value": "28",
+          "label": "B+L enVista Aspire Toric",
+          "disabled": false
+        },
+        {
+          "value": "29",
+          "label": "B+L enVista Envy",
+          "disabled": false
+        },
+        {
+          "value": "30",
+          "label": "B+L enVista Envy Toric",
+          "disabled": false
+        },
+        {
+          "value": "20",
+          "label": "B+L LuxGood",
+          "disabled": false
+        },
+        {
+          "value": "21",
+          "label": "B+L LuxGood Toric",
+          "disabled": false
+        },
+        {
+          "value": "31",
+          "label": "B+L LuxLife",
+          "disabled": false
+        },
+        {
+          "value": "32",
+          "label": "B+L LuxLife Toric",
+          "disabled": false
+        },
+        {
+          "value": "22",
+          "label": "B+L LuxSmart",
+          "disabled": false
+        },
+        {
+          "value": "23",
+          "label": "B+L LuxSmart Toric",
+          "disabled": false
+        },
+        {
+          "value": "13",
+          "label": "HumanOptics TORICA",
+          "disabled": false
+        },
+        {
+          "value": "26",
+          "label": "HumanOptics TrivaT",
+          "disabled": false
+        },
+        {
+          "value": "5",
+          "label": "J+J AR40e",
+          "disabled": false
+        },
+        {
+          "value": "4",
+          "label": "J+J ZCB00",
+          "disabled": false
+        },
+        {
+          "value": "10",
+          "label": "J+J ZCTx",
+          "disabled": false
+        },
+        {
+          "value": "14",
+          "label": "Primus-HD Toric",
+          "disabled": false
+        },
+        {
+          "value": "11",
+          "label": "SIFI Mini Toric",
+          "disabled": false
+        },
+        {
+          "value": "12",
+          "label": "SIFI Mini WELL Toric",
+          "disabled": false
+        },
+        {
+          "value": "6",
+          "label": "Zeiss 409M",
+          "disabled": false
+        }
+      ]
+    }
+  ],
+  "scriptTexts": [
+    "document.ioltypes = {\"v0\":[\"IOL Type\",0,0,0],\"v3\":[\"Alcon MN60MA\",119.24,0,0],\"v2\":[\"Alcon SA60AT\",118.7,0,0],\"v1\":[\"Alcon SN60WF\",118.98,0,0],\"v7\":[\"Alcon SN6ATx\",119.28,0,1],\"v33\":[\"AST Asqelio Monofocal Toric\",119.23,21,1],\"v36\":[\"AST Asqelio Pluris Toric\",119.23,24,1],\"v34\":[\"AST Asqelio EDOF Toric\",119.23,22,1],\"v35\":[\"AST Asqelio Trifocal Toric\",119.34,23,1],\"v24\":[\"B+L enVista\",119.31,5,4],\"v25\":[\"B+L enVista Toric\",119.25,6,2],\"v27\":[\"B+L enVista Aspire\",119.1,13,4],\"v28\":[\"B+L enVista Aspire Toric\",119.1,14,2],\"v29\":[\"B+L enVista Envy\",119.33,15,4],\"v30\":[\"B+L enVista Envy Toric\",119.33,16,2],\"v20\":[\"B+L LuxGood\",119.24,7,4],\"v21\":[\"B+L LuxGood Toric\",119.24,8,2],\"v31\":[\"B+L LuxLife\",118.69,17,4],\"v32\":[\"B+L LuxLife Toric\",118.69,18,2],\"v22\":[\"B+L LuxSmart\",118.45,9,4],\"v23\":[\"B+L LuxSmart Toric\",118.45,10,2],\"v13\":[\"HumanOptics TORICA\",118.3,3,2],\"v26\":[\"HumanOptics TrivaT\",119.21,12,2],\"v5\":[\"J+J AR40e\",118.7,0,0],\"v4\":[\"J+J ZCB00\",119.36,0,0],\"v10\":[\"J+J ZCTx\",119.36,0,1],\"v14\":[\"Primus-HD Toric\",119.2,4,1],\"v11\":[\"SIFI Mini Toric\",118.94,1,2],\"v12\":[\"SIFI Mini WELL Toric\",118.72,2,1],\"v6\":[\"Zeiss 409M\",118.34,0,0]};"
+  ]
+}
