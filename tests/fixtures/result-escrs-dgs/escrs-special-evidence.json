@@ -1,0 +1,130 @@
+{
+  "sourceUrl": "https://iolcalculator.escrs.org/",
+  "capturedAt": "2026-11-18T08:17:11.09Z",
+  "checkedAt": "2026-11-18T08:27:02.921Z",
+  "groups": 14,
+  "rows": 70,
+  "sphericalRows": 49,
+  "toricRows": 21,
+  "checks": [
+    {
+      "eye": "OD",
+      "formula": "Barrett",
+      "type": "spherical",
+      "rows": 3,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "EVO",
+      "type": "spherical",
+      "rows": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Hoffer®QST",
+      "type": "spherical",
+      "rows": 6,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Kane",
+      "type": "spherical",
+      "rows": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Pearl DGS",
+      "type": "spherical",
+      "rows": 4,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Cooke K6",
+      "type": "spherical",
+      "rows": 7,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "EVO",
+      "type": "spherical",
+      "rows": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Hoffer®QST",
+      "type": "spherical",
+      "rows": 9,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Pearl DGS",
+      "type": "spherical",
+      "rows": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Barrett",
+      "type": "toric",
+      "rows": 3,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "EVO",
+      "type": "toric",
+      "rows": 3,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Hoffer®QST",
+      "type": "toric",
+      "rows": 8,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Kane",
+      "type": "toric",
+      "rows": 3,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Pearl DGS",
+      "type": "toric",
+      "rows": 4,
+      "rawParity": true
+    }
+  ],
+  "modes": {
+    "OD": {
+      "sourceOption": "Toric",
+      "incisionAxis": "180",
+      "source": "SIA @ angle cross-checked with explicit Incision legend and pre-calculation control"
+    },
+    "OS": {
+      "sourceOption": "Post LASIK/PRK/RK",
+      "lvcType": "myopic",
+      "sourceNote": "This calculation is only valid for patients who underwent prior MYOPIC LASIK/PRK."
+    }
+  },
+  "malformedCells": [
+    {
+      "eye": "OD",
+      "formula": "Kane",
+      "iolPower": "+21.50",
+      "rawValue": "-+0.00",
+      "numericRefractionOmitted": true
+    }
+  ]
+}

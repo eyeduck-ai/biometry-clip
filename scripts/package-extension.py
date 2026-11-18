@@ -25,7 +25,7 @@ with zipfile.ZipFile(temporary) as output:
     assert output.testzip() is None
     assert len(output.namelist())==len(files)
     assert json.loads(output.read('manifest.json'))['version']==version
-    for filename in ['manifest.json','index.html','background.js','floating.js','icons/16.png','icons/48.png','icons/128.png']:
+    for filename in ['manifest.json','index.html','background.js','floating.js','result-probe.js','icons/16.png','icons/48.png','icons/128.png']:
         assert output.read(filename)==(dist/filename).read_bytes()
 temporary.replace(archive)
 digest=hashlib.sha256()

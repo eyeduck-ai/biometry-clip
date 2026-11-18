@@ -1,0 +1,410 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:biometry-clip:calculation-runs:1.0",
+  "title": "Biometry-Clip calculation run export 1.0",
+  "type": "object",
+  "properties": {
+    "format": {
+      "const": "biometry-clip-calculation-runs"
+    },
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "exportedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "units": {
+      "const": {
+        "iolPower": "D",
+        "predictedRefraction": "D",
+        "toricPower": "D",
+        "axis": "deg",
+        "residualCylinder": "D",
+        "residualAxis": "deg",
+        "refractionSphere": "D",
+        "refractionCylinder": "D",
+        "refractionAxis": "deg"
+      }
+    },
+    "runs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/run"
+      }
+    }
+  },
+  "required": [
+    "format",
+    "schemaVersion",
+    "exportedAt",
+    "units",
+    "runs"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "boolean"
+        ]
+      },
+      "description": "Allowlisted values from the calculator adapter. Numeric values use Biometry-Clip canonical units."
+    },
+    "observedForm": {
+      "type": "object",
+      "properties": {
+        "OD": {
+          "$ref": "#/$defs/inputs"
+        },
+        "OS": {
+          "$ref": "#/$defs/inputs"
+        }
+      },
+      "required": [
+        "OD",
+        "OS"
+      ],
+      "additionalProperties": false
+    },
+    "preCalculationForm": {
+      "type": "object",
+      "properties": {
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "OD": {
+          "$ref": "#/$defs/inputs"
+        },
+        "OS": {
+          "$ref": "#/$defs/inputs"
+        }
+      },
+      "required": [
+        "observedAt",
+        "OD",
+        "OS"
+      ],
+      "additionalProperties": false
+    },
+    "row": {
+      "type": "object",
+      "properties": {
+        "iolPower": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "predictedRefraction": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "toricPower": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "axis": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "residualCylinder": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "residualAxis": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "refractionSphere": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "refractionCylinder": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "refractionAxis": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "lensModel": {
+          "type": "string"
+        },
+        "highlighted": {
+          "type": "boolean"
+        },
+        "siteSelected": {
+          "type": "boolean"
+        },
+        "rawCells": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "label",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "required": [
+            "iolPower"
+          ]
+        },
+        {
+          "required": [
+            "predictedRefraction"
+          ]
+        },
+        {
+          "required": [
+            "toricPower"
+          ]
+        },
+        {
+          "required": [
+            "axis"
+          ]
+        },
+        {
+          "required": [
+            "residualCylinder"
+          ]
+        },
+        {
+          "required": [
+            "residualAxis"
+          ]
+        },
+        {
+          "required": [
+            "refractionSphere"
+          ]
+        },
+        {
+          "required": [
+            "refractionCylinder"
+          ]
+        },
+        {
+          "required": [
+            "refractionAxis"
+          ]
+        }
+      ]
+    },
+    "group": {
+      "type": "object",
+      "properties": {
+        "eye": {
+          "enum": [
+            "OD",
+            "OS",
+            null
+          ]
+        },
+        "formula": {
+          "type": "string"
+        },
+        "lensModel": {
+          "type": "string"
+        },
+        "manufacturer": {
+          "type": "string"
+        },
+        "sourceLabel": {
+          "type": "string"
+        },
+        "cylinderNotation": {
+          "enum": [
+            "plus",
+            "minus",
+            ""
+          ]
+        },
+        "cylinderPlane": {
+          "enum": [
+            "corneal",
+            "iol",
+            ""
+          ]
+        },
+        "targetRefraction": {
+          "type": "string",
+          "pattern": "^[+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)$"
+        },
+        "constants": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "value",
+              "unit"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "inputEcho": {
+          "$ref": "#/$defs/inputs"
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 250,
+          "items": {
+            "$ref": "#/$defs/row"
+          }
+        }
+      },
+      "required": [
+        "eye",
+        "formula",
+        "lensModel",
+        "manufacturer",
+        "sourceLabel",
+        "cylinderNotation",
+        "cylinderPlane",
+        "inputEcho",
+        "rows"
+      ],
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "capturedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "siteId": {
+          "type": "string"
+        },
+        "siteName": {
+          "type": "string"
+        },
+        "pageUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "adapterVersion": {
+          "type": "string"
+        },
+        "trigger": {
+          "enum": [
+            "manual",
+            "automatic"
+          ]
+        },
+        "association": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "unlinked",
+                "pending",
+                "confirmed"
+              ]
+            },
+            "patientId": {
+              "type": "string"
+            },
+            "measurementId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "patientId",
+            "measurementId"
+          ],
+          "additionalProperties": false
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "groupIndex": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "rowIndex": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "groupIndex",
+              "rowIndex"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "groups": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 48,
+          "items": {
+            "$ref": "#/$defs/group"
+          }
+        },
+        "observedForm": {
+          "$ref": "#/$defs/observedForm"
+        },
+        "watchStartForm": {
+          "$ref": "#/$defs/observedForm"
+        },
+        "preCalculationForm": {
+          "$ref": "#/$defs/preCalculationForm"
+        }
+      },
+      "required": [
+        "id",
+        "capturedAt",
+        "siteId",
+        "siteName",
+        "pageUrl",
+        "adapterVersion",
+        "trigger",
+        "association",
+        "choices",
+        "groups",
+        "observedForm"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

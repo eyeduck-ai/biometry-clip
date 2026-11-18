@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Biometry-Clip",
-  "description": "Enter biometry once and fill multiple IOL calculators. Supports local OCR, PDF import, and optional cloud recognition.",
-  "version": "0.4.1",
+  "description": "Transfer biometry and archive IOL calculator results. Supports local PDF and image recognition and optional cloud OCR.",
+  "version": "0.5.2",
   "minimum_chrome_version": "140",
   "permissions": [
     "activeTab",

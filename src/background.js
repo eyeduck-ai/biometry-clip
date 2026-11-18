@@ -6,11 +6,16 @@ import { panelStatusRelay } from './panel-status.js';
 import { createQaBackend } from './qa/backend.js';
 import { createTabTransfer } from './tab-transfer.js';
 import {UI_LANGUAGE_KEY,normalizeUiLanguage,isUiLanguage,sameSupportedDocument} from './ui-language.js';
+import {createResultService} from './result-service.js';
+import {matchResultSite} from './result-sites.js';
 
 const store = createSessionStore(chrome.storage.session);
 const library = createLibraryService(createLibraryStore(chrome.storage.local),store);
 const qa=createQaBackend(chrome.storage,chrome.runtime.id);
 const transfers=createTabTransfer(chrome,{readSession:()=>store.read(),readLensCatalog:async()=>(await chrome.storage.local.get('biometryLensCatalog')).biometryLensCatalog});
+const results=createResultService(chrome,{readSession:()=>store.read(),readLibrary:()=>library.read()});
+chrome.tabs.onUpdated?.addListener(results.reconnect);
+chrome.tabs.onRemoved?.addListener(results.removed);
 async function protectStorage() {
   await Promise.all([
     chrome.storage.session.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' }),
@@ -21,13 +26,18 @@ protectStorage().catch(console.error);
 chrome.runtime.onInstalled.addListener(() => protectStorage().catch(console.error));
 
 chrome.runtime.onMessage.addListener((message, sender, respond) => {
+  if(results.handles(message?.type)){
+    results.request(message,sender).then(result=>respond({ok:true,result}))
+      .catch(error=>respond({ok:false,code:error.code||'RESULT_FAILED',error:error.message}));
+    return true;
+  }
   if(['biometry:ui-language:get','biometry:ui-language:set'].includes(message?.type)){
     const work=async()=>{
       const panel=isTrustedPanelSender(sender,chrome.runtime.id);
       if(!panel){
-        if(sender?.id!==chrome.runtime.id||sender.frameId!==0||!Number.isInteger(sender.tab?.id)||!sameSupportedDocument(sender.url,sender.tab.url,matchSite))throw new Error('Unsupported locale sender.');
+        if(sender?.id!==chrome.runtime.id||sender.frameId!==0||!Number.isInteger(sender.tab?.id)||!sameSupportedDocument(sender.url,sender.tab.url,matchResultSite))throw new Error('Unsupported locale sender.');
         const current=await chrome.tabs.get(sender.tab.id);
-        if(!sameSupportedDocument(sender.url,current.url,matchSite))throw new Error('Locale source tab changed.');
+        if(!sameSupportedDocument(sender.url,current.url,matchResultSite))throw new Error('Locale source tab changed.');
       }
       if(message.type.endsWith(':set')){
         if(!isUiLanguage(message.language))throw new Error('Unsupported interface language.');
@@ -100,13 +110,13 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
 chrome.storage.onChanged.addListener((changes,area)=>{
   if(area!=='local'||!changes[UI_LANGUAGE_KEY])return;
   const language=normalizeUiLanguage(changes[UI_LANGUAGE_KEY].newValue);
-  chrome.tabs.query({}).then(tabs=>Promise.all(tabs.filter(tab=>Number.isInteger(tab.id)&&matchSite(tab.url)).map(tab=>chrome.tabs.sendMessage(tab.id,{type:'biometry:ui-language:changed',language},{frameId:0}).catch(()=>{})))).catch(()=>{});
+  chrome.tabs.query({}).then(tabs=>Promise.all(tabs.filter(tab=>Number.isInteger(tab.id)&&matchResultSite(tab.url)).map(tab=>chrome.tabs.sendMessage(tab.id,{type:'biometry:ui-language:changed',language},{frameId:0}).catch(()=>{})))).catch(()=>{});
 });
 
 chrome.action.onClicked.addListener(async tab => {
   try {
-    if (tab.id != null && (matchSite(tab.url) || matchSite(tab.pendingUrl))) {
-      const ready = await waitForSupportedTab(chrome.tabs,tab.id);
+    if (tab.id != null && (matchResultSite(tab.url) || matchResultSite(tab.pendingUrl))) {
+      const ready = tab.status==='complete'&&matchResultSite(tab.url)?tab:await waitForSupportedTab(chrome.tabs,tab.id,15000,matchResultSite);
       await chrome.scripting.executeScript({ target: { tabId: ready.id }, files: ['floating.js'] });
       await chrome.tabs.sendMessage(ready.id, { type: 'biometry:toggle-floating', tabId: ready.id }, { frameId: 0 });
     } else {

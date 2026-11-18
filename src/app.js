@@ -23,13 +23,16 @@ import {reviewSources,loadReviewSource,bindReviewPreview} from './import-preview
 import {createImportProgress,importProgressMarkup,formatElapsed} from './import-progress.js';
 import {paddleApiEndpoint} from './ocr/cloud-config.js';
 import {getLanguage,setLanguage,localize,observeLocalization,languageButtonMarkup,translate} from './i18n.js';
+import {createResultController} from './result-controller.js';
 
 const app=document.querySelector('#app');
 const JSON_IMPORT_LIMIT=10_000_000;
-const extensionVersion=(()=>{try{return chrome.runtime.getManifest().version;}catch{return '0.4.1';}})();
+const extensionVersion=(()=>{try{return chrome.runtime.getManifest().version;}catch{return '0.5.2';}})();
 const query=new URLSearchParams(location.search);
 const floating=query.get('view')==='floating';
 const hostTabId=platform.getFloatingTabId();
+const panelTabs=[['data','data','資料'],['patients','patients','病人'],['import','import','匯入'],
+  ['results','results','結果'],['sites','sites','入口'],['settings','gear','設定']];
 document.body.classList.toggle('embedded',floating);
 let route='data';
 let settings={...platform.defaultSettings},tabs=[],targetId=hostTabId!=null?String(hostTabId):'';
@@ -70,6 +73,12 @@ const editor=createEditor(platform,{
   onError(error){if(initialized)toast(error.message || '資料尚未儲存，請重試。',true);},
 });
 const currentTab=()=>tabs.find(t=>String(t.id)===String(targetId));
+const resultHistory=createResultController({
+  sites:SITES,hostTabId,preferredTab:()=>targetId,patients:()=>library.patients,
+  currentSelection:()=>editor.selection,sessionGuard:()=>({caseToken:editor.token,revision:editor.revision}),
+  isVisible:()=>route==='results',hasDialog:()=>Boolean(document.querySelector('#review-dialog')?.open),
+  redraw:render,showDialog,closeDialog,toast,flush:()=>editor.flush(),
+});
 const measurementKeys=new Set(FIELD_GROUPS.flatMap(group=>group.fields.map(field=>field[0])));
 const measureCount=eye=>Object.entries(editor.data.eyes[eye]).filter(([k,v])=>measurementKeys.has(k)&&v!=null&&v!=='').length;
 const fieldMeta=key=>FIELD_GROUPS.flatMap(g=>g.fields).find(f=>f[0]===key) || [key,fieldLabel(key),'',''];
@@ -198,14 +207,15 @@ function render(){
   syncTransferScope();
   const lensSection=app.querySelector('#lens-section');if(lensSection)lensOpen=lensSection.open;
   const scroll=app.querySelector('.panel-scroll')?.scrollTop||0;
-  app.innerHTML=`<section class="compact-panel" aria-label="Biometry-Clip"><header class="panel-brand"><span><img class="brand-icon" src="./icons/48.png" width="26" height="26" alt=""/><strong>Biometry-Clip</strong></span><div class="brand-actions"><span class="version">v${esc(extensionVersion)}</span>${floating?'':languageButtonMarkup()}</div></header><div class="panel-tabs" role="tablist" aria-label="功能分頁">${[['data','data','資料'],['patients','patients','病人'],['import','import','匯入'],['sites','sites','入口'],['settings','gear','設定']].map(([r,i,label])=>`<button type="button" role="tab" id="tab-${r}" data-route="${r}" aria-selected="${route===r}" tabindex="${route===r?'0':'-1'}">${icon(i,15)}${label}</button>`).join('')}</div>${targetMarkup()}<main id="current-panel" role="tabpanel" aria-labelledby="tab-${route}" class="panel-scroll">${!platform.isExtension?'<div class="preview-note">介面預覽 · 網站讀寫需載入 Chrome 擴充功能</div>':''}${({data:dataMarkup,patients:()=>libraryMarkup(library,editor.selection),import:importMarkup,sites:sitesMarkup,settings:settingsMarkup})[route]()}</main>${route==='data'||route==='import'?footerMarkup():`<footer class="quiet-footer"><span id="save-status"></span><button class="text-button" data-route="data">回到資料${icon('arrow',13)}</button></footer>`}</section>${floating?'':workbenchHelp(route)}<div id="toast" role="status" class="toast"></div><dialog id="review-dialog" aria-labelledby="dialog-title"></dialog>`;
+  app.innerHTML=`<section class="compact-panel" aria-label="Biometry-Clip"><header class="panel-brand"><span><img class="brand-icon" src="./icons/48.png" width="26" height="26" alt=""/><strong>Biometry-Clip</strong></span><div class="brand-actions"><span class="version">v${esc(extensionVersion)}</span>${floating?'':languageButtonMarkup()}</div></header><div class="panel-tabs" role="tablist" aria-label="功能分頁">${panelTabs.map(([r,i,label])=>`<button type="button" role="tab" id="tab-${r}" data-route="${r}" aria-selected="${route===r}" tabindex="${route===r?'0':'-1'}">${icon(i,15)}${label}</button>`).join('')}</div>${route==='results'?'':targetMarkup()}<main id="current-panel" role="tabpanel" aria-labelledby="tab-${route}" class="panel-scroll">${!platform.isExtension?'<div class="preview-note">介面預覽 · 網站讀寫需載入 Chrome 擴充功能</div>':''}${({data:dataMarkup,patients:()=>libraryMarkup(library,editor.selection),import:importMarkup,results:()=>resultHistory.markup(),sites:sitesMarkup,settings:settingsMarkup})[route]()}</main>${route==='data'||route==='import'?footerMarkup():`<footer class="quiet-footer"><span id="save-status"></span><button class="text-button" data-route="data">回到資料${icon('arrow',13)}</button></footer>`}</section>${floating?'':workbenchHelp(route)}<div id="toast" role="status" class="toast"></div><dialog id="review-dialog" aria-labelledby="dialog-title"></dialog>`;
   app.querySelector('.panel-scroll').scrollTop=scroll;
   bindEvents();updateStatus();if(Date.now()<toastUntil)paintToast();localize(app);
 }
 function navigate(next,focus=false){
-  if(!['data','patients','import','sites','settings'].includes(next))return;
+  if(!panelTabs.some(([key])=>key===next))return;
   route=next;pendingFill=null;render();app.querySelector('.panel-scroll').scrollTop=0;
   if(focus)document.querySelector(`#tab-${next}`).focus();
+  if(next==='results')resultHistory.refresh();
 }
 function bindEvents(){
   app.querySelector('#biometry-form')?.addEventListener('submit',e=>e.preventDefault());
@@ -224,7 +234,7 @@ function bindEvents(){
   });
   app.querySelector('[role="tablist"]')?.addEventListener('keydown',event=>{
     if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-    event.preventDefault();const routes=['data','patients','import','sites','settings'],i=routes.indexOf(route);
+    event.preventDefault();const routes=panelTabs.map(([key])=>key),i=routes.indexOf(route);
     navigate(routes[event.key==='Home'?0:event.key==='End'?routes.length-1:(i+(event.key==='ArrowRight'?1:routes.length-1))%routes.length],true);
   });
   app.querySelector('.eye-choices[role="tablist"]')?.addEventListener('keydown',event=>{
@@ -494,7 +504,7 @@ function showDialog(title,body){
   dialog.innerHTML=`<div class="dialog-heading"><h2 id="dialog-title">${esc(title)}</h2><button class="icon-button" data-close aria-label="關閉">${icon('close')}</button></div>${body}`;
   dialog.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeDialog);
   if(!dialog.open)dialog.showModal();
-  dialog.onclose=()=>{releaseReview();releaseReview=()=>{};dialog.classList.remove('import-review-dialog');pendingFill=null;};localize(dialog);
+  dialog.onclose=()=>{releaseReview();releaseReview=()=>{};dialog.classList.remove('import-review-dialog');pendingFill=null;if(route==='results')resultHistory.scheduleRefresh();};localize(dialog);
 }
 function closeDialog(){releaseReview();releaseReview=()=>{};const el=document.querySelector('#review-dialog');if(el?.open)el.close();pendingFill=null;}
 function downloadJson(document,filename){const url=URL.createObjectURL(new Blob([JSON.stringify(document,null,2)],{type:'application/json'}));const link=window.document.createElement('a');link.href=url;link.download=filename;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
@@ -642,13 +652,15 @@ async function init(){
     applyLanguage(await Promise.resolve(platform.loadLanguage?.()).catch(()=> 'en') ?? 'en');stopLocalization=observeLocalization(app);unsubscribeLanguage=platform.subscribeLanguage?.(applyLanguage)||(()=>{});draftSource=translate(draftSource);const loaded=await editor.init();settings={...platform.defaultSettings,...loaded.settings,...transferSettings(loaded.settings)};
     platform.subscribeLibrary(next=>{acceptLibrary(next);const focused=document.activeElement?.matches('input,textarea,select');if(initialized&&!focused&&!document.querySelector('#review-dialog')?.open)render();});
     acceptLibrary(await platform.loadLibrary());transferScope=editor.eye;if(platform.loadLensCatalog)lensCatalog=await platform.loadLensCatalog();
-    await refreshTabs();initialized=true;render();window.dispatchEvent(new Event('biometry:panel-ready'));platform.reportPanelStatus?.('ready')?.catch(()=>{});await refreshInventory(true);
-    platform.subscribeTabs(()=>{clearTimeout(refreshTimer);refreshTimer=setTimeout(async()=>{try{await refreshTabs();await refreshInventory();const hasFocus=app.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');if(!hasFocus&&!document.querySelector('#review-dialog')?.open)render();}catch(error){toast(error.message,true);}},150);});
+    await refreshTabs();if(hostTabId!=null&&!currentTab())route='results';initialized=true;render();if(route==='results')resultHistory.refresh();window.dispatchEvent(new Event('biometry:panel-ready'));platform.reportPanelStatus?.('ready')?.catch(()=>{});await refreshInventory(true);
+    platform.subscribeTabs(()=>{clearTimeout(refreshTimer);refreshTimer=setTimeout(async()=>{try{await refreshTabs();if(route==='results'){resultHistory.scheduleRefresh();return;}await refreshInventory();const hasFocus=app.contains(document.activeElement)&&document.activeElement.matches('input,textarea,select');if(!hasFocus&&!document.querySelector('#review-dialog')?.open)render();}catch(error){toast(error.message,true);}},150);});
     setInterval(()=>{if(!document.hidden&&!document.querySelector('#review-dialog')?.open)refreshInventory().catch(()=>{});},1800);
   }
   catch(error){app.innerHTML=`<div class="startup-error"><h1>無法開啟共用資料</h1><p>${esc(error.message)}</p><button class="button" id="retry">重新載入</button></div>`;localize(app);document.querySelector('#retry').onclick=()=>location.reload();window.dispatchEvent(new Event('biometry:panel-failed'));platform.reportPanelStatus?.('error')?.catch(()=>{});}
 }
 const unbindImagePaste=bindImagePaste(document,{isEnabled:()=>initialized&&route==='import'&&!busy&&!document.querySelector('#review-dialog')?.open,onImages:files=>processFiles(files),onError:error=>toast(error.message||'無法貼上圖片，請改用上傳。',true)});
-window.addEventListener('pagehide',()=>{releaseReview();importProgress.finish();stopLocalization();unsubscribeLanguage();unbindImagePaste();ocrAbort?.abort();editor.flushOnExit().catch(()=>{});});
+app.addEventListener('click',event=>{resultHistory.handleClick(event);});
+app.addEventListener('change',event=>resultHistory.handleChange(event));
+window.addEventListener('pagehide',()=>{resultHistory.dispose();releaseReview();importProgress.finish();stopLocalization();unsubscribeLanguage();unbindImagePaste();ocrAbort?.abort();editor.flushOnExit().catch(()=>{});});
 document.addEventListener('visibilitychange',()=>{if(document.hidden)editor.flush().catch(()=>{});else if(initialized)refreshTabs().then(()=>refreshInventory()).catch(()=>{});});
 init();

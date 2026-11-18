@@ -1,0 +1,1039 @@
+[
+  {
+    "siteId": "cooke",
+    "url": "https://cookeformula.com/PrintPreview",
+    "capturedAt": "2026-11-18T05:24:36.045Z",
+    "synthetic": true,
+    "evidence": "isolated-chromium-normal-ui",
+    "result": [
+      {
+        "eye": "OD",
+        "formula": "K6v2024.01",
+        "lensModel": "Alcon SA60WF/SN60WF",
+        "targetRefraction": "0",
+        "constants": [
+          {
+            "name": "A-Constant",
+            "value": "118.9648",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "target": "0",
+          "aConstant": "118.9648",
+          "al": "23.5",
+          "cct": "543",
+          "acd": "3.1",
+          "lt": "4.4",
+          "wtw": "11.8",
+          "k1": "43",
+          "k2": "44"
+        },
+        "rows": [
+          {
+            "iolPower": "19.50",
+            "predictedRefraction": "1.11",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "19.50"
+              },
+              {
+                "label": "Refraction",
+                "value": "1.11"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.00",
+            "predictedRefraction": "0.77",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "20.00"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.77"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.50",
+            "predictedRefraction": "0.44",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "20.50"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.44"
+              }
+            ]
+          },
+          {
+            "iolPower": "21.00",
+            "predictedRefraction": "0.10",
+            "highlighted": true,
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "21.00"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.10"
+              }
+            ]
+          },
+          {
+            "iolPower": "21.50",
+            "predictedRefraction": "-0.25",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "21.50"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.25"
+              }
+            ]
+          },
+          {
+            "iolPower": "22.00",
+            "predictedRefraction": "-0.60",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "22.00"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.60"
+              }
+            ]
+          },
+          {
+            "iolPower": "22.50",
+            "predictedRefraction": "-0.95",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "22.50"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.95"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "Cooke K6 · Print Preview"
+      },
+      {
+        "eye": "OS",
+        "formula": "K6v2024.01",
+        "lensModel": "J&J Tecnis 1-Piece (ZCB00, ICB00, ZCU***, ZXR00)",
+        "targetRefraction": "-0.5",
+        "constants": [
+          {
+            "name": "A-Constant",
+            "value": "119.4303",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "target": "-0.5",
+          "aConstant": "119.4303",
+          "al": "24.1",
+          "cct": "550",
+          "acd": "3.2",
+          "lt": "4.5",
+          "wtw": "12",
+          "k1": "43.5",
+          "k2": "45"
+        },
+        "rows": [
+          {
+            "iolPower": "18.00",
+            "predictedRefraction": "0.52",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "18.00"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.52"
+              }
+            ]
+          },
+          {
+            "iolPower": "18.50",
+            "predictedRefraction": "0.19",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "18.50"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.19"
+              }
+            ]
+          },
+          {
+            "iolPower": "19.00",
+            "predictedRefraction": "-0.15",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "19.00"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.15"
+              }
+            ]
+          },
+          {
+            "iolPower": "19.50",
+            "predictedRefraction": "-0.48",
+            "highlighted": true,
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "19.50"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.48"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.00",
+            "predictedRefraction": "-0.82",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "20.00"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.82"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.50",
+            "predictedRefraction": "-1.16",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "20.50"
+              },
+              {
+                "label": "Refraction",
+                "value": "-1.16"
+              }
+            ]
+          },
+          {
+            "iolPower": "21.00",
+            "predictedRefraction": "-1.51",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "21.00"
+              },
+              {
+                "label": "Refraction",
+                "value": "-1.51"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "Cooke K6 · Print Preview"
+      }
+    ],
+    "fixture": "cooke-browser-live.html",
+    "limitations": "Ordinary isolated Chromium UI calculation plus injected read-only result adapter. No installed-extension result-capture flow tested here.",
+    "termsAccepted": true,
+    "screenshot": "output/playwright/result-other-live/cooke-both.png"
+  },
+  {
+    "siteId": "kane",
+    "url": "https://www.iolformula.com/",
+    "capturedAt": "2026-11-18T05:32:37.776Z",
+    "synthetic": true,
+    "evidence": "isolated-chromium-normal-ui",
+    "result": [
+      {
+        "eye": "OD",
+        "lensModel": "Alcon SN60WF",
+        "targetRefraction": "0.00",
+        "constants": [
+          {
+            "name": "A-Constant",
+            "value": "118.98",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "al": "23.50",
+          "acd": "3.10",
+          "lt": "4.40",
+          "cct": "543",
+          "k1": "43.00",
+          "k2": "44.00",
+          "target": "0.00",
+          "aConstant": "118.98"
+        },
+        "formula": "Kane",
+        "rows": [
+          {
+            "iolPower": "23.5",
+            "predictedRefraction": "-1.50",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "23.5"
+              },
+              {
+                "label": "Refraction",
+                "value": "-1.50"
+              }
+            ]
+          },
+          {
+            "iolPower": "23.0",
+            "predictedRefraction": "-1.15",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "23.0"
+              },
+              {
+                "label": "Refraction",
+                "value": "-1.15"
+              }
+            ]
+          },
+          {
+            "iolPower": "22.5",
+            "predictedRefraction": "-0.81",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "22.5"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.81"
+              }
+            ]
+          },
+          {
+            "iolPower": "22.0",
+            "predictedRefraction": "-0.46",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "22.0"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.46"
+              }
+            ]
+          },
+          {
+            "iolPower": "21.5",
+            "predictedRefraction": "-0.12",
+            "highlighted": true,
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "21.5"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.12"
+              }
+            ]
+          },
+          {
+            "iolPower": "21.0",
+            "predictedRefraction": "0.21",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "21.0"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.21"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.5",
+            "predictedRefraction": "0.54",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "20.5"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.54"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "Kane · IOL Power / Refraction"
+      },
+      {
+        "eye": "OS",
+        "lensModel": "J+J ZCTx",
+        "targetRefraction": "-0.50",
+        "constants": [
+          {
+            "name": "A-Constant",
+            "value": "119.36",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "al": "24.10",
+          "acd": "3.20",
+          "lt": "4.50",
+          "cct": "550",
+          "k1": "43.50",
+          "k1Axis": "0",
+          "k2": "45.00",
+          "k2Axis": "90",
+          "target": "-0.50",
+          "aConstant": "119.36"
+        },
+        "formula": "Kane Toric",
+        "rows": [
+          {
+            "iolPower": "21.5",
+            "predictedRefraction": "-1.76",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "21.5"
+              },
+              {
+                "label": "Refraction",
+                "value": "-1.76"
+              }
+            ]
+          },
+          {
+            "iolPower": "21.0",
+            "predictedRefraction": "-1.42",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "21.0"
+              },
+              {
+                "label": "Refraction",
+                "value": "-1.42"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.5",
+            "predictedRefraction": "-1.08",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "20.5"
+              },
+              {
+                "label": "Refraction",
+                "value": "-1.08"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.0",
+            "predictedRefraction": "-0.75",
+            "highlighted": true,
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "20.0"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.75"
+              }
+            ]
+          },
+          {
+            "iolPower": "19.5",
+            "predictedRefraction": "-0.42",
+            "rawCells": [
+              {
+                "label": "IOL Power",
+                "value": "19.5"
+              },
+              {
+                "label": "Refraction",
+                "value": "-0.42"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "Kane Toric · IOL Power / Refraction"
+      },
+      {
+        "eye": "OS",
+        "lensModel": "J+J ZCTx",
+        "targetRefraction": "-0.50",
+        "constants": [
+          {
+            "name": "A-Constant",
+            "value": "119.36",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "al": "24.10",
+          "acd": "3.20",
+          "lt": "4.50",
+          "cct": "550",
+          "k1": "43.50",
+          "k1Axis": "0",
+          "k2": "45.00",
+          "k2Axis": "90",
+          "target": "-0.50",
+          "aConstant": "119.36"
+        },
+        "formula": "Kane Toric",
+        "rows": [
+          {
+            "toricPower": "1.00",
+            "residualCylinder": "0.31",
+            "residualAxis": "90",
+            "axis": "90",
+            "rawCells": [
+              {
+                "label": "Toric (Cylinder Power)",
+                "value": "T2 (1.00)"
+              },
+              {
+                "label": "Residual Cylinder",
+                "value": "0.31 D Axis 90"
+              },
+              {
+                "label": "IOL Axis",
+                "value": "90"
+              }
+            ]
+          },
+          {
+            "toricPower": "1.50",
+            "residualCylinder": "0.01",
+            "residualAxis": "90",
+            "axis": "90",
+            "rawCells": [
+              {
+                "label": "Toric (Cylinder Power)",
+                "value": "T3 (1.50)"
+              },
+              {
+                "label": "Residual Cylinder",
+                "value": "0.01 D Axis 90"
+              },
+              {
+                "label": "IOL Axis",
+                "value": "90"
+              }
+            ]
+          },
+          {
+            "toricPower": "2.25",
+            "residualCylinder": "0.45",
+            "residualAxis": "0",
+            "axis": "90",
+            "rawCells": [
+              {
+                "label": "Toric (Cylinder Power)",
+                "value": "T4 (2.25)"
+              },
+              {
+                "label": "Residual Cylinder",
+                "value": "0.45 D Axis 0"
+              },
+              {
+                "label": "IOL Axis",
+                "value": "90"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "Kane Toric · Cylinder Power / Residual Cylinder"
+      }
+    ],
+    "fixture": "kane-browser-live.html",
+    "limitations": "Ordinary isolated Chromium UI calculation plus injected read-only result adapter. No installed-extension result-capture flow tested here.",
+    "termsAccepted": true,
+    "screenshot": "output/playwright/result-other-live/kane-both.png"
+  },
+  {
+    "siteId": "tecnis-toric",
+    "url": "https://tecnistoriccalc.com/calculator/",
+    "capturedAt": "2026-11-18T05:32:00.781Z",
+    "synthetic": true,
+    "evidence": "isolated-chromium-normal-ui",
+    "result": [
+      {
+        "eye": "OS",
+        "formula": "TECNIS Toric",
+        "lensModel": "",
+        "rows": [
+          {
+            "lensModel": "ZCU150",
+            "axis": "90",
+            "residualCylinder": "-0.57",
+            "residualAxis": "0",
+            "rawCells": [
+              {
+                "label": "IOL Model",
+                "value": "ZCU150"
+              },
+              {
+                "label": "Orientation",
+                "value": "90 °"
+              },
+              {
+                "label": "Cylinder",
+                "value": "-0.57 D"
+              },
+              {
+                "label": "Axis",
+                "value": "0 °"
+              }
+            ]
+          },
+          {
+            "lensModel": "ZCU225",
+            "axis": "90",
+            "residualCylinder": "-0.07",
+            "residualAxis": "0",
+            "siteSelected": true,
+            "rawCells": [
+              {
+                "label": "IOL Model",
+                "value": "ZCU225"
+              },
+              {
+                "label": "Orientation",
+                "value": "90 °"
+              },
+              {
+                "label": "Cylinder",
+                "value": "-0.07 D"
+              },
+              {
+                "label": "Axis",
+                "value": "0 °"
+              }
+            ]
+          },
+          {
+            "lensModel": "ZCU300",
+            "axis": "90",
+            "residualCylinder": "-0.43",
+            "residualAxis": "90",
+            "rawCells": [
+              {
+                "label": "IOL Model",
+                "value": "ZCU300"
+              },
+              {
+                "label": "Orientation",
+                "value": "90 °"
+              },
+              {
+                "label": "Cylinder",
+                "value": "-0.43 D"
+              },
+              {
+                "label": "Axis",
+                "value": "90 °"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "TECNIS Toric · Final Results"
+      }
+    ],
+    "fixture": "tecnis-browser-live.html",
+    "limitations": "Ordinary isolated Chromium UI calculation plus injected read-only result adapter. No installed-extension result-capture flow tested here.",
+    "termsAccepted": true,
+    "screenshot": "output/playwright/result-other-live/tecnis-os.png"
+  },
+  {
+    "siteId": "evo",
+    "url": "https://www.evoiolcalculator.com/Calculator.aspx",
+    "capturedAt": "2026-11-18T05:34:56.697Z",
+    "synthetic": true,
+    "evidence": "isolated-chromium-normal-ui",
+    "result": [
+      {
+        "eye": "OS",
+        "formula": "EVO 2.0",
+        "lensModel": "J&J ZCB00",
+        "targetRefraction": "-0.5",
+        "constants": [
+          {
+            "name": "A Constant",
+            "value": "119.3",
+            "unit": "1"
+          },
+          {
+            "name": "K Index",
+            "value": "1.3375",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "al": "24.1",
+          "acd": "3.2",
+          "lt": "4.5",
+          "cct": "550",
+          "target": "-0.5",
+          "k1": "43.5",
+          "k2": "45"
+        },
+        "rows": [
+          {
+            "iolPower": "18.5",
+            "predictedRefraction": "0.11",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "18.5"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "0.11"
+              }
+            ]
+          },
+          {
+            "iolPower": "19",
+            "predictedRefraction": "-0.21",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "19"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "-0.21"
+              }
+            ]
+          },
+          {
+            "iolPower": "19.5",
+            "predictedRefraction": "-0.52",
+            "highlighted": true,
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "19.5"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "-0.52"
+              }
+            ]
+          },
+          {
+            "iolPower": "20",
+            "predictedRefraction": "-0.84",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "20"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "-0.84"
+              }
+            ]
+          },
+          {
+            "iolPower": "20.5",
+            "predictedRefraction": "-1.17",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "20.5"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "-1.17"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "EVO 2.0 · Spherical equivalent"
+      }
+    ],
+    "fixture": "evo-browser-live.html",
+    "limitations": "Ordinary isolated Chromium UI calculation plus injected read-only result adapter. No installed-extension result-capture flow tested here.",
+    "termsAccepted": false,
+    "screenshot": "output/playwright/result-other-live/evo-browser.png"
+  },
+  {
+    "siteId": "evo-toric",
+    "url": "https://www.evoiolcalculator.com/Toric.aspx",
+    "capturedAt": "2026-11-18T05:36:02.080Z",
+    "synthetic": true,
+    "evidence": "isolated-chromium-normal-ui",
+    "result": [
+      {
+        "eye": "OD",
+        "formula": "EVO Toric 2.0",
+        "lensModel": "J&J ZCU",
+        "targetRefraction": "0",
+        "constants": [
+          {
+            "name": "A Constant",
+            "value": "119.3",
+            "unit": "1"
+          },
+          {
+            "name": "K Index",
+            "value": "1.3375",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "al": "23.5",
+          "acd": "3.1",
+          "lt": "4.4",
+          "cct": "543",
+          "target": "0",
+          "k1": "43",
+          "k1Axis": "0",
+          "k2": "44",
+          "k2Axis": "90"
+        },
+        "rows": [
+          {
+            "iolPower": "20.5",
+            "predictedRefraction": "0.74",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "20.5"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "0.74"
+              }
+            ]
+          },
+          {
+            "iolPower": "21",
+            "predictedRefraction": "0.43",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "21"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "0.43"
+              }
+            ]
+          },
+          {
+            "iolPower": "21.5",
+            "predictedRefraction": "0.11",
+            "highlighted": true,
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "21.5"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "0.11"
+              }
+            ]
+          },
+          {
+            "iolPower": "22",
+            "predictedRefraction": "-0.21",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "22"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "-0.21"
+              }
+            ]
+          },
+          {
+            "iolPower": "22.5",
+            "predictedRefraction": "-0.53",
+            "rawCells": [
+              {
+                "label": "IOL Power (SE)",
+                "value": "22.5"
+              },
+              {
+                "label": "Refraction (SE)",
+                "value": "-0.53"
+              }
+            ]
+          }
+        ],
+        "sourceLabel": "EVO Toric 2.0 · Spherical equivalent"
+      },
+      {
+        "eye": "OD",
+        "formula": "EVO Toric 2.0",
+        "lensModel": "J&J ZCU",
+        "targetRefraction": "0",
+        "constants": [
+          {
+            "name": "A Constant",
+            "value": "119.3",
+            "unit": "1"
+          },
+          {
+            "name": "K Index",
+            "value": "1.3375",
+            "unit": "1"
+          }
+        ],
+        "inputEcho": {
+          "al": "23.5",
+          "acd": "3.1",
+          "lt": "4.4",
+          "cct": "543",
+          "target": "0",
+          "k1": "43",
+          "k1Axis": "0",
+          "k2": "44",
+          "k2Axis": "90"
+        },
+        "rows": [
+          {
+            "toricPower": "0",
+            "axis": "90",
+            "predictedRefraction": "0.08",
+            "residualCylinder": "-0.4",
+            "residualAxis": "180",
+            "rawCells": [
+              {
+                "label": "Toric",
+                "value": "0"
+              },
+              {
+                "label": "IOL Axis",
+                "value": "90°"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.08"
+              },
+              {
+                "label": "Residual Cyl",
+                "value": "-0.4"
+              },
+              {
+                "label": "Axis",
+                "value": "180°"
+              }
+            ],
+            "iolPower": "21.5"
+          },
+          {
+            "toricPower": "1",
+            "axis": "90",
+            "predictedRefraction": "0.11",
+            "residualCylinder": "-0.29",
+            "residualAxis": "90",
+            "highlighted": true,
+            "rawCells": [
+              {
+                "label": "Toric",
+                "value": "1"
+              },
+              {
+                "label": "IOL Axis",
+                "value": "90°"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.11"
+              },
+              {
+                "label": "Residual Cyl",
+                "value": "-0.29"
+              },
+              {
+                "label": "Axis",
+                "value": "90°"
+              }
+            ],
+            "iolPower": "21.5"
+          },
+          {
+            "toricPower": "1.5",
+            "axis": "90",
+            "predictedRefraction": "0.12",
+            "residualCylinder": "-0.63",
+            "residualAxis": "90",
+            "rawCells": [
+              {
+                "label": "Toric",
+                "value": "1.5"
+              },
+              {
+                "label": "IOL Axis",
+                "value": "90°"
+              },
+              {
+                "label": "Refraction",
+                "value": "0.12"
+              },
+              {
+                "label": "Residual Cyl",
+                "value": "-0.63"
+              },
+              {
+                "label": "Axis",
+                "value": "90°"
+              }
+            ],
+            "iolPower": "21.5"
+          }
+        ],
+        "sourceLabel": "EVO Toric 2.0 · Toric alternatives"
+      }
+    ],
+    "fixture": "evo-toric-browser-live.html",
+    "limitations": "Ordinary isolated Chromium UI calculation plus injected read-only result adapter. No installed-extension result-capture flow tested here.",
+    "termsAccepted": false,
+    "screenshot": "output/playwright/result-other-live/evo-toric-browser.png"
+  }
+]

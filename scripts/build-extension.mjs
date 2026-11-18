@@ -5,7 +5,8 @@ const manifest = JSON.parse(await readFile('dist/manifest.json', 'utf8'));
 assertPackagedCodeCsp(manifest);
 await build({ entryPoints: ['src/background.js'], bundle: true, format: 'esm', target: 'chrome140', outfile: 'dist/background.js' });
 await build({ entryPoints: ['src/floating.js'], bundle: true, format: 'iife', target: 'chrome140', outfile: 'dist/floating.js' });
-for (const file of ['index.html','floating.js',manifest.background.service_worker, ...Object.values(manifest.icons)]) await access(`dist/${file}`);
+await build({ entryPoints: ['src/result-probe.js'], bundle: true, format: 'iife', target: 'chrome140', outfile: 'dist/result-probe.js' });
+for (const file of ['index.html','floating.js','result-probe.js',manifest.background.service_worker, ...Object.values(manifest.icons)]) await access(`dist/${file}`);
 for (const file of [
   'src/ocr/sandbox.html',
   'vendor-ocr/LICENSE-ONNX-Runtime.txt',

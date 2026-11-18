@@ -24,7 +24,7 @@ Biometry-Clip currently registers **15 calculator entry pages**. The URLs and ey
 
 ## Mode and transfer rules
 
-- The Launch tab groups entries by use: general, Toric, post-LVC/RK, special cornea/KC, postoperative/exchange and second eye. A calculator can appear in more than one group.
+- The **Sites** tab groups entries by use: general, Toric, post-LVC/RK, special cornea/KC, postoperative/exchange and second eye. A calculator can appear in more than one group.
 - Required fields are derived from the detected current form. Original-site mode changes may reveal additional fields; the extension cannot fill a field the site has not exposed.
 - ESCRS combined switches are treated as mode controls, not numeric measurements. Post-LVC subtype and remaining original-site selections still require review. A compatible default biometer can drive Argos-specific controls; IOLMaster 700 is the default instrument preference.
 - Toric SIA and incision defaults apply only to missing applicable data. The preferred cylinder display is `−ve` where supported. Conventional K, total K and posterior K are separate values.
@@ -36,5 +36,7 @@ Biometry-Clip currently registers **15 calculator entry pages**. The URLs and ey
 Terms, login, CAPTCHA and original-site calculation actions remain on the website. A site may change its markup or available fields; review the transfer result on the original form. Report a problem with the entry URL, mode, eye and field names, using synthetic values.
 
 ## What has been validated
+
+See [result capture evidence](calculation-results.md#adapter-verification) for the separate output adapters.
 
 Automated adapter tests cover synthetic field mapping, eye groups, mode controls and units. Historical live-site checks and user acceptance results are recorded separately in the [documentation archive](README.md#research-and-validation-archive). The installed-extension IOLMaster 700 tests validate report import/review; they do not establish a fresh successful cross-tab run across all 15 calculators.

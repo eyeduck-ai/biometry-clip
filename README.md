@@ -1,6 +1,6 @@
 # Biometry-Clip
 
-Enter biometry once, then copy it between supported IOL calculators. Biometry-Clip is a Chrome extension with a compact floating editor, a patient library, and local PDF/image recognition.
+Biometry-Clip is a Chrome extension for reusing eye measurements across IOL calculators and saving their calculation results for later review or analysis.
 
 [繁體中文](README.zh-TW.md) · [User guide](docs/user-guide.md) · [15 supported calculators](docs/supported-sites.md) · [API setup](docs/api-setup.md) · [Development](docs/development.md)
 
@@ -15,17 +15,24 @@ Requires **Chrome 140 or newer**.
 
 When building from source, select the generated `dist` folder instead. Keep the installed folder at the same path when updating, reload the extension, and refresh calculator tabs. Moving an unpacked extension can change its Chrome identity and the associated local data.
 
-## Use
+## Transfer measurements between calculators
 
-- On a supported calculator, the icon opens a draggable, resizable floating panel. On other pages, it opens a wider workbench with brief help.
-- **Data:** enter measurements or copy existing calculator inputs. OD/OS tabs select the eye being edited; Toric, KC and LVC describe that eye. Required fields adapt to the detected calculator.
-- Choose **OD**, **OS**, or **OD+OS** for transfer. Both eyes are available together only when the current calculator form exposes independent supported eye groups. The adapter selects the relevant eye on single-eye forms.
-- **Patients:** save multiple patients and multiple measurements per patient. Load, edit, duplicate, or delete saved measurements; the shared working draft is separate from saved history.
-- **Import:** paste a screenshot, upload a PDF/image, copy website data, or paste/upload JSON from Biometry-Clip or biometry-parser. Review candidate values before applying them.
-- **Launch:** open calculator entries grouped by use. Manually opened calculator tabs work too.
-- **Settings:** set defaults and optional cloud recognition. English is the default; the header language button switches to Traditional Chinese.
+1. Use **Copy site** on a supported calculator with completed inputs, enter values in **Data**, or use **Import** to recognize a PDF, image, or pasted screenshot. **Import** also accepts structured JSON from Biometry-Clip and biometry-parser.
+2. Review the **OD** and **OS** values and each eye's Toric, KC, and LVC settings. **Patients** lets you save and reload multiple measurements per patient.
+3. Open another [supported calculator](docs/supported-sites.md) from **Sites** or in your own tab. Choose **Paste OD**, **Paste OS**, or **Paste OD+OS** where the site supports bilateral entry. The extension fills the corresponding fields and selects the requested eye on supported single-eye forms. Lens selection transfers when the mapping is unambiguous. You can opt in to transferring IOL constants.
+4. Handle any terms prompt or reCAPTCHA yourself when it appears. Check the fields and run the calculation on the website.
 
-Copy and paste operate on calculator fields. Calculation remains an action on the original website. Lens selection transfers when a supported unambiguous mapping exists; site-specific IOL constants are excluded by default.
+[Measurement transfer guide](docs/user-guide.md#cross-site-measurements)
+
+## Save and export calculator results
+
+1. In **Results**, choose the calculator tab. Select **Watch this tab** before calculating for automatic capture, or **Capture current results** after the website displays its results.
+2. Open the saved record to review the available eye, formula, IOL candidates, predicted refraction, and Toric fields. You can confirm a link to a patient and measurement and annotate the candidates you considered.
+3. Filter by website, patient, or eye and use **Export current filter**. JSON keeps the nested calculation records, and CSV contains one row per candidate.
+
+[Result capture, export format, and verification](docs/calculation-results.md)
+
+On a supported calculator, the toolbar icon opens a draggable, resizable floating panel. Elsewhere it opens a wider workbench. English is the default, and the header language button switches to Traditional Chinese.
 
 ## PDF and image recognition
 
@@ -39,7 +46,7 @@ The principal report family tested is **ZEISS IOLMaster 700**: a native-text PDF
 
 The working draft uses Chrome session storage. The patient library, preferences, and API credentials use local extension storage, which is **not encrypted**. Local OCR needs no cloud account. Gemini and official PaddleOCR APIs are optional; settings include application instructions and require only a key/token and model choice in normal mode. Actual cloud image requests require upload confirmation. A readable native PDF does not get uploaded merely because a cloud provider is selected.
 
-Case/library backups use `biometry-clipboard` **1.3** or **1.4** when they include a report summary. Imports support 1.0–1.4. A separate export shares the current measurement with the Python kit. [Backup schema](docs/interchange.md) · [biometry-parser exchange](docs/parser-exchange.md)
+Case/library backups use `biometry-clipboard` **1.3** or **1.4** when they include a report summary. Imports support 1.0–1.4. Use the measurement export to share a case with the Python kit, and the **Results** export to archive local calculation history. [Backup schema](docs/interchange.md) · [biometry-parser exchange](docs/parser-exchange.md) · [Calculation result schema](schemas/biometry-calculation-runs.schema.json)
 
 ## Build from source
 

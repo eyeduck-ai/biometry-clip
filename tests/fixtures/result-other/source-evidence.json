@@ -1,0 +1,107 @@
+{
+  "checkedAt": "2026-11-18T05:36:02.080Z",
+  "scope": "Read-only result extraction. All case values are synthetic. All five entries have now been calculated through ordinary UI in an isolated Chromium browser and read from actual result DOM. No installed-extension result-capture flow was exercised by this subtask.",
+  "sources": [
+    {
+      "siteId": "cooke",
+      "url": "https://cookeformula.com/",
+      "resultRoute": "https://cookeformula.com/PrintPreview",
+      "evidence": "public-client-renderer-source",
+      "sourceCapturedAt": "2026-11-15",
+      "localSource": "artifacts/modes-037/cooke.js",
+      "fixture": "cooke-both.html",
+      "selectors": [
+        "#page td.outputs",
+        "table.outputs h3.tblabel",
+        "td.iol-names",
+        "td.iol-results",
+        ".best-option"
+      ],
+      "limitations": "Source-shaped synthetic DOM fixture, not a captured live calculation. The result URL is explicitly published by history.pushState in the source. Later ordinary-browser calculation evidence and strict fixture parity are recorded in live-browser-evidence.json.",
+      "liveFixture": "cooke-browser-live.html",
+      "liveEvidence": "live-browser-evidence.json",
+      "liveCapturedAt": "2026-11-18T05:24:36.045Z"
+    },
+    {
+      "siteId": "kane",
+      "url": "https://www.iolformula.com/wp-content/themes/iolformula/js/kane-script.js",
+      "resultRoute": "https://www.iolformula.com/",
+      "evidence": "public-client-renderer-source",
+      "sourceCapturedAt": "2026-11-15",
+      "localSource": "artifacts/lens-catalog-038/kane-script.js",
+      "fixture": "kane-both.html",
+      "selectors": [
+        ".form_block .eye1_results",
+        ".form_block .eye2_results",
+        ".res_tab3_lines",
+        ".res_tab32_lines",
+        ".res_tab42_lines",
+        ".iol_device_name",
+        ".eyecircle svg #angle-bigtext"
+      ],
+      "limitations": "Source-shaped synthetic DOM fixture, not a captured live calculation. No agreement acceptance or private API request in this task. Sphere/cylinder tables are kept separate. Later ordinary-browser calculation evidence and strict fixture parity are recorded in live-browser-evidence.json.",
+      "liveFixture": "kane-browser-live.html",
+      "liveEvidence": "live-browser-evidence.json",
+      "liveCapturedAt": "2026-11-18T05:32:37.776Z"
+    },
+    {
+      "siteId": "evo",
+      "url": "https://www.evoiolcalculator.com/Calculator.aspx",
+      "resultRoute": "https://www.evoiolcalculator.com/Calculator.aspx",
+      "evidence": "public-html-form-server-response",
+      "fixture": "evo-os.html",
+      "selectors": [
+        "#PnPred.results",
+        "#LabelODOS",
+        "#Labelpara1",
+        "#Labelpara2",
+        "table.pred"
+      ],
+      "limitations": "Actual synthetic server response, not native browser or installed-extension verification. Personal-label spans, form inputs and scripts removed from fixture. Later ordinary-browser calculation evidence and strict fixture parity are recorded in live-browser-evidence.json.",
+      "liveFixture": "evo-browser-live.html",
+      "liveEvidence": "live-browser-evidence.json",
+      "liveCapturedAt": "2026-11-18T05:34:56.697Z"
+    },
+    {
+      "siteId": "evo-toric",
+      "url": "https://www.evoiolcalculator.com/Toric.aspx",
+      "resultRoute": "https://www.evoiolcalculator.com/Toric.aspx",
+      "evidence": "public-html-form-server-response",
+      "fixture": "evo-toric-od.html",
+      "selectors": [
+        "#PnPred.results",
+        "table.pred",
+        "table.toric",
+        "#LabelBaseIOL"
+      ],
+      "limitations": "Actual synthetic server response, not native browser or installed-extension verification. Sphere and toric alternatives remain separate groups; toric rows use the explicitly echoed base SE power. Later ordinary-browser calculation evidence and strict fixture parity are recorded in live-browser-evidence.json.",
+      "liveFixture": "evo-toric-browser-live.html",
+      "liveEvidence": "live-browser-evidence.json",
+      "liveCapturedAt": "2026-11-18T05:36:02.080Z"
+    },
+    {
+      "siteId": "tecnis-toric",
+      "url": "https://tecnistoriccalc.com/calculator/",
+      "resultRoute": "https://tecnistoriccalc.com/calculator/",
+      "evidence": "public-markup-and-client-renderer-source",
+      "sourceCapturedAt": "2026-11-15",
+      "localSources": [
+        "artifacts/tecnis-source/calculator-public.html",
+        "artifacts/tecnis-source/calculator-public.js"
+      ],
+      "fixture": "tecnis-toric.html",
+      "selectors": [
+        "#results",
+        "#resultsPrint",
+        ".js-eye-selection-text",
+        ".js-eye-selection-text-side",
+        ".pr-seIOLPower",
+        ".pr-constantFactor"
+      ],
+      "limitations": "Source-shaped synthetic DOM fixture, not a captured live calculation. Cylinder is residual astigmatism, not lens cylinder power. SE power/constants are read only when echoed in the visible print result, never from form inputs. Later ordinary-browser calculation evidence and strict fixture parity are recorded in live-browser-evidence.json.",
+      "liveFixture": "tecnis-browser-live.html",
+      "liveEvidence": "live-browser-evidence.json",
+      "liveCapturedAt": "2026-11-18T05:32:00.781Z"
+    }
+  ]
+}

@@ -40,6 +40,21 @@ test('ESCRS one-eye mode preparation never touches OS and duplicated controls ar
   assert.equal(siteBridge('inspect',p,data,{eye:'OD'}).modeControls.some(state=>state.eye==='OS'),false);
 });
 
+test('ESCRS reads the visible selected LVC subtype in the matching eye',t=>{
+  setup(t,`<div class="mud-grid mud-grid-spacing-xs-6 noprint">
+      <div class="mud-grid-item"><label><input type="checkbox">Post LASIK/PRK/RK</label></div>
+      <div class="mud-grid-item"><label><input type="checkbox" checked>Post LASIK/PRK/RK</label>
+        <input type="hidden" readonly value="Hyperopic">
+        <div role="combobox" aria-label="Post LASIK/PRK/RK" aria-expanded="false">Myopic</div>
+      </div>
+    </div>`,'https://iolcalculator.escrs.org/');
+  const types=()=>siteBridge('read',findSite('escrs'),emptyCase(),{eye:'OU'}).rows
+    .filter(row=>row.key==='lvcType').map(({eye,value})=>[eye,value]);
+  assert.deepEqual(types(),[['OD','none'],['OS','myopic']]);
+  document.querySelector('[role="combobox"]').setAttribute('aria-expanded','true');
+  assert.deepEqual(types(),[['OD','none'],['OS','unknown']]);
+});
+
 test('ESCRS required initials prefer true initials then ID then name, without changing stored identity',async t=>{
   setup(t,'<label for="initials">Patient Initials</label><input id="initials" required>','https://iolcalculator.escrs.org/');
   const p={...findSite('escrs'),writeSettleMs:0},data=emptyCase();data.patient.patientId='SYNTHETIC-ID';data.patient.name='SYNTHETIC NAME';

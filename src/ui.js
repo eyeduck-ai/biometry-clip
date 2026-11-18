@@ -6,6 +6,7 @@ export function icon(name,size=16) {
     import:'<path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/>',
     export:'<path d="M12 16V3m-4 4 4-4 4 4M4 16v5h16v-5"/>',
     sites:'<path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/>',
+    results:'<path d="M4 4v16h16M8 15l3-4 3 2 5-6"/><circle cx="19" cy="7" r="1"/>',
     gear:'<path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/>',
     arrow:'<path d="M5 12h14m-5-5 5 5-5 5"/>',external:'<path d="M14 3h7v7m0-7-11 11M10 3H3v18h18v-7"/>',
     check:'<path d="m5 12 4 4L19 6"/>',close:'<path d="m6 6 12 12M6 18 18 6"/>',refresh:'<path d="M20 7v5h-5M4 17v-5h5"/><path d="M6 6a8 8 0 0 1 13 3M5 15a8 8 0 0 0 13 3"/>',
