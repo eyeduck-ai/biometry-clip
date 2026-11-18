@@ -1,0 +1,24 @@
+[
+  {
+    "siteId": "evo",
+    "url": "https://www.evoiolcalculator.com/Calculator.aspx",
+    "fixture": "evo-os.html",
+    "evidence": "public-html-form-server-response",
+    "capturedAt": "2026-11-18T04:33:38.263Z",
+    "synthetic": true,
+    "eye": "OS",
+    "rows": 5,
+    "toricRows": 0
+  },
+  {
+    "siteId": "evo-toric",
+    "url": "https://www.evoiolcalculator.com/Toric.aspx",
+    "fixture": "evo-toric-od.html",
+    "evidence": "public-html-form-server-response",
+    "capturedAt": "2026-11-18T04:33:39.650Z",
+    "synthetic": true,
+    "eye": "OD",
+    "rows": 5,
+    "toricRows": 3
+  }
+]

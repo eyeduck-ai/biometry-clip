@@ -312,7 +312,14 @@ export function siteBridge(action, profile, data, options = {}) {
   if(action==='read')for(const {field,state} of modes)if(state.available&&state.status==='ready'){
     let value=state.value;
     if(field.sourceTransform==='boolean')value=state.value==='yes';
-    if(field.sourceTransform==='lvc-enabled')value=state.value==='yes'?'unknown':'none';
+    if(field.sourceTransform==='lvc-enabled'){
+      value=state.value==='yes'?'unknown':'none';
+      if(value==='unknown' && field.readSelection){
+        const choices=queryChoices(`${field.scopeSelector} ${field.readSelection}`,true);
+        const subtype=choices.length===1 ? normalize(choices[0].textContent) : '';
+        if(Object.hasOwn(field.readValues,subtype))value=field.readValues[subtype];
+      }
+    }
     result.rows.push({key:field.key,eye:state.eye,value,previous:state.value,status:'read',label:field.label||field.key,modeControl:true});
   }
   if(['preview','apply'].includes(action))for(const {field,state} of modes)if(hasValue(state.requested)){

@@ -1,13 +1,14 @@
 import {messages as coreMessages,rules as coreRules} from './locales/en-core.js';
 import {messages as helpMessages,rules as helpRules} from './locales/en-help.js';
 import {messages as parserMessages,rules as parserRules} from './locales/en-parser.js';
+import {messages as resultsMessages,rules as resultsRules} from './locales/en-results-ui.js';
 import {messages as secondaryMessages,rules as secondaryRules} from './locales/en-secondary.js';
 
 // Interface language is an explicit preference. It does not depend on the
 // browser locale and never changes the vocabulary of stored clinical data.
 let currentLanguage='en';
-const messages={...secondaryMessages,...coreMessages,...helpMessages,...parserMessages};
-const rules=[...(coreRules||[]),...(secondaryRules||[]),...(helpRules||[]),...parserRules];
+const messages={...secondaryMessages,...coreMessages,...helpMessages,...parserMessages,...resultsMessages};
+const rules=[...(coreRules||[]),...(secondaryRules||[]),...(helpRules||[]),...parserRules,...resultsRules];
 const textSources=new WeakMap();
 const attributeSources=new WeakMap();
 const activeObservers=new Set();

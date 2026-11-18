@@ -14,7 +14,13 @@ const escrsEyeScope = eye => `.mud-grid.mud-grid-spacing-xs-6.noprint > .mud-gri
 const escrsModeControls = ['OD', 'OS'].flatMap(eye => [
   ['toric', 'Toric', 'boolean'], ['keratoconus', 'Keratoconus', 'boolean'],
   ['argos', 'Argos (SoS) AL', 'argos'], ['lvcType', 'Post LASIK/PRK/RK', 'lvc-enabled'],
-].map(([key, label, sourceTransform]) => labelField(key, label, {eye, control:'checkbox', sourceTransform, scopeSelector:escrsEyeScope(eye)})));
+].map(([key, label, sourceTransform]) => labelField(key, label, {
+  eye, control:'checkbox', sourceTransform, scopeSelector:escrsEyeScope(eye),
+  ...(sourceTransform === 'lvc-enabled' && {
+    readSelection:'[role="combobox"][aria-label="Post LASIK/PRK/RK"][aria-expanded="false"]',
+    readValues:{myopic:'myopic', hyperopic:'hyperopic', 'radial keratotomy':'rk'},
+  }),
+})));
 const cookeModeControls = ['OD', 'OS'].map(eye => ({key:'biometer', eye, label:'Biometer', control:'radio', sourceTransform:'cooke-biometer',
   choices:Object.fromEntries([['Argos','0'],['Lenstar','1'],['Other','2']].map(([value, code]) => [value, `[role="radiogroup"][aria-labelledby="${eye.toLowerCase()}-biometer-label"] input[type="radio"][value="${code}"]`])),
 }));

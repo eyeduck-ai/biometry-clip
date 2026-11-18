@@ -34,9 +34,10 @@ The production build uses stable extension entry names and excludes development-
 | --- | --- | --- |
 | Interface | `src/app.js`, `src/styles.css`, `src/i18n.js` | Editor, workflow and responsive presentation |
 | Shared draft | `src/editor-state.js`, `src/session-store.js` | Per-eye updates, revision/case-token guards and session state |
-| Saved history | `src/library-store.js` | Patient/measurement CRUD and append-only validated import |
+| Patient library | `src/library-store.js` | Patient/measurement CRUD and append-only validated import |
 | Browser transport | `src/platform.js`, `src/background.js` | Chrome messaging, active tabs, permissions and storage ownership |
 | Site integration | `src/sites.js`, `src/adapters/`, `src/bridge.js`, `src/tab-transfer.js` | URL matching, field inspection/read/fill, eyes, modes and units |
+| Calculator results | `src/result-sites.js`, `src/result-probe.js`, `src/result-adapters/`, `src/result-service.js`, `src/result-store.js` | Result-page matching, DOM capture, per-tab watches and IndexedDB history |
 | Lens data | `src/lens-*` | Source selection, canonical identity, site-specific mappings and constants |
 | Import and OCR | `src/ocr/` | Native PDF routing, selected-page rasterization, local/cloud OCR and field evidence |
 | Review | `src/import-review-ui.js`, `src/import-preview.js`, `src/import-progress.js` | OD/OS candidates, bounded source preview, resource cleanup and elapsed time |
@@ -45,6 +46,8 @@ The production build uses stable extension entry names and excludes development-
 The service worker owns shared storage mutations. Independent panels send guarded field updates instead of replacing a whole stale case. Saved measurements are snapshots; ordinary draft edits do not write through to the patient library.
 
 The editor is intentionally separate from page adapters. Site scripts exchange validated field data rather than executing report text or importing arbitrary page code. Recognition evidence is transient; only explicit cleaned patient/eye fields enter saved cases and interchange JSON.
+
+The result reader uses supported page layouts and captures recognized, displayed values. Result history persists separately from the measurement library. The result export keeps echoed inputs, observed form snapshots and candidate annotations in their own fields. [Result workflow and export contract](calculation-results.md)
 
 ## Memory and processing constraints
 
@@ -66,6 +69,8 @@ The [v0.4.0 architecture review](architecture-review-0.4.0.md) records concrete 
 6. Update [supported sites](supported-sites.md), not just the adapter code. Record live-browser evidence separately from synthetic DOM test results.
 
 Do not automatically submit clinical calculations or silently guess a lens model. IOL constants are site-specific and ordinary transfer leaves them disabled by default.
+
+For result adapter changes, compare the captured eye, formula and candidate values against the calculator output for the tested mode. Cover manual capture, automatic capture, reopening the panel and JSON/CSV export as applicable. Record which checks used the live calculator and which replayed a saved synthetic result page. [Result verification](calculation-results.md#adapter-verification)
 
 ## Compatibility and publishing
 

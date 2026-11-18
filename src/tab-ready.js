@@ -1,12 +1,12 @@
 import { matchSite } from './sites.js';
 
 /** Wait for a newly created or navigating calculator before injecting its UI. */
-export async function waitForSupportedTab(tabs, tabId, timeoutMs = 15000) {
+export async function waitForSupportedTab(tabs, tabId, timeoutMs = 15000, identifySite = matchSite) {
   const id = Number(tabId);
   if (!Number.isSafeInteger(id) || id < 0) throw new Error('無效的計算網站分頁。');
   const initial = await tabs.get(id);
   if (initial.status !== 'loading') {
-    if (!matchSite(initial.url)) throw new Error('此分頁不是支援的計算網站。');
+    if (!identifySite(initial.url)) throw new Error('此分頁不是支援的計算網站。');
     return initial;
   }
   return new Promise((resolve,reject)=>{
@@ -19,7 +19,7 @@ export async function waitForSupportedTab(tabs, tabId, timeoutMs = 15000) {
     }
     function check(tab) {
       if(tab.status==='loading')return;
-      if(!matchSite(tab.url))finish(new Error('網站已導向其他頁面，請在指定計算頁面開啟懸浮窗。'));
+      if(!identifySite(tab.url))finish(new Error('網站已導向其他頁面，請在指定計算頁面開啟懸浮窗。'));
       else finish(null,tab);
     }
     function onUpdated(updatedId,changeInfo,tab) {

@@ -1,0 +1,97 @@
+{
+  "sourceUrl": "https://iolcalculator.escrs.org/",
+  "capturedAt": "2026-11-18T08:01:06.637Z",
+  "checkedAt": "2026-11-18T08:08:04.342Z",
+  "groups": 12,
+  "nonemptySourceCells": 72,
+  "checks": [
+    {
+      "eye": "OD",
+      "formula": "Cooke K6",
+      "cells": 7,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "EVO",
+      "cells": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Hill-RBF",
+      "cells": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Hoffer®QST",
+      "cells": 9,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Kane",
+      "cells": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OD",
+      "formula": "Pearl DGS",
+      "cells": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Cooke K6",
+      "cells": 7,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "EVO",
+      "cells": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Hill-RBF",
+      "cells": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Hoffer®QST",
+      "cells": 9,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Kane",
+      "cells": 5,
+      "rawParity": true
+    },
+    {
+      "eye": "OS",
+      "formula": "Pearl DGS",
+      "cells": 5,
+      "rawParity": true
+    }
+  ],
+  "partialFailures": [
+    {
+      "eye": null,
+      "formula": "Barrett",
+      "message": "Barrett: Calculation could not be completed because the calculator service call failed. Please try again."
+    }
+  ],
+  "malformedCells": [
+    {
+      "eye": "OD",
+      "formula": "Cooke K6",
+      "iolPower": "+21.00",
+      "rawValue": "-+0.00",
+      "numericRefractionOmitted": true
+    }
+  ]
+}

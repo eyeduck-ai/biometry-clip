@@ -2,6 +2,22 @@
 
 Current user documentation is maintained in the [documentation index](docs/README.md). The [consolidated validation evidence](docs/validation-evidence.md) preserves each check's version and scope; it is not a cumulative claim that every website or report was retested for each release.
 
+## 0.5.2
+
+- Enable ESCRS result capture for bilateral spherical, Toric and post-myopic LASIK/PRK calculations. Preserve eye-specific formulas, implantation and residual axes, and the original text of malformed cells. [Site verification](docs/calculation-results.md#adapter-verification)
+- Read the explicitly selected ESCRS LVC subtype from its per-eye form control when available.
+
+## 0.5.1
+
+- Validate result capture against synthetic calculations from the live Barrett, PEARL-DGS, Cooke, Kane, EVO and TECNIS sites. [Site verification](docs/calculation-results.md#adapter-verification)
+- Keep automatic capture attached when PEARL-DGS and Cooke navigate to a result within the same document. Read Kane's visible tables inside a form with a control named `hidden`.
+- Read Barrett's displayed constants and result tables, including the separate Rx exchange and piggyback layouts.
+
+## 0.5.0
+
+- Capture displayed calculator results on demand or automatically for a watched tab.
+- Store calculation history locally, record candidate annotations and patient/measurement links, and export filtered JSON/CSV. [Site verification](docs/calculation-results.md)
+
 ## 0.4.1
 
 - Paste or upload biometry-parser JSON and export a working measurement for the Python kit.
