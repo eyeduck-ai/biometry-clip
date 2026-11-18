@@ -35,7 +35,10 @@ for (const name of ['cmaps', 'standard_fonts']) {
   await cp(join(root, 'node_modules', 'pdfjs-dist', name), join(destination, `pdf-${name}`), { recursive: true });
 }
 await copyFile(join(root, 'node_modules', 'pdfjs-dist', 'LICENSE'), join(destination, 'LICENSE-PDF.js.txt'));
-for (const [dependency, name] of [['onnxruntime-web', 'LICENSE-ONNX-Runtime.txt'], ['@techstark/opencv-js', 'LICENSE-OpenCV-JS.txt']]) {
+// onnxruntime-web 1.31.1 does not include the license in its npm archive.
+// Microsoft release source: https://github.com/microsoft/onnxruntime/blob/rel-1.31.1/LICENSE
+await copyFile(join(root, 'scripts', 'licenses', 'onnxruntime-web.txt'), join(destination, 'LICENSE-ONNX-Runtime.txt'));
+for (const [dependency, name] of [['@techstark/opencv-js', 'LICENSE-OpenCV-JS.txt']]) {
   const dir = join(root, 'node_modules', dependency);
   for (const file of ['LICENSE', 'LICENSE.txt']) {
     try { await stat(join(dir, file)); await copyFile(join(dir, file), join(destination, name)); break; } catch { /* Try conventional filename. */ }
@@ -43,7 +46,6 @@ for (const [dependency, name] of [['onnxruntime-web', 'LICENSE-ONNX-Runtime.txt'
 }
 for (const [name, url] of [
   ['LICENSE-PaddleOCR.txt', 'https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/main/LICENSE'],
-  ['LICENSE-ONNX-Runtime.txt', 'https://raw.githubusercontent.com/microsoft/onnxruntime/main/LICENSE'],
 ]) {
   try { await stat(join(destination, name)); }
   catch {

@@ -8,6 +8,7 @@ await build({ entryPoints: ['src/floating.js'], bundle: true, format: 'iife', ta
 for (const file of ['index.html','floating.js',manifest.background.service_worker, ...Object.values(manifest.icons)]) await access(`dist/${file}`);
 for (const file of [
   'src/ocr/sandbox.html',
+  'vendor-ocr/LICENSE-ONNX-Runtime.txt',
   ...['tiny','small'].flatMap(model => ['det','rec'].map(part => `vendor-ocr/PP-OCRv6_${model}_${part}_onnx_infer.tar`)),
   ...['mjs','wasm'].flatMap(ext => [`vendor-ocr/ort-wasm-simd-threaded.${ext}`,`vendor-ocr/ort-wasm-simd-threaded.jsep.${ext}`]),
   'vendor-ocr/pdf-cmaps/Adobe-Japan1-UCS2.bcmap','vendor-ocr/pdf-standard_fonts/LiberationSans-Regular.ttf',
