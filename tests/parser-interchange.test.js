@@ -105,3 +105,51 @@ test('native backup retains the original compact report alongside edited measure
   restored.patient.patientId = 'SYNTHETIC-DIFFERENT';
   assert.throws(() => exportParserDocument(restored), {code: 'PARSER_PATIENT_MISMATCH'});
 });
+
+const vghksBatch = (documents, source = 'orders') => ({schema_version: 1, source, documents});
+
+test('a single VGHKS-bot PDF imports the same measurements as its nested parser JSON', () => {
+  const source = fixture();
+  source.iol_calculations = [{eye: 'OD', lens_type: 'toric', target_refraction: -0.50, rows: [{power: 21.5}]}];
+  const wrapped = vghksBatch([{id: 'SYNTHETIC', label: 'Synthetic report', date: '2026-11-01', pages: [2], data: source}]);
+  const result = parseInterchange(JSON.stringify({...wrapped, workflow: 'batch-export'}));
+  assert.deepEqual(result, parseInterchange(source));
+  assert.equal(result.measurementDate, '2026-11-18');
+  assert.equal(result.data.eyes.OD.target, undefined);
+  assert.equal(result.data.eyes.OD.plannedIolPower, undefined);
+  assert.equal(result.data.report.iol_calculations, undefined);
+});
+
+test('a VGHKS-bot batch exposes independent reports in source order, including failed entries', () => {
+  const od = fixture(), os = fixture();
+  delete od.eyes.OS;
+  delete os.eyes.OD;
+  const batch = parseInterchange(vghksBatch([
+    {label: 'First synthetic report', date: '2026-11-01', pages: [1, 3], data: od},
+    {label: 'Skipped report', pages: null, error: 'Source error detail'},
+    {label: 'Last synthetic report', date: '2026-02-30', pages: [2], data: os, error: null},
+  ], 'scans'));
+  assert.equal(batch.kind, 'parser-batch');
+  const [first, failed, last] = batch.documents;
+  assert.deepEqual([first.index, first.label, first.date, first.pages], [0, 'First synthetic report', '2026-11-01', [1, 3]]);
+  assert.deepEqual(first.parsed.data.eyes.OS, {});
+  assert.equal(first.parsed.data.eyes.OD.al, '23.64');
+  assert.equal(first.parsed.measurementDate, '2026-11-18');
+  assert.equal(failed.parsed, null);
+  assert.match(failed.error, /PDF/);
+  assert.doesNotMatch(failed.error, /Source error detail/);
+  assert.equal(last.index, 2);
+  assert.equal(last.date, '');
+  assert.deepEqual(last.parsed.data.eyes.OD, {});
+  assert.equal(last.parsed.data.eyes.OS.al, '25.11');
+});
+
+test('wrapped input requires a known VGHKS-bot version and applies existing parser validation', () => {
+  const valid = vghksBatch([{data: fixture()}]);
+  assert.throws(() => parseInterchange({...valid, schema_version: 2}), {code: 'PARSER_BATCH_VERSION'});
+  assert.throws(() => parseInterchange({schema_version: 1, source: 'orders', documents: []}), {code: 'PARSER_BATCH_EMPTY'});
+  assert.throws(() => parseInterchange({...valid, source: 'unrelated'}), {code: 'INTERCHANGE_FORMAT'});
+  assert.throws(() => parseInterchange(vghksBatch([{data: {...fixture(), schema_version: '2.0'}}])), {code: 'PARSER_VERSION'});
+  assert.throws(() => parseInterchange(vghksBatch([{data: {...fixture(), verification_state: 'error'}}])), {code: 'PARSER_EXTRACTION_ERROR'});
+  assert.throws(() => parseInterchange(vghksBatch([{error: 'Source error detail'}])), {code: 'PARSER_BATCH_DOCUMENT'});
+});

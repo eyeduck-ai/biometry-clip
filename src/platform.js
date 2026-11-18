@@ -194,6 +194,7 @@ async function libraryMessage(operation,payload={}) {
     if(operation==='delete-measurements')result=await previewLibrary.deleteMeasurements({...payload.options,clientId});
     if(operation==='duplicate-measurement')result=await previewLibrary.duplicateMeasurement(payload.options);
     if(operation==='import-patients')result=await previewLibrary.importPatients(payload.patients,payload.expectedLibraryRevision);
+    if(operation==='import-measurements')result=await previewLibrary.importMeasurements(payload.options);
     if(operation==='save-measurement')result=await previewLibrary.saveMeasurement(payload.options);
     if(operation==='activate-patient')result=await previewLibrary.activatePatient(payload.patientId,payload.caseToken,payload.revision,clientId);
     if(operation==='select-measurement')result=await previewLibrary.selectMeasurement(payload.patientId,payload.measurementId,payload.caseToken,payload.revision,clientId);
@@ -217,6 +218,7 @@ export async function deletePatient(options){return libraryMessage('delete-patie
 export async function deleteMeasurements(options){return libraryMessage('delete-measurements',{options});}
 export async function duplicateMeasurement(options){return libraryMessage('duplicate-measurement',{options});}
 export async function importPatients(patients,expectedLibraryRevision){return libraryMessage('import-patients',{patients,expectedLibraryRevision});}
+export async function importMeasurements(options){return libraryMessage('import-measurements',{options});}
 export async function saveMeasurement(options){return libraryMessage('save-measurement',{options:{...options,caseToken:options.caseToken??knownSession?.caseToken,revision:options.revision??knownSession?.revision}});}
 export async function activatePatient(patientId,caseToken=knownSession?.caseToken,revision=knownSession?.revision){return libraryMessage('activate-patient',{patientId,caseToken,revision});}
 export async function selectMeasurement(patientId,measurementId,caseToken=knownSession?.caseToken,revision=knownSession?.revision){return libraryMessage('select-measurement',{patientId,measurementId,caseToken,revision});}

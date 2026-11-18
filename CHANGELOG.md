@@ -2,6 +2,14 @@
 
 Current user documentation is maintained in the [documentation index](docs/README.md). The [consolidated validation evidence](docs/validation-evidence.md) preserves each check's version and scope; it is not a cumulative claim that every website or report was retested for each release.
 
+## 0.5.4
+
+- Save selected reports from a VGHKS-bot export as independent measurements for one patient. Review each report, choose a destination, and load the saved measurements individually. [Parser exchange](docs/parser-exchange.md)
+
+## 0.5.3
+
+- Import complete VGHKS-bot JSON exports through the existing measurement review. For a batch, choose one PDF at a time. [Parser exchange](docs/parser-exchange.md)
+
 ## 0.5.2
 
 - Enable ESCRS result capture for bilateral spherical, Toric and post-myopic LASIK/PRK calculations. Preserve eye-specific formulas, implantation and residual axes, and the original text of malformed cells. [Site verification](docs/calculation-results.md#adapter-verification)

@@ -24,7 +24,7 @@ export function createResultService(chrome, {readSession, readLibrary, history =
   newId = () => crypto.randomUUID(), now = () => new Date().toISOString()} = {}) {
   const inFlight = new Map();
   const sessionStorage = chrome.storage.session;
-  const adapterVersion = chrome.runtime.getManifest?.()?.version || '0.5.2';
+  const adapterVersion = chrome.runtime.getManifest?.()?.version || '0.5.4';
 
   function serialize(tabId, work) {
     const task = (inFlight.get(tabId) || Promise.resolve()).catch(() => {}).then(work);

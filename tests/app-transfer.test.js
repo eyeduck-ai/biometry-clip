@@ -54,6 +54,7 @@ async function fixture(t,{ocr,lensCatalog,view='floating',capture='data:image/pn
     subscribeLibrary:()=>()=>{},loadLibrary:()=>service.read(),createPatient:(...args)=>service.createPatient(...args),saveMeasurement:options=>service.saveMeasurement(options),
     activatePatient:(...args)=>service.activatePatient(...args),selectMeasurement:(...args)=>service.selectMeasurement(...args),
     importPatients:async(...args)=>{calls.push({type:'import-patients'});return service.importPatients(...args);},
+    importMeasurements:async options=>{calls.push({type:'import-measurements',options:structuredClone(options)});return service.importMeasurements(options);},
     inspectTab:async(id,data,options,action)=>{assert.equal(Number(id),tabId);calls.push({type:action,options:structuredClone(options)});const result=bridge(action,data,options);if(action==='read'&&heldRead){heldRead.started.resolve();await heldRead.release.promise;}return result;},
     quickFillTab:async(id,data,options)=>{
       assert.equal(Number(id),tabId);calls.push({type:'quick-fill',data:structuredClone(data),options:structuredClone(options)});
@@ -69,7 +70,7 @@ async function fixture(t,{ocr,lensCatalog,view='floating',capture='data:image/pn
   await import(`data:text/javascript;base64,${Buffer.from(`${source}\n// ${crypto.randomUUID()}`).toString('base64')}`);
   await until(()=>dom.window.document.querySelector('#field-al')?.value==='21.00','application initializes seeded draft');
   const find=selector=>{const element=dom.window.document.querySelector(selector);assert.ok(element,`Missing app element ${selector}`);return element;};
-  return {dom,target,session,calls,find,click:selector=>find(selector).click(),get dialogs(){return dialogs;},holdRead(){heldRead={started:deferred(),release:deferred()};return heldRead;},targetValue:(field,eye='OD')=>target.window.document.querySelector(`#MainContent_${field}${eye==='OS'?'0':''}`).value,setTarget:(field,value,eye='OD')=>{target.window.document.querySelector(`#MainContent_${field}${eye==='OS'?'0':''}`).value=value;}};
+  return {dom,target,session,calls,find,readLibrary:()=>service.read(),click:selector=>find(selector).click(),get dialogs(){return dialogs;},holdRead(){heldRead={started:deferred(),release:deferred()};return heldRead;},targetValue:(field,eye='OD')=>target.window.document.querySelector(`#MainContent_${field}${eye==='OS'?'0':''}`).value,setTarget:(field,value,eye='OD')=>{target.window.document.querySelector(`#MainContent_${field}${eye==='OS'?'0':''}`).value=value;}};
 }
 
 test('one click copies both real target eye groups, preserving zero and existing values where the source is blank',async t=>{
@@ -385,6 +386,100 @@ test('JSON upload and explicit paste parse once and preserve unchecked parser ca
     f.click('#apply-candidates');await until(async()=>{const r=await f.session.read();return r.data.eyes.OD.k1==='43.5'&&f.dom.window.document.querySelector('#field-al');},'selected parser fields saved');
     const saved=await f.session.read();assert.equal(saved.data.eyes.OD.al,'21.00');assert.equal(saved.data.patient.patientId,'SYNTHETIC-WORKING');assert.equal(saved.data.eyes.OS.k2,'44.2');assert.equal(Object.hasOwn(saved.data,'measurementDate'),false);assert.equal(saved.data.report.eyes.OD.mean_k.candidate_value,43.75);assert.equal(saved.data.report.measurement_date.candidate_value,'2026-11-17');assert.match(f.find('.report-summary').textContent,/43.75/);
   });
+});
+
+test('a pasted single-PDF VGHKS-bot export opens the existing parser review',async t=>{
+  const f=await fixture(t);
+  f.click('[data-route="import"]');
+  pasteJson(f,JSON.stringify({schema_version:1,source:'orders',documents:[{pages:[1],data:parserResult()}]}));
+  await until(()=>f.dom.window.document.querySelector('#select-new-candidates'),'single report parser review');
+  const candidate=f.find('[data-review-eye="OS"][data-review-key="k2"] [data-candidate]');
+  assert.equal(candidate.checked,false);
+  assert.equal(f.dom.window.document.querySelector('[data-parser-batch-index]'),null);
+});
+
+test('a VGHKS-bot batch reviews and applies only the selected PDF',async t=>{
+  const f=await fixture(t);
+  const first={...parserResult(),eyes:{OD:{acd:parserCandidate(3.1,'mm')}}};
+  const last={...parserResult(),eyes:{OS:{k2:{power:parserCandidate(44.2,'D')}}}};
+  const text=JSON.stringify({schema_version:1,source:'scans',documents:[
+    {label:'First synthetic report',data:first},
+    {label:'Unavailable report',error:'Source failure'},
+    {label:'<b>Third synthetic report</b>',pages:[3],data:last},
+  ]});
+  const before=(await f.session.read()).data;
+  f.click('[data-route="import"]');
+  uploadJson(f,{size:text.length,text:async()=>text});
+  await until(()=>f.dom.window.document.querySelector('[data-parser-batch-index]'),'batch report picker');
+  const reports=[...f.dom.window.document.querySelectorAll('[data-parser-batch-index]')];
+  assert.equal(f.find('#review-parser-document').disabled,true);
+  assert.deepEqual(reports.map(report=>report.dataset.parserBatchIndex),['0','2']);
+  assert.match(reports[1].closest('label').textContent,/<b>Third synthetic report<\/b>/);
+  assert.match(f.find('[data-parser-batch-failed]').textContent,/Unavailable report/);
+  assert.deepEqual((await f.session.read()).data,before);
+  reports[1].click();
+  f.click('#review-parser-document');
+  await until(()=>f.dom.window.document.querySelector('#select-new-candidates'),'selected report review');
+  assert.equal(f.dom.window.document.querySelector('[data-review-eye="OD"][data-review-key="acd"]'),null);
+  f.click('#select-new-candidates');
+  f.click('#apply-candidates');
+  await until(async()=>(await f.session.read()).data.eyes.OS.k2==='44.2','selected OS field saved');
+  assert.equal((await f.session.read()).data.eyes.OD.acd,before.eyes.OD.acd);
+});
+
+test('VGHKS-bot batches save separate measurements to one explicit patient without changing the draft',async t=>{
+  const f=await fixture(t);
+  const patient_id=parserCandidate('000427');
+  const first={...parserResult(),patient_id,source_sha256:'a'.repeat(64),eyes:{OD:{al:parserCandidate(24.05,'mm')}}};
+  const second={...parserResult(),patient_id,source_sha256:'b'.repeat(64),eyes:{OS:{al:parserCandidate(24.32,'mm')}}};
+  delete second.measurement_date;
+  const batch=JSON.stringify({schema_version:1,source:'orders',documents:[
+    {label:'Earlier PDF',date:'2026-11-15',pages:[3,1],data:first},
+    {label:'Later PDF',date:'2026-11-18',data:second},
+    {label:'Failed PDF',error:'Synthetic extraction failure'},
+  ]});
+  const before=(await f.session.read()).data;
+  async function chooseReports(){
+    f.click('[data-route="import"]');
+    pasteJson(f,batch);
+    await until(()=>f.dom.window.document.querySelector('#save-parser-batch'),'batch save controls');
+    assert.equal(f.find('#save-parser-batch').disabled,true);
+    const reports=[...f.dom.window.document.querySelectorAll('[data-parser-batch-index]')];
+    assert.equal(reports.every(report=>report.checked===false),true);
+    assert.equal(reports.length,2);
+    assert.match(f.find('.parser-batch-report table').textContent,/24\.05/);
+    for(const report of reports)report.click();
+    assert.equal(f.find('#review-parser-document').disabled,true);
+    assert.equal(f.find('#save-parser-batch').disabled,true);
+    return f.find('#parser-batch-patient');
+  }
+  function selectPatient(select,id){
+    select.value=id;
+    select.dispatchEvent(new f.dom.window.Event('change',{bubbles:true}));
+  }
+  selectPatient(await chooseReports(),'new');
+  assert.equal(f.find('#parser-batch-patient-id').placeholder,'000427');
+  f.click('#save-parser-batch');
+  await until(()=>f.dom.window.document.querySelector('#tab-patients').getAttribute('aria-selected')==='true','batch saved to Patients');
+  const saved=await f.readLibrary();
+  assert.equal(saved.patients.length,1);
+  const [patient]=saved.patients;
+  assert.equal(patient.patient.patientId,'000427');
+  assert.equal(patient.measurements.length,2);
+  assert.notEqual(patient.measurements[0].id,patient.measurements[1].id);
+  assert.deepEqual(patient.measurements.map(item=>item.label),['Earlier PDF','Later PDF']);
+  assert.deepEqual(patient.measurements.map(item=>item.measuredAt),['2026-11-17T00:00:00.000Z','']);
+  assert.deepEqual(patient.measurements.map(item=>item.source),['VGHKS-bot · p.1,3','VGHKS-bot']);
+  assert.deepEqual(patient.measurements.map(item=>item.eyes),[{OD:{al:'24.05'},OS:{}},{OD:{},OS:{al:'24.32'}}]);
+  assert.equal(patient.measurements[0].report.eyes.OD.al.status,'unverified');
+  assert.equal(f.find('.patient-record').open,true);
+  assert.deepEqual((await f.session.read()).data,before);
+
+  selectPatient(await chooseReports(),'0');
+  f.click('#save-parser-batch');
+  await until(()=>f.find('#toast').textContent.includes('略過 2 筆重複紀錄'),'duplicate import reported');
+  assert.deepEqual(await f.readLibrary(),saved);
+  assert.deepEqual((await f.session.read()).data,before);
 });
 
 test('plain text paste is inert and malformed or oversized explicit JSON does not alter the draft',async t=>{
