@@ -97,6 +97,7 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
     'biometry:library:delete-measurements': () => library.deleteMeasurements({...message.options,clientId:message.clientId}),
     'biometry:library:duplicate-measurement': () => library.duplicateMeasurement(message.options),
     'biometry:library:import-patients': () => library.importPatients(message.patients,message.expectedLibraryRevision),
+    'biometry:library:import-measurements': () => library.importMeasurements(message.options),
     'biometry:library:save-measurement': () => library.saveMeasurement(message.options),
     'biometry:library:activate-patient': () => library.activatePatient(message.patientId,message.caseToken,message.revision,message.clientId),
     'biometry:library:select-measurement': () => library.selectMeasurement(message.patientId,message.measurementId,message.caseToken,message.revision,message.clientId),

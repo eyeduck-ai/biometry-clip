@@ -63,3 +63,68 @@ test('an empty import is a no-op and source or returned objects cannot mutate sa
   patients[0].measurements[0].eyes.OD.al='88';saved.library.patients[0].measurements[0].eyes.OS.al='99';saved.imported[0].patientId='changed';
   const actual=await f.store.read();assert.equal(actual.patients[0].measurements[0].eyes.OD.al,'23.45');assert.equal(actual.patients[0].measurements[0].eyes.OS.al,'24.10');
 });
+
+function batchMeasurement({patientId='0007',caseId=patientId,hash='a'.repeat(64),source='VGHKS-bot · p.1',measuredAt='2026-11-10',eyes={OD:{al:'23.42'},OS:{}}}={}){
+  const patient_id=patientId?{unit:null,status:'unverified',data_status:'present',verification_status:'unverified',candidate_value:patientId}:undefined;
+  return {label:'Synthetic PDF',source,measuredAt,data:{patient:{patientId:caseId},eyes,report:{
+    schema_version:'1.2',workflow:'synthetic-library',source_sha256:hash,verification_state:'needs_review',eyes:{OD:{},OS:{}},...(patient_id&&{patient_id}),
+  }}};
+}
+
+test('batch import creates one patient with independent dated measurements without changing the draft',async()=>{
+  const f=fixture(),draft=await f.session.read();
+  await f.session.patch({eyes:{OD:{al:'25.10'}}},draft.caseToken);
+  const before=await f.session.read();
+  const reports=[batchMeasurement(),batchMeasurement({hash:'b'.repeat(64),measuredAt:'',eyes:{OD:{},OS:{al:'24.04'}}})];
+  const result=await f.service.importMeasurements({measurements:reports,expectedLibraryRevision:0});
+  assert.equal(f.writes,1);assert.equal(result.importedCount,2);assert.equal(result.library.patients.length,1);
+  const [patient]=result.library.patients;
+  assert.equal(result.patientId,patient.id);assert.equal(patient.patient.patientId,'0007');
+  const [od,os]=patient.measurements;
+  assert.deepEqual(od.eyes,{OD:{al:'23.42'},OS:{}});assert.deepEqual(os.eyes,{OD:{},OS:{al:'24.04'}});
+  assert.equal(od.measuredAt,'2026-11-10T00:00:00.000Z');assert.equal(os.measuredAt,'');
+  assert.equal(od.report.source_sha256,'a'.repeat(64));assert.equal(os.report.source_sha256,'b'.repeat(64));
+  assert.notEqual(od.id,os.id);assert.deepEqual(await f.session.read(),before);
+});
+
+test('batch append preserves existing history and skips only exact source duplicates',async()=>{
+  const f=fixture(),created=await f.store.createPatient({patientId:'0007',name:'Synthetic alias'});
+  const first=await f.store.importMeasurements({patientId:created.patient.id,measurements:[batchMeasurement()],expectedLibraryRevision:created.library.revision});
+  const prior=structuredClone(first.library.patients[0].measurements[0]);
+  const same=batchMeasurement(),newPage=batchMeasurement({source:'VGHKS-bot · p.2'}),newValues=batchMeasurement({eyes:{OD:{al:'23.50'},OS:{}}});
+  const second=await f.store.importMeasurements({patientId:created.patient.id,measurements:[same,newPage,newValues,same],expectedLibraryRevision:first.library.revision});
+  assert.equal(second.importedCount,2);assert.equal(second.skippedDuplicateCount,2);assert.equal(second.library.patients[0].measurements.length,3);
+  assert.deepEqual(second.library.patients[0].measurements[0],prior);assert.deepEqual(second.library.patients[0].patient,created.patient.patient);
+  assert.equal(second.library.patients[0].measurements[1].patient.name,'Synthetic alias');
+  const writes=f.writes;
+  const unchanged=await f.store.importMeasurements({patientId:created.patient.id,measurements:[same,newPage],expectedLibraryRevision:second.library.revision});
+  assert.equal(unchanged.importedCount,0);assert.equal(unchanged.skippedDuplicateCount,2);assert.equal(f.writes,writes);
+  assert.deepEqual(unchanged.library,second.library);
+});
+
+test('batch identity and revision checks reject conflicting, ambiguous or stale requests atomically',async()=>{
+  const f=fixture(),created=await f.store.createPatient({patientId:'0007'}),atRevision=created.library.revision;
+  const params={patientId:created.patient.id,expectedLibraryRevision:atRevision,measurements:[batchMeasurement()]};
+  const expectMismatch={code:'PATIENT_MISMATCH'};
+  await assert.rejects(f.store.importMeasurements({...params,measurements:[batchMeasurement({caseId:'7'})]}),expectMismatch);
+  await assert.rejects(f.store.importMeasurements({...params,measurements:[batchMeasurement({patientId:'7'})]}),expectMismatch);
+  await assert.rejects(f.store.importMeasurements({...params,measurements:[batchMeasurement(),batchMeasurement({patientId:'7'})]}),expectMismatch);
+  await assert.rejects(f.store.importMeasurements({...params,patientId:undefined}),/已有相同 ID/);
+  await assert.rejects(f.store.importMeasurements({...params,expectedLibraryRevision:0}),{code:'LIBRARY_CHANGED'});
+  await assert.rejects(f.store.importMeasurements({...params,expectedLibraryRevision:undefined}),{code:'LIBRARY_CHANGED'});
+  await assert.rejects(f.store.importMeasurements({...params,measurements:[batchMeasurement(),batchMeasurement({eyes:{OD:{al:'bad'},OS:{}}})]}),/數值/);
+  assert.equal(f.writes,1);assert.deepEqual(await f.store.read(),created.library);
+});
+
+test('an explicit alias-only target retains known report identity across imports',async()=>{
+  const f=fixture(),created=await f.store.createPatient({name:'Synthetic alias-only patient'});
+  const params={patientId:created.patient.id,expectedLibraryRevision:created.library.revision,measurements:[batchMeasurement()]};
+  const saved=await f.store.importMeasurements(params);
+  const [patient]=saved.library.patients;
+  assert.equal(patient.patient.patientId,'');assert.equal(patient.measurements[0].patient.patientId,'0007');
+  await assert.rejects(f.store.importMeasurements({...params,expectedLibraryRevision:saved.library.revision,measurements:[batchMeasurement({patientId:'7'})]}),{code:'PATIENT_MISMATCH'});
+  await assert.rejects(f.store.importMeasurements({...params,patientId:undefined,expectedLibraryRevision:saved.library.revision}),/已有相同 ID/);
+  assert.equal(f.writes,2);
+  const unknown=await f.store.importMeasurements({...params,expectedLibraryRevision:saved.library.revision,measurements:[batchMeasurement({patientId:'',hash:'b'.repeat(64)})]});
+  assert.equal(unknown.importedCount,1);assert.equal(unknown.library.patients[0].measurements[1].patient.patientId,'');
+});

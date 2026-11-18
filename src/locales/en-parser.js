@@ -9,8 +9,27 @@ export const messages = {
   '請先填入共用眼部量測欄位，再匯出 biometry-parser JSON。': 'Enter at least one shared eye measurement to export biometry-parser JSON.',
   '來源報告病人 ID 與工作副本不一致，請先核對再匯出。': 'The source report and working copy have different patient IDs. Check them before exporting.',
   '無法辨識 JSON 資料格式；請使用個案、病人資料庫或 biometry-parser 輸出。': 'Unknown JSON format. Use a case, patient library, or biometry-parser export.',
+  '這份 PDF 沒有可匯入的 biometry-parser 結果。': 'This PDF has no importable biometry-parser result.',
+  '此版本支援 VGHKS-bot 批次 JSON schema 1。': 'This version supports VGHKS-bot batch JSON schema 1.',
+  'VGHKS-bot JSON 沒有可供選擇的 PDF 紀錄。': 'The VGHKS-bot JSON contains no selectable PDF records.',
+  '選擇要匯入的報告': 'Choose reports to import',
+  'PDF 報告': 'PDF report',
+  '這批報告沒有可核對的測量值。': 'This batch has no measurements to review.',
+  '無法匯入的報告': 'Unavailable reports',
+  '核對測量值': 'Review measurements',
+  '展開各筆核對後，勾選要保存的測量。勾選即確認採用該筆報告的測量候選值。': 'Expand each report to review its measurements. Selecting a report confirms its measurement candidates for saving.',
+  '保存至病人': 'Save to patient',
+  '部分已選報告缺少病人 ID，請依原始報告確認歸屬。': 'Some selected reports lack a patient ID. Check their source reports before saving.',
+  '帶入單筆工作副本': 'Review one report in draft',
+  '保存已選測量': 'Save selected measurements',
+  '請至少選擇一筆含有眼部測量值的紀錄。': 'Select at least one report with eye measurements.',
+  '匯入測量的病人 ID 不一致，請分開匯入。': 'The selected reports have different patient IDs. Import them separately.',
+  '所選病人與報告的病人 ID 不一致。': 'The selected patient ID differs from the report ID.',
+  '請選擇一位病人，或輸入病人 ID／代稱。': 'Choose a patient or enter a patient ID or alias.',
+  '請選擇資料庫中已有相同 ID 的病人。': 'Select the existing patient with the same ID.',
 };
 export const rules = [
   [/^已略過衝突、單位不符或無效欄位：(.+)$/, (_, fields) =>
     `Skipped conflicting fields or invalid values or units: ${fields.replaceAll('、', ', ')}`],
+  [/^已保存 (\d+) 筆測量，略過 (\d+) 筆重複紀錄。$/, 'Saved $1 measurements. Skipped $2 duplicates.'],
 ];

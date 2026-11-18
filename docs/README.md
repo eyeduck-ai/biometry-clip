@@ -1,6 +1,6 @@
 # Documentation
 
-The current guides cover **Biometry-Clip 0.5.2**. Earlier validation records and dated technical research are available in the archive below.
+The current guides cover **Biometry-Clip 0.5.4**. Earlier validation records and dated technical research are available in the archive below.
 
 ## Start here
 

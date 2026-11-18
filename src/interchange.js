@@ -1,6 +1,6 @@
 import {cleanCase,validateCase,FIELD_GROUPS,NUMERIC_FIELDS,EYE_FIELDS,PATIENT_FIELDS} from './model.js';
 import {cleanLibrary} from './library-store.js';
-import {isParserDocument,importParserDocument} from './parser-interchange.js';
+import {isParserDocument,importParserDocument,isVghksParserBatch,importVghksParserBatch} from './parser-interchange.js';
 import {cleanParserReport} from './parser-report.js';
 
 export const INTERCHANGE_FORMAT='biometry-clipboard';
@@ -157,6 +157,7 @@ export function parseInterchange(input) {
     try{value=JSON.parse(value.replace(/^\uFEFF/,''));}catch{fail('INTERCHANGE_JSON','JSON 無法解析，未匯入。');}
   }
   if(!value||typeof value!=='object'||Array.isArray(value))fail('INTERCHANGE_SHAPE','JSON 必須是 Biometry-Clip 資料物件。');
+  if(!own(value,'format')&&isVghksParserBatch(value))return importVghksParserBatch(value);
   if(!own(value,'format')&&isParserDocument(value))return importParserDocument(value);
   if(own(value,'format')){
     if(value.format!==INTERCHANGE_FORMAT)fail('INTERCHANGE_FORMAT','這不是病人或量測交換資料；原生 QA 報告不能當作病人資料匯入。');

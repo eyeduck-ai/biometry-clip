@@ -35,6 +35,30 @@ start unchecked. **Select candidates for empty fields** selects candidates for e
 after review. Existing values require an explicit choice to overwrite.
 [Synthetic example](../examples/biometry-parser.synthetic.json)
 
+Biometry-Clip 0.5.3 also accepts the complete JSON copied or downloaded from
+VGHKS-bot. Its batch envelope uses `schema_version: 1`, a `source` of `orders`
+or `scans`, and a parser result at each successful `documents[].data`.
+
+### Save several measurements for one patient
+
+In 0.5.4, paste or upload a VGHKS-bot export with several reports and expand a
+report to inspect its OD/OS measurements. Select one or more usable reports
+for the same patient, choose an existing patient or enter a new patient's ID
+or alias, then save the selected measurements. Selecting a report confirms the
+use of its displayed measurement candidates. The **Patients** tab lets you
+load each saved measurement independently.
+
+Clip checks the available report IDs against the destination. If the file
+contains different known patient IDs, select reports for one patient at a
+time. Reports with no readable ID can be assigned to the destination after
+review. Exact reimports of an identifiable report measurement can be skipped.
+Each saved measurement retains its own data, source and reported date if
+available. The active draft stays available for the current case.
+
+A bare parser result or an export with one PDF opens the usual field review
+directly. To review one report field by field from a batch, select just that
+report and open the measurement review.
+
 Parser schema 1.2 carries two kinds of data. The top-level measurement fields
 and `eyes` contain the measured values. The `iol_calculations` array contains
 the report's tables, including each eye, lens model, formula, printed
@@ -86,36 +110,9 @@ lens selection, patient histories and the full retained summaries. The
 Python kit's original output is the place to keep OCR evidence, source pages
 and IOL calculation tables.
 
-## Proposed storage for website calculation results
+## Website calculation results
 
-Keep measurements and calculation runs as independently versioned records.
-A measurement can have many calculations, each with its own eye, source,
-settings and output rows. A single report or a future case bundle can carry
-both record types. The usual paste operation needs only the measurement.
-
-A website run should store these pieces:
-
-| Part | Suggested contents |
-| --- | --- |
-| Source | Site and formula identifiers, source URL without identifying query parameters, capture time, adapter version and formula version when available |
-| Input | Eye, reference to the saved measurement and a snapshot of the effective inputs confirmed on that website, including the biometry used, target, lens, constants, mode, units and relevant defaults |
-| Result | Candidate lens powers, predicted refractions and, when shown, toric model, axis and residual cylinder with notation and plane. Keep exact source labels and distinguish missing values, visual highlights and explicit user selections |
-| Link status | Record whether the result is tied to the saved input snapshot. If the page does not provide enough evidence, show it as unlinked in review |
-
-The saved input snapshot keeps earlier runs interpretable after a measurement
-is edited. Candidate rows from the same site can differ by input, lens,
-formula or calculation run. Save each run independently. Report tables and
-website tables can share the result fields their sources actually expose,
-with distinct provenance such as report page versus website capture time.
-When importing a bundle, remap calculation links alongside the new
-measurement IDs assigned by the patient library.
-
-Start with read-only capture after the user calculates, using one adapter
-for a site with a stable result table. Review the source eye, inputs and
-results before saving. Extend to other sites after testing changed inputs
-with stale rows, repeated calculations, Toric notation and unavailable cells.
-
-Use versioned UTF-8 JSON for importing, exporting and case bundles. CSV is a
-derived export for comparing candidates in a spreadsheet. If result history
-grows enough to need indexed queries, use IndexedDB for per-run local storage
-while continuing to export JSON.
+After you calculate on a supported website, use **Results** to capture its
+displayed IOL candidates and export them as calculation-history JSON or CSV.
+Each run can link to a saved measurement. The report's `iol_calculations`
+remain available in the original parser JSON for comparison. [Result capture and export](calculation-results.md)

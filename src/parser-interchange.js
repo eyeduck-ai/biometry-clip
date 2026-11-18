@@ -24,6 +24,11 @@ export function isParserDocument(value) {
   return own(value, 'schema_version') && (own(value, 'source_sha256') || own(value, 'workflow'));
 }
 
+export function isVghksParserBatch(value) {
+  return own(value, 'schema_version') && own(value, 'documents') &&
+    own(value, 'source') && ['orders', 'scans'].includes(value.source);
+}
+
 function measuredValue(field) {
   if (!object(field) || field.data_status !== 'present') return null;
   const candidate = field.candidate_value;
@@ -113,6 +118,37 @@ export function importParserDocument(document) {
     warnings.push('IOL 計算表保留在原始 JSON。');
   }
   return {kind: 'case', source: 'biometry-parser', data, warnings, measurementDate, unverifiedFields};
+}
+
+function importVghksEntry(entry) {
+  if (!own(entry, 'data') || (entry.error != null && entry.error !== '') || !isParserDocument(entry.data)) {
+    fail('PARSER_BATCH_DOCUMENT', '這份 PDF 沒有可匯入的 biometry-parser 結果。');
+  }
+  return importParserDocument(entry.data);
+}
+
+/** Read each PDF independently so a batch cannot combine eyes from different reports. */
+export function importVghksParserBatch(batch) {
+  if (batch.schema_version !== 1) {
+    fail('PARSER_BATCH_VERSION', '此版本支援 VGHKS-bot 批次 JSON schema 1。');
+  }
+  if (!Array.isArray(batch.documents) || !batch.documents.length) {
+    fail('PARSER_BATCH_EMPTY', 'VGHKS-bot JSON 沒有可供選擇的 PDF 紀錄。');
+  }
+  if (batch.documents.length === 1) return importVghksEntry(batch.documents[0]);
+
+  const documents = batch.documents.map((entry, index) => {
+    const label = typeof entry?.label === 'string' ? entry.label.trim().slice(0, 150) : '';
+    const date = calendarDate(entry?.date);
+    const pages = Array.isArray(entry?.pages) ? entry.pages.filter(page => Number.isSafeInteger(page) && page > 0) : [];
+    try {
+      return {index, label, date, pages, parsed: importVghksEntry(entry), error: ''};
+    } catch (error) {
+      if (!error.code?.startsWith('PARSER_')) throw error;
+      return {index, label, date, pages, parsed: null, error: error.message};
+    }
+  });
+  return {kind: 'parser-batch', documents};
 }
 
 function candidate(value, unit = null) {

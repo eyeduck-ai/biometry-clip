@@ -12,12 +12,13 @@ import { deriveRequirements } from './requirements.js';
 import { libraryPicker,libraryMarkup,patientLabel,measurementTime,selectedRecord } from './library-ui.js';
 import { caseFromReadRows,resolveTransferScope,patchFromCase,reconcileLensPatch } from './transfer.js';
 import { exportCaseDocument,exportLibraryDocument,parseInterchange } from './interchange.js';
-import {isParserDocument,exportParserDocument} from './parser-interchange.js';
+import {exportParserDocument} from './parser-interchange.js';
 import { choosePdfPages } from './pdf-picker.js';
 import { bindImagePaste } from './clipboard-images.js';
 import {workbenchHelp,preferenceSettingsMarkup} from './workbench-ui.js';
 import {eyeStateMarkup} from './eye-state-ui.js';
 import {reviewMarkup} from './import-review-ui.js';
+import {parserBatchMarkup} from './parser-batch-ui.js';
 import {reportSummaryMarkup} from './report-ui.js';
 import {reviewSources,loadReviewSource,bindReviewPreview} from './import-preview.js';
 import {createImportProgress,importProgressMarkup,formatElapsed} from './import-progress.js';
@@ -27,7 +28,7 @@ import {createResultController} from './result-controller.js';
 
 const app=document.querySelector('#app');
 const JSON_IMPORT_LIMIT=10_000_000;
-const extensionVersion=(()=>{try{return chrome.runtime.getManifest().version;}catch{return '0.5.2';}})();
+const extensionVersion=(()=>{try{return chrome.runtime.getManifest().version;}catch{return '0.5.4';}})();
 const query=new URLSearchParams(location.search);
 const floating=query.get('view')==='floating';
 const hostTabId=platform.getFloatingTabId();
@@ -486,7 +487,90 @@ async function importJsonText(content,{token=editor.token,guard=editor.guard}={}
     const result=await platform.importPatients(parsed.data.patients,library.revision);acceptLibrary(result.library);
     if(token===editor.token&&guard===editor.guard){closeDialog();navigate('patients');}
     toast(`已新增 ${result.imported.length} 位病人的測量，原有紀錄保留。`);
-  }else reviewCandidates(parsed.data,isParserDocument(value)?'匯入 biometry-parser':'JSON 測量匯入','',parsed.warnings,{parserDocument:isParserDocument(value),unverifiedFields:parsed.unverifiedFields,measurementDate:parsed.measurementDate});
+  }else if(parsed.kind==='parser-batch')showParserBatchPicker(parsed.documents,{token,guard});
+  else reviewJsonResult(parsed);
+}
+function reviewJsonResult(parsed){
+  const parserDocument=parsed.source==='biometry-parser';
+  reviewCandidates(parsed.data,parserDocument?'匯入 biometry-parser':'JSON 測量匯入','',parsed.warnings,{
+    parserDocument,unverifiedFields:parsed.unverifiedFields,measurementDate:parsed.measurementDate,
+  });
+}
+function showParserBatchPicker(documents,{token,guard}){
+  const available=documents.filter(item=>item.parsed);
+  const {patients,revision}=library;
+  showDialog('選擇要匯入的報告',parserBatchMarkup(documents,patients));
+  const dialog=document.querySelector('#review-dialog');
+  const checkboxes=[...dialog.querySelectorAll('[data-parser-batch-index]')];
+  if(!checkboxes.length){dialog.querySelector('[data-close]')?.focus();return;}
+  const target=dialog.querySelector('#parser-batch-patient');
+  const newPatientFields=dialog.querySelector('#parser-batch-new-patient');
+  const newId=dialog.querySelector('#parser-batch-patient-id');
+  const newName=dialog.querySelector('#parser-batch-patient-name');
+  const identityNote=dialog.querySelector('#parser-batch-identity-note');
+  const review=dialog.querySelector('#review-parser-document');
+  const save=dialog.querySelector('#save-parser-batch');
+  const controls=[...checkboxes,target,newId,newName];
+  let saving=false;
+  function selection(){
+    const records=available.filter((_,index)=>checkboxes[index].checked);
+    const ids=records.map(item=>item.parsed.data.patient.patientId.trim());
+    const knownIds=[...new Set(ids.filter(Boolean))];
+    const suggestedId=knownIds.length===1?knownIds[0]:'';
+    return {records,ids,suggestedId};
+  }
+  function updateActions(){
+    const {records,ids,suggestedId}=selection();
+    const creating=target.value==='new';
+    newPatientFields.hidden=!creating;
+    identityNote.hidden=!ids.includes('');
+    newId.placeholder=suggestedId;
+    review.disabled=saving||records.length!==1;
+    save.disabled=saving||!records.length||!target.value||(creating&&!newId.value.trim()&&!newName.value.trim()&&!suggestedId);
+    for(const control of controls)control.disabled=saving;
+  }
+  for(const checkbox of checkboxes)checkbox.onchange=updateActions;
+  target.onchange=updateActions;
+  newId.oninput=newName.oninput=updateActions;
+  review.onclick=()=>{
+    if(token!==editor.token||guard!==editor.guard)return toast('個案已變更，已取消這次匯入。',true);
+    const {records}=selection();
+    if(records.length===1)reviewJsonResult(records[0].parsed);
+  };
+  save.onclick=async()=>{
+    if(saving||save.disabled)return;
+    if(token!==editor.token||guard!==editor.guard)return toast('個案已變更，已取消這次匯入。',true);
+    const {records,suggestedId}=selection();
+    const measurements=records.map(({label,pages,parsed})=>({
+      label:label||'VGHKS-bot PDF',
+      measuredAt:parsed.measurementDate?`${parsed.measurementDate}T00:00:00.000Z`:'',
+      source:pages.length?`VGHKS-bot · p.${[...new Set(pages)].sort((a,b)=>a-b).join(',')}`:'VGHKS-bot',
+      data:parsed.data,
+    }));
+    const destination=target.value==='new'
+      ? {patient:{patientId:newId.value.trim()||suggestedId,name:newName.value.trim()}}
+      : {patientId:patients[Number(target.value)].id};
+    saving=true;
+    updateActions();
+    try{
+      const result=await platform.importMeasurements({...destination,measurements,expectedLibraryRevision:revision});
+      acceptLibrary(result.library);
+      if(dialog.open&&dialog.contains(save)&&token===editor.token&&guard===editor.guard){
+        closeDialog();
+        navigate('patients',true);
+        for(const record of app.querySelectorAll('.patient-record')){
+          if(record.querySelector('[data-activate-patient]')?.dataset.activatePatient===result.patientId)record.open=true;
+        }
+      }
+      toast(`已保存 ${result.importedCount} 筆測量，略過 ${result.skippedDuplicateCount} 筆重複紀錄。`);
+    }catch(error){
+      toast(error.message,true);
+    }finally{
+      saving=false;
+      updateActions();
+    }
+  };
+  checkboxes[0].focus();
 }
 function showJsonPasteDialog(){
   const token=editor.token,guard=editor.guard;

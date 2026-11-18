@@ -51,7 +51,9 @@
 | 複製網站 | 直接讀取目前受支援計算網站已填入的表單 |
 | 貼上截圖 | 先用系統截圖，再於匯入頁貼上剪貼簿圖片；Windows 可用 Win+Shift+S、Ctrl+V |
 | PDF／圖片 | 上傳或拖入 PDF、PNG、JPEG、WebP |
-| JSON | 貼上或上傳個案、病人資料庫、晶體目錄或 biometry-parser 1.2 結果 |
+| JSON | 貼上或上傳個案、病人資料庫、晶體目錄、biometry-parser 1.2 結果，或 VGHKS-bot 整份匯出 |
+
+VGHKS-bot 匯出含多份報告時，可展開核對各筆 OD／OS，勾選同一位病人的報告，再選擇病人並保存多筆測量。保存後可從**病人**逐筆帶入。單份報告會直接開啟欄位核對。[單筆與多筆匯入](parser-exchange.md#save-several-measurements-for-one-patient)
 
 沒有「貼上文字報告」入口。需要交換資料時，優先使用有版本與單位定義的 JSON。
 

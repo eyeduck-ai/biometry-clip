@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
 import {reportSummaryMarkup} from '../src/report-ui.js';
-import {libraryMarkup} from '../src/library-ui.js';
+import {libraryMarkup,libraryPicker} from '../src/library-ui.js';
 import {localize} from '../src/i18n.js';
 
 const field=(value,unit)=>({candidate_value:value,unit,status:'unverified',data_status:'present',verification_status:'unverified'});
@@ -27,4 +27,15 @@ test('report snapshot localizes labels while source values stay exact and cannot
 test('historical measurements display their own separate report snapshots',()=>{
   const dom=new JSDOM(libraryMarkup({patients:[{id:'synthetic',patient:{patientId:'SYNTHETIC'},measurements:[{id:'m1',label:'Synthetic',eyes:{OD:{al:'23.45'},OS:{}},report:report()}]}]},{}));
   assert.equal(dom.window.document.querySelectorAll('.measurement-record > .report-summary').length,1);assert.match(dom.window.document.querySelector('.report-summary').textContent,/43.75/);dom.window.close();
+});
+
+test('batch-imported report dates display as calendar dates in the library and picker',()=>{
+  const measurement={id:'m1',label:'Synthetic',measuredAt:'2026-11-17T00:00:00.000Z',source:'VGHKS-bot · p.2,3',eyes:{OD:{},OS:{}},report:report()};
+  const library={patients:[{id:'synthetic',patient:{patientId:'SYNTHETIC'},measurements:[measurement]}]};
+  const selection={patientId:'synthetic',measurementId:'m1'};
+  const dom=new JSDOM(libraryMarkup(library,selection)+libraryPicker(library,selection));
+  const doc=dom.window.document;
+  assert.equal(doc.querySelector('.measurement-record time').textContent,'2026-11-17');
+  assert.equal(doc.querySelector('#measurement-picker option[value="m1"]').textContent,'Synthetic · 2026-11-17');
+  dom.window.close();
 });

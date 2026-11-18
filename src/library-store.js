@@ -1,4 +1,4 @@
-import { cleanCase, emptyCase, validateCase, EYE_FIELDS, PATIENT_FIELDS } from './model.js';
+import { cleanCase, emptyCase, validateCase, EYE_FIELDS, NUMERIC_FIELDS, PATIENT_FIELDS } from './model.js';
 import { SessionConflict } from './session-store.js';
 import {cleanParserReport} from './parser-report.js';
 
@@ -9,35 +9,87 @@ const identity = value => cleanCase({patient:value||{},eyes:{OD:{},OS:{}}}).pati
 const validId = value => typeof value==='string' && value.length>0 && value.length<=100;
 const date = value => { const valueText=text(value,40);if(!valueText)return '';if(!Number.isFinite(Date.parse(valueText)))throw new Error('測量日期格式不正確。');return new Date(valueText).toISOString(); };
 
+function importShape(value, keys, required=keys) {
+  if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(key=>!keys.includes(key))||required.some(key=>!Object.hasOwn(value,key)))throw new Error('匯入資料包含缺漏、未知或無效欄位，未新增紀錄。');
+}
+function importScalar(value,limit) {
+  if(!['string','number'].includes(typeof value)||(typeof value==='number'&&!Number.isFinite(value))||String(value).length>limit)throw new Error('匯入資料包含無效或過長數值，未新增紀錄。');
+}
+function validateImportIdentity(value) {
+  importShape(value,PATIENT_FIELDS,[]);
+  for(const key of Object.keys(value))importScalar(value[key],150);
+}
+function validateImportEyes(value) {
+  importShape(value,['OD','OS']);
+  for(const eye of ['OD','OS']){
+    importShape(value[eye],EYE_FIELDS,[]);
+    for(const key of Object.keys(value[eye]))if(['toric','keratoconus'].includes(key)){if(typeof value[eye][key]!=='boolean')throw new Error('匯入 Toric／Keratoconus 必須為 true 或 false。');}else importScalar(value[eye][key],100);
+  }
+  const errors=validateCase(cleanCase({patient:{},eyes:value}));if(errors.length)throw new Error(errors[0]);
+}
+
 // Import is an append-only library transaction. Check the complete source before
 // allocating new IDs or committing; cleanCase alone would silently drop fields.
 function validateImportPatients(patients) {
   if(!Array.isArray(patients))throw new Error('匯入病人資料必須是陣列。');
-  function shape(value,keys,required=keys){
-    if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).some(key=>!keys.includes(key))||required.some(key=>!Object.hasOwn(value,key)))throw new Error('匯入資料包含缺漏、未知或無效欄位，未新增紀錄。');
-  }
-  function scalar(value,limit){if(!['string','number'].includes(typeof value)||(typeof value==='number'&&!Number.isFinite(value))||String(value).length>limit)throw new Error('匯入資料包含無效或過長數值，未新增紀錄。');}
-  function patient(value){shape(value,PATIENT_FIELDS,[]);for(const key of Object.keys(value))scalar(value[key],150);}
-  function eyes(value){
-    shape(value,['OD','OS']);
-    for(const eye of ['OD','OS']){
-      shape(value[eye],EYE_FIELDS,[]);
-      for(const key of Object.keys(value[eye]))if(['toric','keratoconus'].includes(key)){if(typeof value[eye][key]!=='boolean')throw new Error('匯入 Toric／Keratoconus 必須為 true 或 false。');}else scalar(value[eye][key],100);
-    }
-    const errors=validateCase(cleanCase({patient:{},eyes:value}));if(errors.length)throw new Error(errors[0]);
-  }
   for(const source of patients){
-    shape(source,['id','patient','createdAt','updatedAt','measurements']);patient(source.patient);
+    importShape(source,['id','patient','createdAt','updatedAt','measurements']);validateImportIdentity(source.patient);
     if(!Array.isArray(source.measurements))throw new Error('匯入測量資料必須是陣列。');
     for(const item of source.measurements){
       const keys=['id','label','measuredAt','source','patient','eyes','createdAt','updatedAt'];
-      shape(item,[...keys,'report'],keys);patient(item.patient);eyes(item.eyes);scalar(item.label,150);scalar(item.source,500);
+      importShape(item,[...keys,'report'],keys);validateImportIdentity(item.patient);validateImportEyes(item.eyes);importScalar(item.label,150);importScalar(item.source,500);
       if(Object.hasOwn(item,'report')&&!cleanParserReport(item.report))throw Object.assign(new Error('匯入報告摘要格式不正確。'),{code:'PARSER_REPORT'});
-      for(const key of ['measuredAt','createdAt','updatedAt']){scalar(item[key],40);date(item[key]);}
+      for(const key of ['measuredAt','createdAt','updatedAt']){importScalar(item[key],40);date(item[key]);}
     }
-    for(const key of ['createdAt','updatedAt']){scalar(source[key],40);date(source[key]);}
+    for(const key of ['createdAt','updatedAt']){importScalar(source[key],40);date(source[key]);}
   }
   return cleanLibrary({version:1,revision:0,patients});
+}
+
+function validateMeasurementBatch(measurements) {
+  const emptyMessage='請至少選擇一筆含有眼部測量值的紀錄。';
+  if(!Array.isArray(measurements)||!measurements.length)throw new Error(emptyMessage);
+  return measurements.map(item=>{
+    importShape(item,['label','measuredAt','source','data'],['data']);
+    for(const [key,limit] of [['label',150],['measuredAt',40],['source',500]]){
+      if(Object.hasOwn(item,key))importScalar(item[key],limit);
+    }
+    const {data}=item;
+    importShape(data,['version','patient','eyes','activeEye','report'],['patient','eyes']);
+    if(Object.hasOwn(data,'version')&&data.version!==1)throw new Error('匯入資料包含缺漏、未知或無效欄位，未新增紀錄。');
+    validateImportIdentity(data.patient);
+    validateImportEyes(data.eyes);
+    const clean=cleanCase(data);
+    if(!Object.values(clean.eyes).some(eye=>NUMERIC_FIELDS.some(key=>eye[key]!=null&&eye[key]!=='')))throw new Error(emptyMessage);
+    return {
+      label:text(item.label)||'未命名測量',measuredAt:date(item.measuredAt),source:text(item.source,500),
+      patient:clean.patient,eyes:clean.eyes,...(clean.report?{report:clean.report}:{}),
+    };
+  });
+}
+
+function measurementPatientIds(measurement) {
+  const id=measurement.report?.patient_id;
+  const reported=id?.value??id?.candidate_value;
+  return [measurement.patient.patientId.trim(),typeof reported==='string'?reported.trim():''].filter(Boolean);
+}
+
+function savedPatientIds(entry) {
+  const id=text(entry.patient.patientId);
+  return new Set(id?[id]:entry.measurements.flatMap(measurementPatientIds));
+}
+
+function duplicateSourceKey(measurement) {
+  if(!measurement.report?.source_sha256)return '';
+  return JSON.stringify([measurement.source,measurement.measuredAt,measurement.eyes,measurement.report]);
+}
+
+function allocateImportId(reserved,newId) {
+  for(let attempt=0;attempt<100;attempt++){
+    const id=newId();
+    if(validId(id)&&!reserved.has(id)){reserved.add(id);return id;}
+  }
+  throw new Error('無法建立新的匯入識別碼，未新增紀錄。');
 }
 
 export function cleanLibrary(value) {
@@ -120,18 +172,65 @@ export function createLibraryStore(storage,{newId=()=>crypto.randomUUID(),now=()
       if(!source.patients.length)return {library:copy(current),imported:[]};
       const next=copy(current),at=now(),imported=[];
       const reserved=new Set([...current.patients,...source.patients].flatMap(patient=>[patient.id,...patient.measurements.map(item=>item.id)]));
-      function allocate(){for(let attempt=0;attempt<100;attempt++){const id=newId();if(validId(id)&&!reserved.has(id)){reserved.add(id);return id;}}throw new Error('無法建立新的匯入識別碼，未新增紀錄。');}
       for(const patient of source.patients){
-        const entry={...copy(patient),id:allocate(),createdAt:at,updatedAt:at,measurements:[]};
+        const entry={...copy(patient),id:allocateImportId(reserved,newId),createdAt:at,updatedAt:at,measurements:[]};
         const mapping={sourcePatientId:patient.id,patientId:entry.id,measurements:[]};
         for(const item of patient.measurements){
-          const measurement={...copy(item),id:allocate(),createdAt:at,updatedAt:at};entry.measurements.push(measurement);
+          const measurement={...copy(item),id:allocateImportId(reserved,newId),createdAt:at,updatedAt:at};entry.measurements.push(measurement);
           mapping.measurements.push({sourceMeasurementId:item.id,measurementId:measurement.id});
         }
         next.patients.push(entry);imported.push(mapping);
       }
       next.revision++;
       return {library:await commit(next),imported};
+    }),
+    importMeasurements:({patientId,patient={},measurements,expectedLibraryRevision}={})=>serialize(async current=>{
+      if(expectedLibraryRevision==null)throw new SessionConflict('LIBRARY_CHANGED','病人資料庫已被其他視窗更新，請重新載入後核對。');
+      guard(current,expectedLibraryRevision);
+      validateImportIdentity(patient);
+      const incoming=validateMeasurementBatch(measurements);
+      const reportIds=new Set(incoming.flatMap(measurementPatientIds));
+      if(reportIds.size>1)throw new SessionConflict('PATIENT_MISMATCH','匯入測量的病人 ID 不一致，請分開匯入。');
+      const [sourceId='']=reportIds;
+      const enteredId=text(patient.patientId);
+      const next=copy(current),at=now();
+      const reserved=new Set(next.patients.flatMap(entry=>[entry.id,...entry.measurements.map(item=>item.id)]));
+      let destination;
+      if(patientId){
+        destination=patientIn(next,patientId);
+        if(new Set([...savedPatientIds(destination),sourceId,enteredId].filter(Boolean)).size>1){
+          throw new SessionConflict('PATIENT_MISMATCH','所選病人與報告的病人 ID 不一致。');
+        }
+      }else{
+        if(sourceId&&enteredId&&sourceId!==enteredId)throw new SessionConflict('PATIENT_MISMATCH','所選病人與報告的病人 ID 不一致。');
+        const externalId=enteredId||sourceId;
+        if(!externalId&&!text(patient.name))throw new Error('請選擇一位病人，或輸入病人 ID／代稱。');
+        if(externalId&&next.patients.some(entry=>{
+          const known=savedPatientIds(entry);
+          return known.size===1&&known.has(externalId);
+        })){
+          throw new SessionConflict('PATIENT_MISMATCH','請選擇資料庫中已有相同 ID 的病人。');
+        }
+        const identitySnapshot=identity({...patient,patientId:externalId});
+        destination={id:allocateImportId(reserved,newId),patient:identitySnapshot,createdAt:at,updatedAt:at,measurements:[]};
+        next.patients.push(destination);
+      }
+      const duplicates=new Set(destination.measurements.map(duplicateSourceKey).filter(Boolean));
+      let importedCount=0,skippedDuplicateCount=0;
+      for(const measurement of incoming){
+        const key=duplicateSourceKey(measurement);
+        if(key&&duplicates.has(key)){skippedDuplicateCount++;continue;}
+        if(key)duplicates.add(key);
+        const snapshot={...destination.patient};
+        for(const field of PATIENT_FIELDS)if(measurement.patient[field].trim())snapshot[field]=measurement.patient[field];
+        snapshot.patientId=text(snapshot.patientId)||sourceId;
+        destination.measurements.push({...measurement,patient:snapshot,id:allocateImportId(reserved,newId),createdAt:at,updatedAt:at});
+        importedCount++;
+      }
+      if(!importedCount)return {library:copy(current),patientId:destination.id,importedCount,skippedDuplicateCount};
+      destination.updatedAt=at;
+      next.revision++;
+      return {library:await commit(next),patientId:destination.id,importedCount,skippedDuplicateCount};
     }),
     saveMeasurement:({patientId,measurementId,label,measuredAt,source,data,expectedLibraryRevision})=>serialize(async current=>{
       guard(current,expectedLibraryRevision);const next=copy(current),patient=patientIn(next,patientId),at=now();
@@ -166,6 +265,7 @@ export function createLibraryService(library,session) {
   return {
     read:()=>library.read(),
     importPatients:(patients,expectedRevision)=>library.importPatients(patients,expectedRevision),
+    importMeasurements:options=>library.importMeasurements(options),
     createPatient:(patient,expectedLibraryRevision)=>library.createPatient(patient,expectedLibraryRevision),
     updatePatient:(patientId,patient,expectedLibraryRevision)=>library.updatePatient(patientId,patient,expectedLibraryRevision),
     editPatient:options=>session.reconcileAfter(options.caseToken,options.revision,async current=>{

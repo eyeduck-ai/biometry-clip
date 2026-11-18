@@ -18,7 +18,7 @@ When building from source, select the generated `dist` folder instead. Keep the 
 ## Transfer measurements between calculators
 
 1. Use **Copy site** on a supported calculator with completed inputs, enter values in **Data**, or use **Import** to recognize a PDF, image, or pasted screenshot. **Import** also accepts structured JSON from Biometry-Clip and biometry-parser.
-2. Review the **OD** and **OS** values and each eye's Toric, KC, and LVC settings. **Patients** lets you save and reload multiple measurements per patient.
+2. Review the **OD** and **OS** values and each eye's Toric, KC, and LVC settings. With a VGHKS-bot batch export, select and save multiple reports under one patient. **Patients** lets you load each measurement separately.
 3. Open another [supported calculator](docs/supported-sites.md) from **Sites** or in your own tab. Choose **Paste OD**, **Paste OS**, or **Paste OD+OS** where the site supports bilateral entry. The extension fills the corresponding fields and selects the requested eye on supported single-eye forms. Lens selection transfers when the mapping is unambiguous. You can opt in to transferring IOL constants.
 4. Handle any terms prompt or reCAPTCHA yourself when it appears. Check the fields and run the calculation on the website.
 
