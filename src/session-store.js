@@ -1,4 +1,5 @@
 import { cleanCase, emptyCase, EYE_FIELDS, PATIENT_FIELDS } from './model.js';
+import {cleanParserReport} from './parser-report.js';
 
 export const SESSION_KEY = 'biometrySession';
 const copy = value => structuredClone(value);
@@ -27,10 +28,10 @@ export function createSessionStore(storage, { newToken = () => crypto.randomUUID
           record = { data: cleanCase(existing.data), revision: existing.revision, caseToken: existing.caseToken, lastWriter: typeof existing.lastWriter === 'string' ? existing.lastWriter : '' };
           const selection=cleanSelection(existing.selection);if(selection)record.selection=selection;
           return record;
-        } catch { /* Invalid old data is replaced with a new empty case. */ }
+        } catch(error) { if(error.code==='PARSER_REPORT')throw error; /* Invalid old data is replaced with a new empty case. */ }
       }
       let data = emptyCase();
-      try { if (saved.biometryCase) data = cleanCase(saved.biometryCase); } catch { /* Treat invalid legacy data as empty. */ }
+      try { if (saved.biometryCase) data = cleanCase(saved.biometryCase); } catch(error) { if(error.code==='PARSER_REPORT')throw error; /* Treat invalid legacy data as empty. */ }
       const next = { data, revision: 0, caseToken: newToken(), lastWriter: '' };
       await storage.set({ [SESSION_KEY]: next, biometryCase: next.data });
       record = next;
@@ -79,9 +80,18 @@ export function createSessionStore(storage, { newToken = () => crypto.randomUUID
       if(!selection)throw new Error('選取的病人或測量識別不正確。');
       return commit({data:cleanCase(loaded.data),revision:current.revision+1,caseToken:newToken(),lastWriter:String(lastWriter).slice(0,100),selection});
     }),
-    patch: (patch, expectedToken, lastWriter = '') => serialize(async current => {
+    patch: (patch, expectedToken, lastWriter = '', expectedRevision) => serialize(async current => {
       guard(current, expectedToken);
+      if(Object.hasOwn(patch||{},'report')&&expectedRevision!==current.revision)throw new SessionConflict('REVISION_CHANGED','報告摘要所屬草稿已更新，請重新核對後套用。');
       const next = copy(current);
+      if(Object.hasOwn(patch||{},'report')){
+        if(patch.report===null)delete next.data.report;
+        else{
+          const report=cleanParserReport(patch.report);
+          if(!report)throw Object.assign(new Error('報告摘要必須是有效物件或 null。'),{code:'PARSER_REPORT'});
+          next.data.report=report;
+        }
+      }
       for (const key of PATIENT_FIELDS) if (Object.hasOwn(patch?.patient || {}, key)) {
         const value = patch.patient[key];
         if (typeof value === 'string' || typeof value === 'number') next.data.patient[key] = String(value).slice(0, 150);

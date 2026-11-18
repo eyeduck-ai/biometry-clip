@@ -7,6 +7,8 @@ import {createLibraryStore,createLibraryService} from '../src/library-store.js';
 import {siteBridge} from '../src/bridge.js';
 import {SITES} from '../src/sites.js';
 import {decodeImageDataUrl} from '../src/ocr/index.js';
+import {emptyCase} from '../src/model.js';
+import {exportCaseDocument,exportLibraryDocument} from '../src/interchange.js';
 
 const deferred=()=>{let resolve;const promise=new Promise(done=>{resolve=done;});return {promise,resolve};};
 async function until(predicate,description){for(let i=0;i<100;i++){if(await predicate())return;await new Promise(resolve=>setTimeout(resolve,0));}throw new Error(`Timed out: ${description}`);}
@@ -48,9 +50,10 @@ async function fixture(t,{ocr,lensCatalog,view='floating',capture='data:image/pn
     isExtension:false,defaultSettings:{ocrProvider:'local',localModel:'tiny'},getFloatingTabId:()=>tabId,
     siteTabs:async()=>[{id:tabId,site:profile,url:profile.url,title:'SYNTHETIC bilateral form',active:true}],subscribeTabs:()=>()=>{},
     subscribeCase:listener=>{listeners.add(listener);return()=>listeners.delete(listener);},loadData:async()=>({...await session.read(),settings:{ocrProvider:'local',localModel:'tiny'}}),
-    patchCase:(patch,token)=>{calls.push({type:'patch',patch:structuredClone(patch)});return session.patch(patch,token,'app-transfer-test');},clearCase:token=>session.clear(token),
+    patchCase:(patch,token,revision)=>{calls.push({type:'patch',patch:structuredClone(patch)});return session.patch(patch,token,'app-transfer-test',revision);},clearCase:token=>session.clear(token),
     subscribeLibrary:()=>()=>{},loadLibrary:()=>service.read(),createPatient:(...args)=>service.createPatient(...args),saveMeasurement:options=>service.saveMeasurement(options),
     activatePatient:(...args)=>service.activatePatient(...args),selectMeasurement:(...args)=>service.selectMeasurement(...args),
+    importPatients:async(...args)=>{calls.push({type:'import-patients'});return service.importPatients(...args);},
     inspectTab:async(id,data,options,action)=>{assert.equal(Number(id),tabId);calls.push({type:action,options:structuredClone(options)});const result=bridge(action,data,options);if(action==='read'&&heldRead){heldRead.started.resolve();await heldRead.release.promise;}return result;},
     quickFillTab:async(id,data,options)=>{
       assert.equal(Number(id),tabId);calls.push({type:'quick-fill',data:structuredClone(data),options:structuredClone(options)});
@@ -359,4 +362,88 @@ test('recognition shows an indeterminate bar and elapsed clock, then cancel stop
  assert.equal(f.find('.import-activity').hidden,false);assert.equal(f.find('.import-activity').getAttribute('aria-busy'),'true');assert.equal(f.find('#ocr-progressbar').hasAttribute('value'),false);assert.match(f.find('#ocr-elapsed').textContent,/^\d+:\d{2}$/);
  f.click('[data-action="cancel-ocr"]');await until(()=>f.find('.import-activity').hidden,'progress hidden after cancel');
  assert.equal(f.dom.window.document.querySelector('#apply-candidates'),null);assert.equal((await f.session.read()).data.eyes.OD.al,'21.00');
+});
+
+const parserCandidate=(value,unit=null)=>({value:null,candidate_value:value,unit,status:'unverified',data_status:'present',verification_status:'unverified'});
+function parserResult(){return {schema_version:'1.2',source_sha256:'',workflow:'synthetic-ui-test',verification_state:'unverified',patient_id:parserCandidate('SYNTHETIC-WORKING'),measurement_date:parserCandidate('2026-11-17'),eyes:{OD:{al:parserCandidate(24.05,'mm'),mean_k:parserCandidate(43.75,'D'),pupil:{unit:'mm',status:'not_measured',data_status:'not_measured',verification_status:'cross_checked'},k1:{power:parserCandidate(43.5,'D'),axis:parserCandidate(90,'degree')}},OS:{k2:{power:parserCandidate(44.2,'D')}}}};}
+function uploadJson(f,file){const input=f.find('#json-file');Object.defineProperty(input,'files',{configurable:true,value:[file]});input.dispatchEvent(new f.dom.window.Event('change',{bubbles:true}));}
+function pasteJson(f,text){f.click('[data-action="paste-json"]');f.find('#json-paste-content').value=text;f.click('#import-pasted-json');}
+
+test('JSON upload and explicit paste parse once and preserve unchecked parser candidates until reviewed',async t=>{
+  for(const method of ['upload','paste'])await t.test(method,async t=>{
+    const f=await fixture(t),text='\uFEFF'+JSON.stringify(parserResult());f.click('[data-route="import"]');
+    const original=JSON.parse;let count=0;JSON.parse=function(input,...args){if(input===text.slice(1))count++;return original.call(this,input,...args);};t.after(()=>{JSON.parse=original;});
+    if(method==='upload')uploadJson(f,{size:new Blob([text]).size,text:async()=>text});else pasteJson(f,text);
+    await until(()=>f.dom.window.document.querySelector('#select-new-candidates'),'parser review');JSON.parse=original;assert.equal(count,1);
+    const rows=[...f.dom.window.document.querySelectorAll('.candidate-row')];assert.ok(rows.length>=5);
+    assert.equal(rows.every(row=>row.classList.contains('is-unverified')),true);assert.equal(rows.some(row=>row.querySelector('[data-candidate]').checked),false);
+    assert.equal(f.dom.window.document.querySelector('.review-confidence'),null);assert.equal(f.dom.window.document.querySelector('.review-report-date'),null);assert.match(f.find('.report-date').textContent,/2026-11-17/);assert.match(f.find('.report-date').textContent,/未驗證候選值/);assert.match(f.find('.report-summary').textContent,/43.75/);assert.match(f.find('.report-summary').textContent,/未測量/);
+    assert.equal((await f.session.read()).data.eyes.OD.k1??'','');f.click('#select-new-candidates');
+    assert.equal(f.find('[data-review-eye="OD"][data-review-key="al"] [data-candidate]').checked,false);
+    assert.equal(f.find('[data-review-eye="patient"][data-review-key="patientId"] [data-candidate]').checked,false);
+    assert.equal(f.find('[data-review-eye="OD"][data-review-key="k1"] [data-candidate]').checked,true);
+    f.click('#apply-candidates');await until(async()=>{const r=await f.session.read();return r.data.eyes.OD.k1==='43.5'&&f.dom.window.document.querySelector('#field-al');},'selected parser fields saved');
+    const saved=await f.session.read();assert.equal(saved.data.eyes.OD.al,'21.00');assert.equal(saved.data.patient.patientId,'SYNTHETIC-WORKING');assert.equal(saved.data.eyes.OS.k2,'44.2');assert.equal(Object.hasOwn(saved.data,'measurementDate'),false);assert.equal(saved.data.report.eyes.OD.mean_k.candidate_value,43.75);assert.equal(saved.data.report.measurement_date.candidate_value,'2026-11-17');assert.match(f.find('.report-summary').textContent,/43.75/);
+  });
+});
+
+test('plain text paste is inert and malformed or oversized explicit JSON does not alter the draft',async t=>{
+  const f=await fixture(t),before=await f.session.read();f.click('[data-route="import"]');
+  const event=new f.dom.window.Event('paste',{bubbles:true,cancelable:true});Object.defineProperty(event,'clipboardData',{value:{items:[],files:[],getData:()=>JSON.stringify(parserResult())}});f.dom.window.document.body.dispatchEvent(event);
+  assert.equal(event.defaultPrevented,false);assert.equal(f.find('#review-dialog').open,false);
+  pasteJson(f,'not JSON');await until(()=>f.dom.window.document.querySelector('.dialog-feedback'),'invalid JSON feedback');assert.match(f.find('.dialog-feedback').textContent,/JSON/);
+  f.find('#json-paste-content').value='"'+'中'.repeat(3_333_334)+'"';f.click('#import-pasted-json');await until(()=>/10 MB/.test(f.find('.dialog-feedback').textContent),'UTF-8 size limit');
+  assert.deepEqual((await f.session.read()).data,before.data);
+});
+
+test('JSON file read rejects stale drafts and rejects oversized files before reading',async t=>{
+  const f=await fixture(t),held=deferred();f.click('[data-route="import"]');uploadJson(f,{size:100,text:()=>held.promise});
+  f.click('[data-route="data"]');f.find('#field-al').value='21.50';f.find('#field-al').dispatchEvent(new f.dom.window.Event('input',{bubbles:true}));f.click('[data-action="save"]');await until(async()=>(await f.session.read()).data.eyes.OD.al==='21.50','manual edit saved');held.resolve(JSON.stringify(parserResult()));
+  await until(()=>/已變更/.test(f.find('#toast').textContent),'stale file import canceled');assert.equal(f.find('#review-dialog').open,false);
+  f.click('[data-route="import"]');let read=false;uploadJson(f,{size:10_000_001,text:async()=>{read=true;return '{}';}});
+  await until(()=>/10 MB/.test(f.find('#toast').textContent),'file size feedback');assert.equal(read,false);assert.equal((await f.session.read()).data.eyes.OD.al,'21.50');
+});
+
+test('legacy case, library and lens catalog JSON still share upload/paste entry points',async t=>{
+  const f=await fixture(t,{lensCatalog:{format:'biometry-lens-catalog',schemaVersion:'1.1',sources:[],entries:[]}});f.click('[data-route="import"]');
+  const data=emptyCase();data.eyes.OD.k1='43.25';pasteJson(f,JSON.stringify(exportCaseDocument(data)));
+  await until(()=>f.dom.window.document.querySelector('#apply-candidates'),'legacy case review');assert.equal(f.dom.window.document.querySelector('#select-new-candidates'),null);
+  assert.equal(f.find('[data-review-key="k1"] [data-candidate]').checked,true);f.click('#apply-candidates');await until(()=>f.dom.window.document.querySelector('#field-k1'),'legacy data saved');
+  f.click('[data-route="import"]');assert.ok(f.find('[data-action="export-parser"]'));assert.ok(f.find('[data-action="export"]'));assert.ok(f.find('[data-action="export-library"]'));
+  pasteJson(f,JSON.stringify(exportLibraryDocument({version:1,revision:0,patients:[]})));
+  await until(()=>f.calls.some(call=>call.type==='import-patients'),'library route');await until(()=>f.dom.window.document.querySelector('#tab-patients').getAttribute('aria-selected')==='true','patient view');
+  f.click('[data-route="import"]');pasteJson(f,JSON.stringify({format:'biometry-lens-catalog',schemaVersion:'1.1',exportedAt:'2026-11-17T00:00:00.000Z',sources:[],entries:[]}));
+  await until(()=>f.calls.some(call=>call.type==='save-lens-catalog'),'lens catalog route');assert.equal(f.find('#review-dialog').open,false);
+});
+
+test('parser export downloads its shared candidate schema while case backup remains independent',async t=>{
+  const f=await fixture(t),blobs=[];const create=URL.createObjectURL,revoke=URL.revokeObjectURL;
+  URL.createObjectURL=blob=>{blobs.push(blob);return 'blob:synthetic-json';};URL.revokeObjectURL=()=>{};t.after(()=>{URL.createObjectURL=create;URL.revokeObjectURL=revoke;});
+  const names=[];f.dom.window.HTMLAnchorElement.prototype.click=function(){names.push(this.download);};f.click('[data-route="import"]');
+  f.click('[data-action="export-parser"]');await until(()=>blobs.length===1,'parser JSON downloaded');
+  const parser=JSON.parse(await blobs[0].text());assert.equal(names[0],'biometry-parser.json');assert.equal(parser.schema_version,'1.2');assert.equal(parser.workflow,'biometry-clip');assert.equal(parser.eyes.OD.al.candidate_value,21);assert.equal(parser.eyes.OD.al.status,'unverified');assert.equal(Object.hasOwn(parser,'measurement_date'),false);
+  f.click('.import-advanced [data-action="export"]');await until(()=>blobs.length===2,'case backup downloaded');
+  const backup=JSON.parse(await blobs[1].text());assert.equal(names[1],'biometry-case.json');assert.equal(backup.format,'biometry-clipboard');assert.equal(backup.case.eyes.OD.al,'21.00');
+});
+
+test('report association blocks a different source patient until the selected identity matches',async t=>{
+  const f=await fixture(t),source=parserResult();source.patient_id=parserCandidate('SYNTHETIC-OTHER');f.click('[data-route="import"]');pasteJson(f,JSON.stringify(source));
+  await until(()=>f.dom.window.document.querySelector('#select-new-candidates'),'parser report review');f.click('#select-new-candidates');f.click('#apply-candidates');
+  await until(()=>f.dom.window.document.querySelector('.dialog-feedback'),'patient mismatch feedback');assert.match(f.find('.dialog-feedback').textContent,/病人 ID/);
+  const before=await f.session.read();assert.equal(before.data.patient.patientId,'SYNTHETIC-WORKING');assert.equal(before.data.report,undefined);assert.equal(before.data.eyes.OD.k1??'','');
+  f.find('[data-review-eye="patient"][data-review-key="patientId"] [data-candidate]').checked=true;f.click('#apply-candidates');
+  await until(async()=>(await f.session.read()).data.patient.patientId==='SYNTHETIC-OTHER','matching selected identity imported');const after=await f.session.read();assert.equal(after.data.report.patient_id.candidate_value,'SYNTHETIC-OTHER');
+});
+
+test('no selected fields cannot silently retain an imported report',async t=>{
+  const f=await fixture(t);f.click('[data-route="import"]');pasteJson(f,JSON.stringify(parserResult()));await until(()=>f.dom.window.document.querySelector('#apply-candidates'),'unselected review');
+  f.click('#apply-candidates');await until(()=>!f.find('#review-dialog').open,'empty selection closed');assert.equal((await f.session.read()).data.report,undefined);
+});
+
+test('confirmed report backups preserve their archive separately from editable calculator values',async t=>{
+  const f=await fixture(t);f.click('[data-route="import"]');pasteJson(f,JSON.stringify(parserResult()));await until(()=>f.dom.window.document.querySelector('#select-new-candidates'),'source review');f.click('#select-new-candidates');f.click('#apply-candidates');
+  await until(async()=>!!(await f.session.read()).data.report,'source archive saved');const saved=(await f.session.read()).data;
+  f.click('[data-route="import"]');const backup=exportCaseDocument(saved);assert.equal(backup.schemaVersion,'1.4');pasteJson(f,JSON.stringify(backup));
+  await until(()=>f.dom.window.document.querySelector('#apply-candidates'),'backup review');assert.ok(f.find('.report-summary'));f.find('[data-review-eye="OD"][data-review-key="al"] [data-candidate]').checked=true;f.click('#apply-candidates');
+  await until(()=>!f.find('#review-dialog').open,'backup applied');assert.deepEqual((await f.session.read()).data.report,saved.report);
 });

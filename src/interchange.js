@@ -1,8 +1,11 @@
 import {cleanCase,validateCase,FIELD_GROUPS,NUMERIC_FIELDS,EYE_FIELDS,PATIENT_FIELDS} from './model.js';
 import {cleanLibrary} from './library-store.js';
+import {isParserDocument,importParserDocument} from './parser-interchange.js';
+import {cleanParserReport} from './parser-report.js';
 
 export const INTERCHANGE_FORMAT='biometry-clipboard';
 export const INTERCHANGE_VERSION='1.3';
+export const INTERCHANGE_REPORT_VERSION='1.4';
 export const INTERCHANGE_UNITS=Object.freeze(Object.fromEntries([
   ...FIELD_GROUPS.flatMap(group=>group.fields.map(([key,,,unit])=>[key,unit==='µm'?'um':unit==='°'?'deg':unit||'1'])),
   ['patient.age','year'],
@@ -17,7 +20,7 @@ const eyeFieldsV1_1=Object.freeze(eyeFieldsV1_2.filter(key=>!addedInV1_2.has(key
 const eyeFieldsV1_0=Object.freeze(eyeFieldsV1_1.filter(key=>!addedInV1_1.has(key)));
 const patientFieldsV1_1=Object.freeze(PATIENT_FIELDS.filter(key=>key!=='initials'));
 export const INTERCHANGE_UNITS_V1_0=Object.freeze(Object.fromEntries(Object.entries(INTERCHANGE_UNITS).filter(([key])=>!addedInV1_1.has(key))));
-export const INTERCHANGE_UNITS_BY_VERSION=Object.freeze({'1.0':INTERCHANGE_UNITS_V1_0,'1.1':INTERCHANGE_UNITS,'1.2':INTERCHANGE_UNITS,'1.3':INTERCHANGE_UNITS});
+export const INTERCHANGE_UNITS_BY_VERSION=Object.freeze({'1.0':INTERCHANGE_UNITS_V1_0,'1.1':INTERCHANGE_UNITS,'1.2':INTERCHANGE_UNITS,'1.3':INTERCHANGE_UNITS,'1.4':INTERCHANGE_UNITS});
 const own=(object,key)=>Object.hasOwn(object,key);
 const copy=value=>structuredClone(value);
 const numeric=new Set(NUMERIC_FIELDS);
@@ -85,11 +88,23 @@ function eyes(value,path,eyeFields=EYE_FIELDS) {
   if(errors.length)fail('INTERCHANGE_VALUE',errors[0]);
   return result;
 }
-function caseData(value,{eyeFields=EYE_FIELDS,patientFields=PATIENT_FIELDS}={}) {
-  object(value,'case',['version','patient','eyes','activeEye'],['version','patient','eyes','activeEye']);
+function sameStructure(left,right){
+  if(left===right)return true;
+  if(!left||!right||typeof left!=='object'||typeof right!=='object'||Array.isArray(left)!==Array.isArray(right))return false;
+  const a=Object.keys(left).sort(),b=Object.keys(right).sort();
+  return a.length===b.length&&a.every((key,index)=>key===b[index]&&sameStructure(left[key],right[key]));
+}
+function reportData(value,path){
+  let report;
+  try{report=cleanParserReport(value);}catch{fail('INTERCHANGE_REPORT',`${path} 報告摘要格式不正確，未匯入。`);}
+  if(!report||!sameStructure(value,report))fail('INTERCHANGE_REPORT',`${path} 包含非標準、原始或無效報告欄位，未匯入。`);
+  return report;
+}
+function caseData(value,{eyeFields=EYE_FIELDS,patientFields=PATIENT_FIELDS,allowReport=false}={}) {
+  object(value,'case',['version','patient','eyes','activeEye',...(allowReport?['report']:[])],['version','patient','eyes','activeEye']);
   if(value.version!==1)fail('INTERCHANGE_VERSION','不支援這個個案資料版本。');
   if(!['OD','OS'].includes(value.activeEye))fail('INTERCHANGE_EYE','activeEye 必須是 OD 或 OS；不會推測眼別。');
-  return cleanCase({version:1,patient:identity(value.patient,'case.patient',patientFields),eyes:eyes(value.eyes,'case.eyes',eyeFields),activeEye:value.activeEye});
+  return cleanCase({version:1,patient:identity(value.patient,'case.patient',patientFields),eyes:eyes(value.eyes,'case.eyes',eyeFields),activeEye:value.activeEye,...(own(value,'report')?{report:reportData(value.report,'case.report')}:{})});
 }
 function dateTime(value,path,{empty=false}={}) {
   if(value===''&&empty)return '';
@@ -104,7 +119,7 @@ function recordId(value,path) {
   if(typeof value!=='string'||!value.length||value.length>100)fail('INTERCHANGE_ID',`${path} 必須是非空白的文字識別碼。`);
   return value;
 }
-function libraryData(value,{envelope=false,eyeFields=EYE_FIELDS,patientFields=PATIENT_FIELDS}={}) {
+function libraryData(value,{envelope=false,eyeFields=EYE_FIELDS,patientFields=PATIENT_FIELDS,allowReport=false}={}) {
   const source=envelope?{version:1,revision:0,patients:value}:value;
   object(source,'library',['version','revision','patients'],['version','revision','patients']);
   if(source.version!==1)fail('INTERCHANGE_VERSION','不支援這個病人資料庫版本。');
@@ -115,23 +130,26 @@ function libraryData(value,{envelope=false,eyeFields=EYE_FIELDS,patientFields=PA
     if(!Array.isArray(patient.measurements))fail('INTERCHANGE_SHAPE',`${path}.measurements 必須是陣列。`);
     return {id:recordId(patient.id,`${path}.id`),patient:identity(patient.patient,`${path}.patient`,patientFields),createdAt:dateTime(patient.createdAt,`${path}.createdAt`,{empty:true}),updatedAt:dateTime(patient.updatedAt,`${path}.updatedAt`,{empty:true}),measurements:patient.measurements.map((measurement,number)=>{
       const item=`${path}.measurements[${number}]`;
-      object(measurement,item,['id','label','measuredAt','source','patient','eyes','createdAt','updatedAt'],['id','label','measuredAt','source','patient','eyes','createdAt','updatedAt']);
-      return {id:recordId(measurement.id,`${item}.id`),label:text(measurement.label,`${item}.label`),measuredAt:dateTime(measurement.measuredAt,`${item}.measuredAt`,{empty:true}),source:text(measurement.source,`${item}.source`,500),patient:identity(measurement.patient,`${item}.patient`,patientFields),eyes:eyes(measurement.eyes,`${item}.eyes`,eyeFields),createdAt:dateTime(measurement.createdAt,`${item}.createdAt`,{empty:true}),updatedAt:dateTime(measurement.updatedAt,`${item}.updatedAt`,{empty:true})};
+      object(measurement,item,['id','label','measuredAt','source','patient','eyes','createdAt','updatedAt',...(allowReport?['report']:[])],['id','label','measuredAt','source','patient','eyes','createdAt','updatedAt']);
+      return {id:recordId(measurement.id,`${item}.id`),label:text(measurement.label,`${item}.label`),measuredAt:dateTime(measurement.measuredAt,`${item}.measuredAt`,{empty:true}),source:text(measurement.source,`${item}.source`,500),patient:identity(measurement.patient,`${item}.patient`,patientFields),eyes:eyes(measurement.eyes,`${item}.eyes`,eyeFields),createdAt:dateTime(measurement.createdAt,`${item}.createdAt`,{empty:true}),updatedAt:dateTime(measurement.updatedAt,`${item}.updatedAt`,{empty:true}),...(own(measurement,'report')?{report:reportData(measurement.report,`${item}.report`)}:{})};
     })};
   });
   try{return cleanLibrary({version:1,revision:source.revision,patients});}
   catch{fail('INTERCHANGE_ID','病人或測量識別碼重複，未匯入。');}
 }
-function metadata(kind,now) {
-  return {format:INTERCHANGE_FORMAT,schemaVersion:INTERCHANGE_VERSION,kind,exportedAt:dateTime(typeof now==='function'?now():now??new Date().toISOString(),'exportedAt'),units:copy(INTERCHANGE_UNITS)};
+function metadata(kind,now,schemaVersion=INTERCHANGE_VERSION) {
+  return {format:INTERCHANGE_FORMAT,schemaVersion,kind,exportedAt:dateTime(typeof now==='function'?now():now??new Date().toISOString(),'exportedAt'),units:copy(INTERCHANGE_UNITS)};
 }
 
 /** Portable data only. No Chrome APIs, API keys, session tokens, or writes. */
 export function exportCaseDocument(data,{now}={}) {
-  return {...metadata('case',now),case:caseData(data)};
+  const value=caseData(data,{allowReport:true});
+  return {...metadata('case',now,value.report?INTERCHANGE_REPORT_VERSION:INTERCHANGE_VERSION),case:value};
 }
 export function exportLibraryDocument(data,{now}={}) {
-  return {...metadata('library',now),patients:libraryData(data).patients};
+  const {patients}=libraryData(data,{allowReport:true});
+  const hasReport=patients.some(patient=>patient.measurements.some(measurement=>own(measurement,'report')));
+  return {...metadata('library',now,hasReport?INTERCHANGE_REPORT_VERSION:INTERCHANGE_VERSION),patients};
 }
 export function parseInterchange(input) {
   let value=input;
@@ -139,20 +157,21 @@ export function parseInterchange(input) {
     try{value=JSON.parse(value.replace(/^\uFEFF/,''));}catch{fail('INTERCHANGE_JSON','JSON 無法解析，未匯入。');}
   }
   if(!value||typeof value!=='object'||Array.isArray(value))fail('INTERCHANGE_SHAPE','JSON 必須是 Biometry-Clip 資料物件。');
+  if(!own(value,'format')&&isParserDocument(value))return importParserDocument(value);
   if(own(value,'format')){
     if(value.format!==INTERCHANGE_FORMAT)fail('INTERCHANGE_FORMAT','這不是病人或量測交換資料；原生 QA 報告不能當作病人資料匯入。');
     if(typeof value.schemaVersion!=='string'||!Object.hasOwn(INTERCHANGE_UNITS_BY_VERSION,value.schemaVersion))fail('INTERCHANGE_VERSION','不支援這個 JSON schemaVersion，未推測或轉換。');
-    const units=INTERCHANGE_UNITS_BY_VERSION[value.schemaVersion],eyeFields=value.schemaVersion==='1.0'?eyeFieldsV1_0:value.schemaVersion==='1.1'?eyeFieldsV1_1:value.schemaVersion==='1.2'?eyeFieldsV1_2:EYE_FIELDS,patientFields=['1.2','1.3'].includes(value.schemaVersion)?PATIENT_FIELDS:patientFieldsV1_1;
+    const units=INTERCHANGE_UNITS_BY_VERSION[value.schemaVersion],eyeFields=value.schemaVersion==='1.0'?eyeFieldsV1_0:value.schemaVersion==='1.1'?eyeFieldsV1_1:value.schemaVersion==='1.2'?eyeFieldsV1_2:EYE_FIELDS,patientFields=['1.2','1.3','1.4'].includes(value.schemaVersion)?PATIENT_FIELDS:patientFieldsV1_1,allowReport=value.schemaVersion==='1.4';
     if(!['case','library'].includes(value.kind))fail('INTERCHANGE_KIND','JSON kind 必須是 case 或 library。');
     const payload=value.kind==='case'?'case':'patients';
     object(value,'document',['format','schemaVersion','kind','exportedAt','units',payload],['format','schemaVersion','kind','exportedAt','units',payload]);
     dateTime(value.exportedAt,'exportedAt');
     object(value.units,'units',Object.keys(units),Object.keys(units));
     if(Object.entries(units).some(([key,unit])=>value.units[key]!==unit))fail('INTERCHANGE_UNITS','JSON 單位與此版本不符，未自動換算。CCT 須為 um，AL／ACD／LT／WTW 須為 mm。');
-    return {kind:value.kind,data:value.kind==='case'?caseData(value.case,{eyeFields,patientFields}):libraryData(value.patients,{envelope:true,eyeFields,patientFields}),warnings:[]};
+    return {kind:value.kind,data:value.kind==='case'?caseData(value.case,{eyeFields,patientFields,allowReport}):libraryData(value.patients,{envelope:true,eyeFields,patientFields,allowReport}),warnings:[]};
   }
   const warnings=['舊版 JSON 沒有明示單位；依原專案定義讀取（CCT 為 um，其餘依交換文件）。不做單位或眼別推測。'];
   if(own(value,'eyes'))return {kind:'case',data:caseData(value),warnings};
   if(own(value,'patients'))return {kind:'library',data:libraryData(value),warnings};
-  fail('INTERCHANGE_FORMAT','無法辨識 JSON 資料格式；請選擇個案或病人資料庫匯出檔。');
+  fail('INTERCHANGE_FORMAT','無法辨識 JSON 資料格式；請使用個案、病人資料庫或 biometry-parser 輸出。');
 }

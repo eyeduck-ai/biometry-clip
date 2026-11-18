@@ -1,16 +1,23 @@
 import { cleanCase, emptyCase, PATIENT_FIELDS, EYE_FIELDS } from './model.js';
+import {cleanParserReport} from './parser-report.js';
 
 const paths = patch => {
   const entries = [];
   for (const key of PATIENT_FIELDS) if (Object.hasOwn(patch.patient || {},key)) entries.push([`patient.${key}`,patch.patient[key]]);
   for (const eye of ['OD','OS']) for (const key of EYE_FIELDS) if (Object.hasOwn(patch.eyes?.[eye] || {},key)) entries.push([`eyes.${eye}.${key}`,patch.eyes[eye][key]]);
+  if(Object.hasOwn(patch,'report')){
+    const report=patch.report===null?null:cleanParserReport(patch.report);
+    if(report===undefined)throw Object.assign(new Error('報告摘要必須是有效物件或 null。'),{code:'PARSER_REPORT'});
+    entries.push(['report',report]);
+  }
   return entries;
 };
 const toPatch = entries => {
   const patch = {};
   for (const [path,value] of entries) {
     const bits=path.split('.');
-    if (bits[0]==='patient') (patch.patient ||= {})[bits[1]]=value;
+    if (bits[0]==='report') patch.report=value;
+    else if (bits[0]==='patient') (patch.patient ||= {})[bits[1]]=value;
     else ((patch.eyes ||= {})[bits[1]] ||= {})[bits[2]]=value;
   }
   return patch;
@@ -19,7 +26,8 @@ const overlay = (record,...maps) => {
   const next=cleanCase(record);
   for (const map of maps) for (const [path,value] of map) {
     const bits=path.split('.');
-    if(bits[0]==='patient') next.patient[bits[1]]=value;
+    if(bits[0]==='report'){if(value===null)delete next.report;else next.report=value;}
+    else if(bits[0]==='patient') next.patient[bits[1]]=value;
     else next.eyes[bits[1]][bits[2]]=value;
   }
   return cleanCase(next);
@@ -67,7 +75,7 @@ export function createEditor(api, { onChange=()=>{}, onStatus=()=>{}, onError=()
         const batch=new Map(pending),token=latest.caseToken;
         pending.clear();inFlight=batch;
         try{
-          const result=await api.patchCase(toPatch(batch),token);
+          const result=await api.patchCase(toPatch(batch),token,latest.revision);
           if(token===latest.caseToken)inFlight=new Map();
           error='';
           accept(result);
@@ -101,7 +109,7 @@ export function createEditor(api, { onChange=()=>{}, onStatus=()=>{}, onError=()
     // The background service worker serializes this behind the prior message.
     const batch=new Map(pending),token=latest.caseToken;
     pending.clear();
-    return api.patchCase(toPatch(batch),token).then(record=>{accept(record);return record;});
+    return api.patchCase(toPatch(batch),token,latest.revision).then(record=>{accept(record);return record;});
   }
   function setEye(value){if(!['OD','OS'].includes(value)||value===eye)return;eye=value;data.activeEye=eye;version++;onChange({source:'eye',changedCase:false});}
   function dispose(){clearTimeout(timer);unsubscribe();}

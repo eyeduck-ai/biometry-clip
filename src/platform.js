@@ -35,7 +35,7 @@ async function sessionMessage(operation, payload = {}) {
   if (!isExtension) {
     let session;
     if (operation === 'read') session = await previewStore.read();
-    if (operation === 'patch') session = await previewStore.patch(payload.patch, payload.caseToken, clientId);
+    if (operation === 'patch') session = await previewStore.patch(payload.patch, payload.caseToken, clientId,payload.revision);
     if (operation === 'clear') session = await previewStore.clear(payload.caseToken, clientId);
     if (operation === 'replace') session = await previewStore.replace(payload.data, payload.caseToken, payload.revision, clientId);
     acceptSession(session);
@@ -50,7 +50,7 @@ export async function loadData() {
   const [session,local] = await Promise.all([sessionMessage('read'),isExtension ? chrome.storage.local.get('settings') : {}]);
   return {...session,settings:{...defaultSettings,...migrateCloudSettings(local.settings),...transferSettings(local.settings)}};
 }
-export async function patchCase(patch, caseToken = knownSession?.caseToken) { return sessionMessage('patch',{patch,caseToken}); }
+export async function patchCase(patch, caseToken = knownSession?.caseToken, revision = knownSession?.revision) { return sessionMessage('patch',{patch,caseToken,revision}); }
 export async function clearCase(caseToken = knownSession?.caseToken) { return sessionMessage('clear',{caseToken}); }
 export async function saveCase(data, {caseToken = knownSession?.caseToken, revision = knownSession?.revision} = {}) {
   return sessionMessage('replace',{data,caseToken,revision});
@@ -275,7 +275,8 @@ export async function inspectTab(tabId, data, options = {}, action = 'preview', 
   // All supported calculator forms were verified in their top document. Never
   // inject the form bridge into the extension's own floating iframe or OCR frame.
   const target = {tabId:tab.id,frameIds:[frameId ?? 0]};
-  const results = await chrome.scripting.executeScript({target,func:siteBridge,args:[action,profile,data,options]});
+  const {report:_privateReport,...siteData}=data;
+  const results = await chrome.scripting.executeScript({target,func:siteBridge,args:[action,profile,siteData,options]});
   const frames = results.filter(r => r.result && !r.result.error && r.result.rows.some(v => ['ready','read','filled','changed','rejected'].includes(v.status)));
   if (frames.length > 1) throw new Error('頁面包含多個可填寫表單，無法唯一對應；請開啟計算器的獨立頁面。');
   const chosen = frames[0] || results.find(r=>r.result && !r.result.error) || results.find(r=>r.result?.error);

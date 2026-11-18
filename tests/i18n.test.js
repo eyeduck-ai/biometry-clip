@@ -8,12 +8,12 @@ import {JSDOM} from 'jsdom';
 const source=await readFile(new URL('../src/i18n.js',import.meta.url),'utf8');
 let instance=0;
 async function engine(){
-  const body=source.replace(/^import\s+\{[^\n]+\}\s+from\s+['"]\.\/locales\/en-(?:core|secondary|help)\.js['"];?\r?$/gm,'');
+  const body=source.replace(/^import\s+\{[^\n]+\}\s+from\s+['"]\.\/locales\/en-(?:core|secondary|help|parser)\.js['"];?\r?$/gm,'');
   const fixtures=`
     const coreMessages={"資料":"Data","儲存":"Save","請稍候":"Please wait","姓名":"Name","選擇病人":"Select patient","選擇測量":"Select measurement","測量":"Measurement","圖片":"Image"};
     const secondaryMessages={"資料":"Incorrect duplicate","匯入":"Import"};
     const coreRules=[[/^已選 (\\d+) 頁$/,(_,count)=>count+' pages selected'],[/完成/g,'Done']];
-    const helpMessages={},helpRules=[];
+    const helpMessages={},helpRules=[],parserMessages={},parserRules=[];
     const secondaryRules=[{pattern:/^共 (\\d+) 筆$/,replacement:'$1 records'}];
   `;
   return import(`data:text/javascript;base64,${Buffer.from(fixtures+body+`\n// instance ${instance++}`).toString('base64')}`);

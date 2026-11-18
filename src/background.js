@@ -76,7 +76,7 @@ chrome.runtime.onMessage.addListener((message, sender, respond) => {
   }
   const operations = {
     'biometry:session:read': () => store.read(),
-    'biometry:session:patch': () => store.patch(message.patch, message.caseToken, message.clientId),
+    'biometry:session:patch': () => store.patch(message.patch, message.caseToken, message.clientId,message.revision),
     'biometry:session:clear': () => store.clear(message.caseToken, message.clientId),
     'biometry:session:replace': () => store.replace(message.data, message.caseToken, message.revision, message.clientId),
     'biometry:library:read': () => library.read(),

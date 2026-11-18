@@ -20,7 +20,8 @@ export function createTabTransfer(chromeApi,{readSession,readLensCatalog=async()
   }
   async function run(tabId,action,data,options={},expectedSiteId) {
     const {tab,profile}=await checkedTab(tabId,expectedSiteId);
-    const results=await chromeApi.scripting.executeScript({target:{tabId:tab.id,frameIds:[0]},func:siteBridge,args:[action,profile,data,options]});
+    const {report,...calculatorData}=data;
+    const results=await chromeApi.scripting.executeScript({target:{tabId:tab.id,frameIds:[0]},func:siteBridge,args:[action,profile,calculatorData,options]});
     const frame=results.find(item=>item.frameId===0&&item.result);
     if(!frame)throw failure('FORM_UNAVAILABLE','計算表單尚未就緒。');
     if(frame.result.error)throw failure('FORM_REJECTED',frame.result.error);

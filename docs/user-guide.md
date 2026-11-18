@@ -41,7 +41,7 @@
 | 複製網站資料 | 讀取目前受支援計算網站已填入的表單，不是螢幕 OCR |
 | 貼上截圖 | 先用系統截圖，再於匯入頁貼上剪貼簿圖片；Windows 可用 Win+Shift+S、Ctrl+V |
 | PDF／圖片 | 上傳或拖入 PDF、PNG、JPEG、WebP |
-| JSON | 載入本專案結構化個案、病人資料庫或晶體目錄 |
+| JSON | 貼上或上傳個案、病人資料庫、晶體目錄或 biometry-parser 1.2 結果 |
 
 沒有「貼上文字報告」入口。需要交換資料時，優先使用有版本與單位定義的 JSON。
 
@@ -75,7 +75,7 @@ PDF 先建立頁面縮圖，可逐頁預覽／放大，以每組 12 頁瀏覽；
 
 這是兩份樣本之代表頁面的結果，沒有驗證所有儀器、報告版本、掃描品質或所有頁面的欄位正確率。其他辨識專案中的 37 欄評分不等於本擴充功能已支援／驗證同一組欄位。**Argos 目前是網站儀器偏好與模式對應，尚未獨立驗證 Argos OCR 報告。**
 
-另以去識別化代表頁比較過 Gemini 與官方 PaddleOCR API；這是有限樣本比較，不表示所有模型與帳戶都可用。可查閱 [v0.3.12](validation-0.3.12.md) 與 [v0.3.13](validation-0.3.13.md)。單元測試、報告辨識測試與 15 站跨站完整驗收是不同範圍，不應互相代替。
+另以去識別化代表頁比較過 Gemini 與官方 PaddleOCR API；這是有限樣本比較，不表示所有模型與帳戶都可用。可查閱[整理後的報告辨識證據](validation-evidence.md#iolmaster-700-report-checks)及[雲端技術紀錄](ocr-cloud-0312.md)。單元測試、報告辨識測試與 15 站跨站完整驗收是不同範圍，不應互相代替。
 
 ## 偏好參數與晶體
 
@@ -87,6 +87,8 @@ ESCRS 與其他站晶體／常數研究保留於[晶體文件](lens-transfer.md)
 
 ## JSON 交換與 API
 
-個案、整份資料庫可匯出 JSON；資料庫匯入會新增獨立紀錄，不直接覆寫既有紀錄。現行格式仍為 `format: "biometry-clipboard"`、`schemaVersion: "1.3"`，相容匯入 1.0–1.2。晶體目錄另用 `biometry-lens-catalog` 格式。API 金鑰、來源影像、網站會話與計算結果不屬於病人交換資料。[完整結構](interchange.md)。
+匯入病人資料庫會新增獨立紀錄。個案及資料庫備份使用 `biometry-clipboard` 1.3，包含報告摘要時改用 1.4。晶體目錄使用 `biometry-lens-catalog`。[備份格式](interchange.md)
+
+用 biometry-parser 辨識後，可直接貼上輸出 JSON 或上傳檔案。核對並選取要帶入的 OD／OS 欄位後，報告日期、平均 K、角膜散光與瞳孔可留在測量的報告摘要中。亦可匯出單筆量測供 Python kit 讀取。[操作與欄位對照](parser-exchange.md)
 
 辨識模型設定區可展開官方 API 申請說明。一般模式只需貼上 Gemini API key 或 PaddleOCR AI Studio Access Token，再選模型；不需填網址。[API 設定與資料傳送說明](api-setup.md)。

@@ -1,0 +1,324 @@
+{
+  "schema_version": "1.2",
+  "source_sha256": "263eeecc5ec9c6fed5a38d6d0c43e933886f1bcc464c17282b0aff86e81b717f",
+  "workflow": "native_only",
+  "patient_id": {
+    "value": null,
+    "unit": null,
+    "status": "unverified",
+    "data_status": "present",
+    "candidate_value": "00001234",
+    "verification_status": "unverified"
+  },
+  "gender": {
+    "value": null,
+    "unit": null,
+    "status": "unverified",
+    "data_status": "present",
+    "candidate_value": "female",
+    "verification_status": "unverified"
+  },
+  "measurement_date": {
+    "value": null,
+    "unit": null,
+    "status": "unverified",
+    "data_status": "present",
+    "candidate_value": "2026-11-18",
+    "verification_status": "unverified"
+  },
+  "eyes": {
+    "OD": {
+      "al": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 23.64,
+        "verification_status": "unverified"
+      },
+      "acd": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 3.12,
+        "verification_status": "unverified"
+      },
+      "lt": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 4.47,
+        "verification_status": "unverified"
+      },
+      "cct": {
+        "value": null,
+        "unit": "um",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 551.0,
+        "verification_status": "unverified"
+      },
+      "wtw": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 11.8,
+        "verification_status": "unverified"
+      },
+      "mean_k": {
+        "value": null,
+        "unit": "D",
+        "status": "not_reported",
+        "data_status": "not_found",
+        "candidate_value": null,
+        "verification_status": "unverified"
+      },
+      "corneal_astigmatism": {
+        "value": null,
+        "unit": "D",
+        "status": "not_reported",
+        "data_status": "not_found",
+        "candidate_value": null,
+        "verification_status": "unverified"
+      },
+      "corneal_astigmatism_axis": {
+        "value": null,
+        "unit": "degree",
+        "status": "not_reported",
+        "data_status": "not_found",
+        "candidate_value": null,
+        "verification_status": "unverified"
+      },
+      "pupil": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 4.25,
+        "verification_status": "unverified"
+      },
+      "k1": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 42.12,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 0.0,
+          "verification_status": "unverified"
+        }
+      },
+      "k2": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 44.23,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 90.0,
+          "verification_status": "unverified"
+        }
+      },
+      "tk1": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 42.05,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 0.0,
+          "verification_status": "unverified"
+        }
+      },
+      "tk2": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 44.4,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 90.0,
+          "verification_status": "unverified"
+        }
+      }
+    },
+    "OS": {
+      "al": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 25.11,
+        "verification_status": "unverified"
+      },
+      "acd": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 3.4,
+        "verification_status": "unverified"
+      },
+      "lt": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 4.65,
+        "verification_status": "unverified"
+      },
+      "cct": {
+        "value": null,
+        "unit": "um",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 534.0,
+        "verification_status": "unverified"
+      },
+      "wtw": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 12.01,
+        "verification_status": "unverified"
+      },
+      "mean_k": {
+        "value": null,
+        "unit": "D",
+        "status": "not_reported",
+        "data_status": "not_found",
+        "candidate_value": null,
+        "verification_status": "unverified"
+      },
+      "corneal_astigmatism": {
+        "value": null,
+        "unit": "D",
+        "status": "not_reported",
+        "data_status": "not_found",
+        "candidate_value": null,
+        "verification_status": "unverified"
+      },
+      "corneal_astigmatism_axis": {
+        "value": null,
+        "unit": "degree",
+        "status": "not_reported",
+        "data_status": "not_found",
+        "candidate_value": null,
+        "verification_status": "unverified"
+      },
+      "pupil": {
+        "value": null,
+        "unit": "mm",
+        "status": "unverified",
+        "data_status": "present",
+        "candidate_value": 3.41,
+        "verification_status": "unverified"
+      },
+      "k1": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 43.25,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 7.0,
+          "verification_status": "unverified"
+        }
+      },
+      "k2": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 45.1,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 97.0,
+          "verification_status": "unverified"
+        }
+      },
+      "tk1": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 43.15,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 7.0,
+          "verification_status": "unverified"
+        }
+      },
+      "tk2": {
+        "power": {
+          "value": null,
+          "unit": "D",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 45.35,
+          "verification_status": "unverified"
+        },
+        "axis": {
+          "value": null,
+          "unit": "degree",
+          "status": "unverified",
+          "data_status": "present",
+          "candidate_value": 97.0,
+          "verification_status": "unverified"
+        }
+      }
+    }
+  },
+  "verification_state": "needs_review"
+}

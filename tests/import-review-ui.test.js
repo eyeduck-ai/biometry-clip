@@ -87,3 +87,19 @@ test('a low-confidence patient identifier still shows the review warning legend'
   assert.equal(doc.querySelector('.review-source-panel').open,false);
   assert.equal(doc.querySelector('[data-candidate-value="0"]').value,'SYNTHETIC-001');
 });
+
+test('unverified candidates remain visibly unchecked without invented OCR confidence',()=>{
+  const doc=documentFor({rows:[{eye:'OD',key:'al',value:'23.45',unverified:true},{eye:'OS',key:'al',value:'24.10'}],allowUnverifiedSelection:true});
+  const candidate=doc.querySelector('[data-review-eye="OD"][data-review-key="al"]');
+  assert.ok(candidate.classList.contains('is-unverified'));assert.equal(candidate.querySelector('[data-candidate]').checked,false);
+  assert.match(candidate.querySelector('.review-unverified-note').textContent,/核對/);assert.equal(candidate.querySelector('.review-confidence'),null);
+  assert.equal(doc.querySelector('[data-review-eye="OS"] [data-candidate]').checked,true);assert.ok(doc.querySelector('#select-new-candidates'));
+  assert.equal(documentFor({rows:[{eye:'OD',key:'al',value:'23.45',unverified:true}]}).querySelector('#select-new-candidates'),null);
+});
+
+test('report measurement dates are static review metadata and accept only ISO date text',()=>{
+  const doc=documentFor({measurementDate:'2026-11-17',measurementDateUnverified:true});
+  assert.equal(doc.querySelector('.review-report-date [data-i18n-skip]').textContent,'2026-11-17');
+  assert.match(doc.querySelector('.review-report-date strong').textContent,/未驗證候選值/);assert.equal(doc.querySelector('.review-report-date input'),null);
+  assert.equal(documentFor({measurementDate:'<img src=x onerror=attack()>'}).querySelector('.review-report-date'),null);
+});

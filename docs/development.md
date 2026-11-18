@@ -69,7 +69,7 @@ Do not automatically submit clinical calculations or silently guess a lens model
 
 ## Compatibility and publishing
 
-The product is now **Biometry-Clip**; the established case/library protocol deliberately remains `biometry-clipboard` version 1.3, with imports for 1.0–1.2. Keep storage keys and migrations compatible. See [interchange](interchange.md) and [the schema](../schemas/biometry-clipboard.schema.json). Lens catalog JSON uses its own versioned format.
+Case and library backups use the established `biometry-clipboard` protocol. Versions 1.0–1.4 can be imported. Version 1.4 adds a bounded report summary and shares the 1.3 calculator field units. Ordinary exports use 1.3. The Python kit exchanges single measurements with its `ExtractionResult` schema 1.2. The report summary is stripped from requests to calculator tabs. [Backup schema](interchange.md) · [Parser exchange](parser-exchange.md)
 
 The public [ESCRS constants snapshot](../data/README.md) is queryable directly with `node scripts/query-escrs-constants.mjs SN60WF`. Its read-only CLI does not depend on local research artifacts. Historical reconstruction/checkpoint scripts still need the non-distributed research inputs described in the [collection record](research-escrs-constants-039.md#重建與查詢).
 

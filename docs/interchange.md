@@ -1,8 +1,8 @@
-# JSON 資料交換格式 1.3（相容 1.0／1.1／1.2）
+# Biometry-Clip 個案與病人資料庫 JSON
 
-JSON 匯出分為目前工作副本（`kind: "case"`）與全部病人／歷史測量（`kind: "library"`）。兩者均使用 `format: "biometry-clipboard"`、字串 `schemaVersion: "1.3"`、含時區的 `exportedAt` 與完整 `units` 宣告。此文件描述資料交換；它不包含 API key、Chrome session token、資料庫操作版本、網站原值或計算結果。
+JSON 匯出分為目前工作副本（`kind: "case"`）與全部病人／歷史測量（`kind: "library"`）。兩者使用 `format: "biometry-clipboard"`、含時區的 `exportedAt` 與完整 `units`。一般備份使用 `schemaVersion: "1.3"`，有報告摘要的備份使用 **1.4**。另見 [biometry-parser 交換流程](parser-exchange.md)。
 
-- [JSON Schema（1.3／1.2／1.1／1.0）](../schemas/biometry-clipboard.schema.json)
+- [JSON Schema（1.4／1.3／1.2／1.1／1.0）](../schemas/biometry-clipboard.schema.json)
 - [凍結的 1.1 Schema](../schemas/biometry-clipboard-1.1.schema.json)
 - [凍結的 1.0 Schema](../schemas/biometry-clipboard-1.0.schema.json)
 - [合成單一個案](../examples/biometry-case.synthetic.json)
@@ -78,7 +78,8 @@ Schema 採 [JSON Schema Draft 2020-12](https://json-schema.org/draft/2020-12/jso
 
 ## 交換版本與相容
 
-- 新匯出使用 `schemaVersion: "1.3"`，完整 `units` 包含 `plannedIolPower: "D"`，即使目前沒有填入該值也須宣告。
+- 1.3 與 1.4 的 `units` 相同，包含 `plannedIolPower: "D"`，即使目前沒有填入該值也須宣告。
+- 1.4 新增選用的 `case.report` 或每筆 `measurement.report`，是自 biometry-parser 1.2 擷取的精簡快照。保留來源欄位狀態與相關單位，省略逐頁辨識證據、圖檔、計算表和任意 metadata。個案草稿的編輯值仍存於 `patient`／`eyes`。
 - 已有 `schemaVersion: "1.0"` 的 case／library 仍可完整匯入，使用原來的**精確欄位集合與單位表**，不要求補上新單位、不改變舊值。可用 [舊版個案範例](../examples/biometry-case.v1.0.synthetic.json) 與 [舊版整庫範例](../examples/biometry-library.v1.0.synthetic.json) 回歸。
 - 宣告 1.0 的文件不可帶入新 `plannedIolPower` 值或單位，即使值是空字串也不接受。1.1 缺少或錯誤宣告該單位同樣拒絕；不會偷偷按另一版本解析。
 - 1.0／1.1／1.2 文件匯入後重新匯出會成為 1.3，但不會替舊眼別憑空產生計畫植入值。未知版本一律拒絕。

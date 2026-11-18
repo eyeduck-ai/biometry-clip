@@ -14,7 +14,7 @@ Date: 2026-11-17. Environment: Windows, Node.js 24.15.0, an independent Chromium
 
 An isolated local preview showed the new product name/version and English by default. Both official provider instruction panels opened normally, and opening/closing help preserved an unsaved synthetic credential. Traditional Chinese switching and the 380 px narrow layout were checked visually; neither 380 px nor 1180 px viewport showed horizontal overflow.
 
-These are UI preview checks and synthetic regressions. This release did not repeat live read/save/cross-tab paste on all 15 calculator entrances, and did not perform a new clinical-report OCR accuracy comparison. Earlier report validation remains bounded to the documented IOLMaster 700 samples.
+These are UI preview checks and synthetic regressions. This release did not repeat live read/save/cross-tab paste on all 15 calculator entrances, and did not perform a new clinical-report OCR accuracy comparison. Earlier report validation remains bounded to the documented IOLMaster 700 samples; [consolidated evidence](validation-evidence.md) separates installed-site reports, report recognition and synthetic checks.
 
 ## Review and limits
 

@@ -21,7 +21,7 @@ When building from source, select the generated `dist` folder instead. Keep the 
 - **Data:** enter measurements or copy existing calculator inputs. OD/OS tabs select the eye being edited; Toric, KC and LVC describe that eye. Required fields adapt to the detected calculator.
 - Choose **OD**, **OS**, or **OD+OS** for transfer. Both eyes are available together only when the current calculator form exposes independent supported eye groups. The adapter selects the relevant eye on single-eye forms.
 - **Patients:** save multiple patients and multiple measurements per patient. Load, edit, duplicate, or delete saved measurements; the shared working draft is separate from saved history.
-- **Import:** paste a screenshot, upload a PDF/image, copy website data, or import JSON. Review recognized values beside the source before accepting them.
+- **Import:** paste a screenshot, upload a PDF/image, copy website data, or paste/upload JSON from Biometry-Clip or biometry-parser. Review candidate values before applying them.
 - **Launch:** open calculator entries grouped by use. Manually opened calculator tabs work too.
 - **Settings:** set defaults and optional cloud recognition. English is the default; the header language button switches to Traditional Chinese.
 
@@ -33,13 +33,13 @@ PDFs show page thumbnails before recognition, with up to **three selected PDF pa
 
 Review presents the source and paired OD/OS fields, with a processing stage and elapsed time. Fields with an actual OCR confidence below **85%** have a dark red highlight. Native PDF extraction and models without a confidence score remain unscored.
 
-The principal report family tested is **ZEISS IOLMaster 700**: a native-text PDF and a scanned PDF. Representative pages matched **18/18 shared numerical fields** against human-reviewed answers in installed-extension tests. This is a bounded test result, not an accuracy claim for every report or device. Argos is supported as a calculator instrument preference, but has not been independently validated as an OCR report type. See the [report scope](docs/user-guide.md#report-types-and-validation) and [recorded validation](docs/validation-0.3.13.md).
+The principal report family tested is **ZEISS IOLMaster 700**: a native-text PDF and a scanned PDF. Representative pages matched **18/18 shared numerical fields** against human-reviewed answers in installed-extension tests. This is a bounded test result, not an accuracy claim for every report or device. Argos is supported as a calculator instrument preference, but has not been independently validated as an OCR report type. See the [report scope](docs/user-guide.md#report-types-and-validation) and [recorded validation](docs/validation-evidence.md#iolmaster-700-report-checks).
 
 ## Data and optional cloud services
 
 The working draft uses Chrome session storage. The patient library, preferences, and API credentials use local extension storage, which is **not encrypted**. Local OCR needs no cloud account. Gemini and official PaddleOCR APIs are optional; settings include application instructions and require only a key/token and model choice in normal mode. Actual cloud image requests require upload confirmation. A readable native PDF does not get uploaded merely because a cloud provider is selected.
 
-Case/library JSON remains compatible with the existing `biometry-clipboard` interchange format, version **1.3**; imports also support versions 1.0–1.2. The product rename does not change that protocol. [Schema and examples](docs/interchange.md).
+Case/library backups use `biometry-clipboard` **1.3** or **1.4** when they include a report summary. Imports support 1.0–1.4. A separate export shares the current measurement with the Python kit. [Backup schema](docs/interchange.md) · [biometry-parser exchange](docs/parser-exchange.md)
 
 ## Build from source
 

@@ -1,3 +1,5 @@
+import {cleanParserReport} from './parser-report.js';
+
 export const FIELD_GROUPS = [
   { id: 'core', title: '基本測量', caption: '常用欄位 · 依各公式需求填寫', fields: [
     ['al','AL','眼軸長','mm'], ['k1','K1','平坦角膜曲率','D'], ['k1Axis','K1 axis','平坦軸向','°'],
@@ -43,6 +45,7 @@ export function cleanCase(input) {
     else if (['string','number'].includes(typeof value)) result.eyes[eye][key] = String(value).slice(0,100);
   }
   if (['OD','OS'].includes(input.activeEye)) result.activeEye = input.activeEye;
+  if (input.report != null) result.report = cleanParserReport(input.report);
   return result;
 }
 export function validateCase(data) {

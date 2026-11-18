@@ -42,7 +42,7 @@ export function createQaBackend(storage,extensionId) {
       const operations={
         'biometry:qa:session:read':()=>session.read(),
         'biometry:qa:session:replace':()=>session.replace(message.data,message.caseToken,message.revision,message.clientId),
-        'biometry:qa:session:patch':()=>session.patch(message.patch,message.caseToken,message.clientId),
+        'biometry:qa:session:patch':()=>session.patch(message.patch,message.caseToken,message.clientId,message.revision),
         'biometry:qa:session:clear':()=>session.clear(message.caseToken,message.clientId),
         'biometry:qa:library:read':()=>library.read(),
         'biometry:qa:library:create-patient':()=>library.createPatient(message.patient,message.expectedLibraryRevision),

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "urn:biometry-clipboard:interchange:1.1",
-  "title": "Biometry Clipboard interchange 1.1 (accepts 1.0)",
-  "description": "Portable case or patient-library document. Version 1.1 adds independent planned SE IOL power in D. Version 1.0 retains its exact original field and unit vocabulary. Runtime validation additionally checks duplicate IDs, finite decimals, positive core measurements, and axis bounds. No clinical inference or unit conversion.",
+  "$id": "urn:biometry-clipboard:interchange:1.4",
+  "title": "Biometry-Clip interchange 1.4",
+  "description": "Portable case or patient-library document. Version 1.4 adds an optional compact biometry-parser report snapshot. Versions 1.0–1.3 keep their original vocabularies. Runtime validation also checks numeric measurements and report field states.",
   "oneOf": [
     {
       "type": "object",
@@ -770,6 +770,199 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/patientV1_0"
+          }
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schemaVersion",
+        "kind",
+        "exportedAt",
+        "units",
+        "case"
+      ],
+      "properties": {
+        "format": {
+          "const": "biometry-clipboard"
+        },
+        "schemaVersion": {
+          "const": "1.4"
+        },
+        "exportedAt": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 40
+        },
+        "units": {
+          "const": {
+            "al": "mm",
+            "k1": "D",
+            "k1Axis": "deg",
+            "k2": "D",
+            "k2Axis": "deg",
+            "acd": "mm",
+            "lt": "mm",
+            "cct": "um",
+            "wtw": "mm",
+            "target": "D",
+            "aConstant": "1",
+            "lensFactor": "1",
+            "sia": "D",
+            "incisionAxis": "deg",
+            "tk1": "D",
+            "tk1Axis": "deg",
+            "tk2": "D",
+            "tk2Axis": "deg",
+            "pk1": "D",
+            "pk1Axis": "deg",
+            "pk2": "D",
+            "pk2Axis": "deg",
+            "pca": "D",
+            "pcaAxis": "deg",
+            "preLasikK": "D",
+            "preLasikRefraction": "D",
+            "postLasikRefraction": "D",
+            "kIndex": "1",
+            "preLvcRadius": "mm",
+            "correctedAmetropia": "D",
+            "posteriorRadius": "mm",
+            "totalK": "D",
+            "tcrp": "D",
+            "plannedIolPower": "D",
+            "refractionSphere": "D",
+            "refractionCylinder": "D",
+            "refractionAxis": "deg",
+            "implantedIolPower": "D",
+            "implantedIolCylinder": "D",
+            "implantedIolAxis": "deg",
+            "desiredIolAxis": "deg",
+            "preOpK1": "D",
+            "preOpK1Axis": "deg",
+            "preOpK2": "D",
+            "preOpK2Axis": "deg",
+            "postOpK1": "D",
+            "postOpK1Axis": "deg",
+            "postOpK2": "D",
+            "postOpK2Axis": "deg",
+            "exchangeLensFactor": "1",
+            "exchangeAConstant": "1",
+            "fellowAl": "mm",
+            "fellowAcd": "mm",
+            "fellowLt": "mm",
+            "fellowCct": "um",
+            "fellowK1": "D",
+            "fellowK2": "D",
+            "fellowIolPower": "D",
+            "fellowRefraction": "D",
+            "patient.age": "year"
+          }
+        },
+        "kind": {
+          "const": "case"
+        },
+        "case": {
+          "$ref": "#/$defs/caseV1_4"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "format",
+        "schemaVersion",
+        "kind",
+        "exportedAt",
+        "units",
+        "patients"
+      ],
+      "properties": {
+        "format": {
+          "const": "biometry-clipboard"
+        },
+        "schemaVersion": {
+          "const": "1.4"
+        },
+        "exportedAt": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 40
+        },
+        "units": {
+          "const": {
+            "al": "mm",
+            "k1": "D",
+            "k1Axis": "deg",
+            "k2": "D",
+            "k2Axis": "deg",
+            "acd": "mm",
+            "lt": "mm",
+            "cct": "um",
+            "wtw": "mm",
+            "target": "D",
+            "aConstant": "1",
+            "lensFactor": "1",
+            "sia": "D",
+            "incisionAxis": "deg",
+            "tk1": "D",
+            "tk1Axis": "deg",
+            "tk2": "D",
+            "tk2Axis": "deg",
+            "pk1": "D",
+            "pk1Axis": "deg",
+            "pk2": "D",
+            "pk2Axis": "deg",
+            "pca": "D",
+            "pcaAxis": "deg",
+            "preLasikK": "D",
+            "preLasikRefraction": "D",
+            "postLasikRefraction": "D",
+            "kIndex": "1",
+            "preLvcRadius": "mm",
+            "correctedAmetropia": "D",
+            "posteriorRadius": "mm",
+            "totalK": "D",
+            "tcrp": "D",
+            "plannedIolPower": "D",
+            "refractionSphere": "D",
+            "refractionCylinder": "D",
+            "refractionAxis": "deg",
+            "implantedIolPower": "D",
+            "implantedIolCylinder": "D",
+            "implantedIolAxis": "deg",
+            "desiredIolAxis": "deg",
+            "preOpK1": "D",
+            "preOpK1Axis": "deg",
+            "preOpK2": "D",
+            "preOpK2Axis": "deg",
+            "postOpK1": "D",
+            "postOpK1Axis": "deg",
+            "postOpK2": "D",
+            "postOpK2Axis": "deg",
+            "exchangeLensFactor": "1",
+            "exchangeAConstant": "1",
+            "fellowAl": "mm",
+            "fellowAcd": "mm",
+            "fellowLt": "mm",
+            "fellowCct": "um",
+            "fellowK1": "D",
+            "fellowK2": "D",
+            "fellowIolPower": "D",
+            "fellowRefraction": "D",
+            "patient.age": "year"
+          }
+        },
+        "kind": {
+          "const": "library"
+        },
+        "patients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/patientV1_4"
           }
         }
       }
@@ -4725,6 +4918,420 @@
               "maxLength": 40
             }
           ]
+        }
+      }
+    },
+    "parserReportField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit",
+        "status",
+        "data_status",
+        "verification_status"
+      ],
+      "properties": {
+        "unit": {
+          "enum": [
+            null,
+            "mm",
+            "um",
+            "D",
+            "degree"
+          ]
+        },
+        "status": {
+          "enum": [
+            "verified",
+            "unverified",
+            "not_reported",
+            "error",
+            "present",
+            "not_found",
+            "absent",
+            "blank",
+            "not_measured",
+            "unreadable",
+            "conflict"
+          ]
+        },
+        "data_status": {
+          "enum": [
+            "present",
+            "not_found",
+            "absent",
+            "blank",
+            "not_measured",
+            "unreadable",
+            "conflict"
+          ]
+        },
+        "verification_status": {
+          "enum": [
+            "unverified",
+            "cross_checked"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "candidate_value": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "minLength": 1,
+          "maxLength": 150
+        }
+      }
+    },
+    "parserReportKeratometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "power": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "D"
+            }
+          }
+        },
+        "axis": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "degree"
+            }
+          }
+        }
+      }
+    },
+    "parserReportEye": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "al": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "mm"
+            }
+          }
+        },
+        "acd": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "mm"
+            }
+          }
+        },
+        "lt": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "mm"
+            }
+          }
+        },
+        "wtw": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "mm"
+            }
+          }
+        },
+        "pupil": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "mm"
+            }
+          }
+        },
+        "cct": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "um"
+            }
+          }
+        },
+        "mean_k": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "D"
+            }
+          }
+        },
+        "corneal_astigmatism": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "D"
+            }
+          }
+        },
+        "corneal_astigmatism_axis": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": "degree"
+            }
+          }
+        },
+        "k1": {
+          "$ref": "#/$defs/parserReportKeratometry"
+        },
+        "k2": {
+          "$ref": "#/$defs/parserReportKeratometry"
+        },
+        "tk1": {
+          "$ref": "#/$defs/parserReportKeratometry"
+        },
+        "tk2": {
+          "$ref": "#/$defs/parserReportKeratometry"
+        }
+      }
+    },
+    "parserReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "source_sha256",
+        "workflow",
+        "verification_state",
+        "eyes"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.2"
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-f]{64})?$"
+        },
+        "workflow": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "verification_state": {
+          "enum": [
+            "verified",
+            "unverified",
+            "needs_review",
+            "error"
+          ]
+        },
+        "eyes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "OD",
+            "OS"
+          ],
+          "properties": {
+            "OD": {
+              "$ref": "#/$defs/parserReportEye"
+            },
+            "OS": {
+              "$ref": "#/$defs/parserReportEye"
+            }
+          }
+        },
+        "patient_id": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": null
+            }
+          }
+        },
+        "gender": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": null
+            }
+          }
+        },
+        "measurement_date": {
+          "$ref": "#/$defs/parserReportField",
+          "properties": {
+            "unit": {
+              "const": null
+            }
+          }
+        }
+      }
+    },
+    "caseV1_4": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "patient",
+        "eyes",
+        "activeEye"
+      ],
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "patient": {
+          "$ref": "#/$defs/identity"
+        },
+        "eyes": {
+          "$ref": "#/$defs/eyes"
+        },
+        "activeEye": {
+          "enum": [
+            "OD",
+            "OS"
+          ]
+        },
+        "report": {
+          "$ref": "#/$defs/parserReport"
+        }
+      }
+    },
+    "measurementV1_4": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "measuredAt",
+        "source",
+        "patient",
+        "eyes",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "label": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 150
+        },
+        "measuredAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "source": {
+          "type": [
+            "string",
+            "number"
+          ],
+          "maxLength": 500
+        },
+        "patient": {
+          "$ref": "#/$defs/identity"
+        },
+        "eyes": {
+          "$ref": "#/$defs/eyes"
+        },
+        "createdAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "updatedAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "report": {
+          "$ref": "#/$defs/parserReport"
+        }
+      }
+    },
+    "patientV1_4": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "patient",
+        "createdAt",
+        "updatedAt",
+        "measurements"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "patient": {
+          "$ref": "#/$defs/identity"
+        },
+        "createdAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "updatedAt": {
+          "oneOf": [
+            {
+              "const": ""
+            },
+            {
+              "type": "string",
+              "format": "date-time",
+              "maxLength": 40
+            }
+          ]
+        },
+        "measurements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/measurementV1_4"
+          }
         }
       }
     }

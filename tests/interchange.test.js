@@ -86,7 +86,11 @@ test('committed schema and both actual exported examples agree on field and unit
   const schema=JSON.parse(await readFile(new URL('../schemas/biometry-clipboard.schema.json',import.meta.url),'utf8'));
   assert.equal(schema.$schema,'https://json-schema.org/draft/2020-12/schema');assert.deepEqual(Object.keys(schema.$defs.eye.properties).sort(),[...EYE_FIELDS].sort());
   assert.deepEqual(schema.oneOf[0].properties.units.const,INTERCHANGE_UNITS);assert.equal(schema.$defs.eye.additionalProperties,false);
-  assert.equal(schema.oneOf.length,8);assert.equal(schema.oneOf[6].properties.schemaVersion.const,'1.0');assert.deepEqual(schema.oneOf[6].properties.units.const,INTERCHANGE_UNITS_V1_0);
+  assert.equal(schema.oneOf.length,10);assert.equal(schema.oneOf[6].properties.schemaVersion.const,'1.0');assert.deepEqual(schema.oneOf[6].properties.units.const,INTERCHANGE_UNITS_V1_0);
+  assert.equal(schema.oneOf[8].properties.schemaVersion.const,'1.4');assert.equal(schema.oneOf[9].properties.schemaVersion.const,'1.4');
+  assert.equal(schema.$defs.caseV1_4.properties.report.$ref,'#/$defs/parserReport');
+  assert.equal(schema.$defs.measurementV1_4.properties.report.$ref,'#/$defs/parserReport');
+  assert.equal(schema.$defs.case.properties.report,undefined);
   assert.equal(schema.$defs.eyeV1_0.properties.plannedIolPower,undefined);assert.equal(schema.$defs.eyeV1_0.additionalProperties,false);
   assert.equal(schema.oneOf[6].properties.case.$ref,'#/$defs/caseV1_0');assert.equal(schema.oneOf[7].properties.patients.items.$ref,'#/$defs/patientV1_0');
   for(const kind of ['case','library']){

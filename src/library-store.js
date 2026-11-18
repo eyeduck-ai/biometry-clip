@@ -1,5 +1,6 @@
 import { cleanCase, emptyCase, validateCase, EYE_FIELDS, PATIENT_FIELDS } from './model.js';
 import { SessionConflict } from './session-store.js';
+import {cleanParserReport} from './parser-report.js';
 
 export const LIBRARY_KEY = 'biometryLibrary';
 const copy = value => structuredClone(value);
@@ -29,7 +30,9 @@ function validateImportPatients(patients) {
     shape(source,['id','patient','createdAt','updatedAt','measurements']);patient(source.patient);
     if(!Array.isArray(source.measurements))throw new Error('匯入測量資料必須是陣列。');
     for(const item of source.measurements){
-      shape(item,['id','label','measuredAt','source','patient','eyes','createdAt','updatedAt']);patient(item.patient);eyes(item.eyes);scalar(item.label,150);scalar(item.source,500);
+      const keys=['id','label','measuredAt','source','patient','eyes','createdAt','updatedAt'];
+      shape(item,[...keys,'report'],keys);patient(item.patient);eyes(item.eyes);scalar(item.label,150);scalar(item.source,500);
+      if(Object.hasOwn(item,'report')&&!cleanParserReport(item.report))throw Object.assign(new Error('匯入報告摘要格式不正確。'),{code:'PARSER_REPORT'});
       for(const key of ['measuredAt','createdAt','updatedAt']){scalar(item[key],40);date(item[key]);}
     }
     for(const key of ['createdAt','updatedAt']){scalar(source[key],40);date(source[key]);}
@@ -46,7 +49,8 @@ export function cleanLibrary(value) {
     for(const item of source.measurements) {
       if(!item || !validId(item.id) || measurementIds.has(item.id))throw new Error('測量資料包含無效或重複識別碼。');
       measurementIds.add(item.id);
-      measurements.push({id:item.id,label:text(item.label)||'未命名測量',measuredAt:date(item.measuredAt),source:text(item.source,500),patient:identity(item.patient??source.patient),eyes:cleanCase({patient:{},eyes:item.eyes}).eyes,createdAt:date(item.createdAt),updatedAt:date(item.updatedAt)});
+      const data=cleanCase({patient:{},eyes:item.eyes,...(Object.hasOwn(item,'report')?{report:item.report}:{})});
+      measurements.push({id:item.id,label:text(item.label)||'未命名測量',measuredAt:date(item.measuredAt),source:text(item.source,500),patient:identity(item.patient??source.patient),eyes:data.eyes,...(data.report?{report:data.report}:{}),createdAt:date(item.createdAt),updatedAt:date(item.updatedAt)});
     }
     patients.push({id:source.id,patient:identity(source.patient),createdAt:date(source.createdAt),updatedAt:date(source.updatedAt),measurements});
   }
@@ -137,8 +141,9 @@ export function createLibraryStore(storage,{newId=()=>crypto.randomUUID(),now=()
         measurement=patient.measurements.find(m=>m.id===measurementId);
         if(!measurement)throw new Error('找不到所選測量，未新增或覆寫資料。');
         Object.assign(measurement,{label:text(label)||measurement.label,measuredAt:measuredAt===undefined?measurement.measuredAt:date(measuredAt),source:source===undefined?measurement.source:text(source,500),patient:clean.patient,eyes:clean.eyes,updatedAt:at});
+        if(clean.report)measurement.report=clean.report;else delete measurement.report;
       }else{
-        measurement={id:newId(),label:text(label)||`測量 ${patient.measurements.length+1}`,measuredAt:date(measuredAt),source:text(source,500),patient:clean.patient,eyes:clean.eyes,createdAt:at,updatedAt:at};
+        measurement={id:newId(),label:text(label)||`測量 ${patient.measurements.length+1}`,measuredAt:date(measuredAt),source:text(source,500),patient:clean.patient,eyes:clean.eyes,...(clean.report?{report:clean.report}:{}),createdAt:at,updatedAt:at};
         patient.measurements.push(measurement);
       }
       patient.updatedAt=at;next.revision++;
@@ -150,6 +155,7 @@ export function createLibraryStore(storage,{newId=()=>crypto.randomUUID(),now=()
       const patient=patientIn(current,patientId),measurement=patient.measurements.find(m=>m.id===measurementId);
       if(!measurement)throw new Error('找不到所選測量，請重新載入。');
       const data=emptyCase();data.patient=copy(measurement.patient);data.eyes=copy(measurement.eyes);
+      if(measurement.report)data.report=copy(measurement.report);
       return {patient:copy(patient),measurement:copy(measurement),data};
     }),
   };
@@ -185,7 +191,7 @@ export function createLibraryService(library,session) {
       for(const key of ['patientId','name'])if(patient.patient[key]&&current.data.patient[key]&&patient.patient[key].trim()!==current.data.patient[key].trim())throw new SessionConflict('PATIENT_MISMATCH','草稿識別資訊與所選病人不同，請先核對或建立新病人。');
       if(options.data){
         const data=cleanCase(options.data);
-        if(JSON.stringify(data.patient)!==JSON.stringify(current.data.patient)||JSON.stringify(data.eyes)!==JSON.stringify(current.data.eyes))throw new SessionConflict('REVISION_CHANGED','草稿已變更，請重新核對後儲存測量。');
+        if(JSON.stringify(data.patient)!==JSON.stringify(current.data.patient)||JSON.stringify(data.eyes)!==JSON.stringify(current.data.eyes)||JSON.stringify(data.report)!==JSON.stringify(current.data.report))throw new SessionConflict('REVISION_CHANGED','草稿已變更，請重新核對後儲存測量。');
       }
       return library.saveMeasurement({...options,data:current.data});
     }),

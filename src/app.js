@@ -12,18 +12,21 @@ import { deriveRequirements } from './requirements.js';
 import { libraryPicker,libraryMarkup,patientLabel,measurementTime,selectedRecord } from './library-ui.js';
 import { caseFromReadRows,resolveTransferScope,patchFromCase,reconcileLensPatch } from './transfer.js';
 import { exportCaseDocument,exportLibraryDocument,parseInterchange } from './interchange.js';
+import {isParserDocument,exportParserDocument} from './parser-interchange.js';
 import { choosePdfPages } from './pdf-picker.js';
 import { bindImagePaste } from './clipboard-images.js';
 import {workbenchHelp,preferenceSettingsMarkup} from './workbench-ui.js';
 import {eyeStateMarkup} from './eye-state-ui.js';
 import {reviewMarkup} from './import-review-ui.js';
+import {reportSummaryMarkup} from './report-ui.js';
 import {reviewSources,loadReviewSource,bindReviewPreview} from './import-preview.js';
 import {createImportProgress,importProgressMarkup,formatElapsed} from './import-progress.js';
 import {paddleApiEndpoint} from './ocr/cloud-config.js';
 import {getLanguage,setLanguage,localize,observeLocalization,languageButtonMarkup,translate} from './i18n.js';
 
 const app=document.querySelector('#app');
-const extensionVersion=(()=>{try{return chrome.runtime.getManifest().version;}catch{return '0.4.0';}})();
+const JSON_IMPORT_LIMIT=10_000_000;
+const extensionVersion=(()=>{try{return chrome.runtime.getManifest().version;}catch{return '0.4.1';}})();
 const query=new URLSearchParams(location.search);
 const floating=query.get('view')==='floating';
 const hostTabId=platform.getFloatingTabId();
@@ -158,7 +161,7 @@ function dataMarkup(){
     ${extraSection('IOL 常數 · 通常在原站選擇',[...constants].filter(k=>showAllFields||siteKeys.includes(k)))}
     ${showAllFields||req.availableKeys.includes('biometer')?`<label class="field"><span>Biometer</span><input data-field="biometer" placeholder="預設：${esc(settings.defaultBiometer)}" value="${esc(activeData().biometer||'')}"/></label>`:''}
     ${showAllFields||req.availableKeys.includes('posteriorBiometer')?`<label class="field"><span>後角膜測量儀器</span><input data-field="posteriorBiometer" placeholder="保留原站選項" value="${esc(activeData().posteriorBiometer||'')}"/></label>`:''}
-    </form><div class="case-tools"><button class="text-button" data-action="save-measurement">${icon('save',13)} 保存為測量</button><button class="icon-button" data-action="export" title="匯出目前測量 JSON" aria-label="匯出目前測量 JSON">${icon('export',15)}</button><button class="icon-button danger-text" data-action="clear" title="清空工作副本" aria-label="清空工作副本">${icon('trash',15)}</button></div>`;
+    </form>${reportSummaryMarkup(editor.data.report)}<div class="case-tools"><button class="text-button" data-action="save-measurement">${icon('save',13)} 保存為測量</button><button class="icon-button" data-action="export" title="匯出目前測量 JSON" aria-label="匯出目前測量 JSON">${icon('export',15)}</button><button class="icon-button danger-text" data-action="clear" title="清空工作副本" aria-label="清空工作副本">${icon('trash',15)}</button></div>`;
 }
 function lensFeedbackMarkup(){
   const value=lastLensFeedback;if(!value||value.tabId!==targetId||value.token!==editor.token)return '';
@@ -171,11 +174,11 @@ function importMarkup(){
   <div class="import-methods"><button class="import-method" data-action="read-site" ${busy?'disabled':''}>${icon('copy',22)}<span><strong>複製網站</strong><small>讀取 ${esc(currentTab()?.site.name||'目前計算網站')} 的欄位</small></span>${icon('arrow',14)}</button>
   <button class="import-method paste-image" id="paste-image-zone" data-action="focus-image-paste" aria-describedby="paste-image-help" ${busy?'disabled':''}>${icon('image',22)}<span><strong>貼上截圖</strong><small>截圖或複製圖片後，按 Ctrl + V</small></span><kbd>Ctrl+V</kbd></button>
   <label class="import-method import-file" id="drop-zone"><input class="sr-only" id="ocr-files" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" multiple ${busy?'disabled':''}>${icon('file',22)}<span><strong>PDF / 圖片</strong><small>上傳或拖入檔案 · PDF 可先選頁</small></span>${icon('import',14)}</label>
-  <label class="import-method import-file"><input class="sr-only" id="json-file" type="file" accept="application/json,.json" ${busy?'disabled':''}>${icon('json',22)}<span><strong>匯入 JSON</strong><small>單筆測量、病人資料庫或晶體對照</small></span>${icon('import',14)}</label></div>
+  <div class="import-method json-method">${icon('json',22)}<span><strong>匯入 JSON</strong><small>biometry-parser、測量、病人資料庫或晶體對照</small></span><div class="json-import-actions"><label class="text-button import-file"><input class="sr-only" id="json-file" type="file" accept="application/json,.json" ${busy?'disabled':''}>${icon('file',13)}上傳 JSON</label><button type="button" class="text-button" data-action="paste-json" ${busy?'disabled':''}>${icon('copy',13)}貼上 JSON</button></div></div></div>
   <p class="import-explanation" id="paste-image-help">Windows：Win + Shift + S 擷取需要的範圍，回到這裡按 Ctrl + V。</p>
   <div class="import-status"><span class="provider-tag">${icon(settings.ocrProvider==='local'?'lock':'gear',12)}${esc(provider)}</span>${busy?'<button class="text-button" data-action="cancel-ocr">取消辨識</button>':'<button class="text-button" data-route="settings">辨識設定</button>'}</div>${importProgressMarkup(importProgress.state)}
   <details class="extra capture-alternative"><summary>${icon('scan',14)}擷取目前網頁${icon('chevron',13)}</summary><p class="small-note">將目前可見的網頁畫面作為圖片辨識。計算網站的表單欄位請使用「複製網站」。</p><button class="button" data-action="screenshot" ${busy?'disabled':''}>${icon('scan',15)}擷取畫面</button></details>
-  <details class="extra import-advanced"><summary>${icon('json',14)}匯出與資料格式${icon('chevron',13)}</summary><p class="small-note">JSON 使用版本化格式，包含雙眼、單位、病人及多次測量。匯入資料庫時新增紀錄，保留原有資料。</p><button class="text-button" data-action="export">${icon('export',14)}目前測量</button><button class="text-button" data-action="export-library">${icon('export',14)}全部病人與測量</button></details>`;
+  <details class="extra import-advanced"><summary>${icon('json',14)}匯出與資料格式${icon('chevron',13)}</summary><p class="small-note">JSON 使用版本化格式，包含雙眼、單位、病人及多次測量。匯入資料庫時新增紀錄，保留原有資料。</p><button class="text-button" data-action="export-parser">${icon('export',14)}匯出 biometry-parser JSON</button><button class="text-button" data-action="export">${icon('export',14)}目前測量</button><button class="text-button" data-action="export-library">${icon('export',14)}全部病人與測量</button></details>`;
 }
 function sitesMarkup(){
   const groups=siteFilter==='all'?FORMULA_GROUPS:FORMULA_GROUPS.filter(g=>g.id===siteFilter);
@@ -257,7 +260,7 @@ function bindEvents(){
   });
   app.querySelector('#ocr-files')?.addEventListener('change',event=>{const files=[...event.target.files];event.target.value='';processFiles(files);});
   app.querySelector('#json-file')?.addEventListener('change',async event=>{
-    try{const token=editor.token,file=event.target.files[0];event.target.value='';if(!file)return;if(file.size>10_000_000)throw new Error('JSON 檔案上限為 10 MB。');const content=await file.text();if(token!==editor.token)throw new Error('個案已變更，已取消這次匯入。');if(JSON.parse(content.replace(/^\uFEFF/,''))?.format==='biometry-lens-catalog'){const catalog=parseLensCatalogDocument(content);await platform.saveLensCatalog(catalog);lensCatalog=await platform.loadLensCatalog();toast(`已匯入 ${catalog.sources.length} 站晶體選項、${catalog.entries.length} 筆精確對照。`);return;}const parsed=parseInterchange(content);if(parsed.kind==='library'){const result=await platform.importPatients(parsed.data.patients,library.revision);acceptLibrary(result.library);navigate('patients');toast(`已新增 ${result.imported.length} 位病人的測量，原有紀錄保留。`);}else{reviewCandidates(parsed.data,'JSON 測量匯入','',parsed.warnings);}}catch(error){toast(error.message,true);}
+    try{const token=editor.token,guard=editor.guard,file=event.target.files[0];event.target.value='';if(!file)return;if(file.size>JSON_IMPORT_LIMIT)throw new Error('JSON 檔案上限為 10 MB。');await importJsonText(await file.text(),{token,guard});}catch(error){toast(error.message,true);}
   });
   const drop=app.querySelector('#drop-zone');
   drop?.addEventListener('dragover',event=>{event.preventDefault();drop.classList.add('drag-over');});
@@ -317,10 +320,12 @@ app.addEventListener('click',async event=>{
       case 'preview-fill':await previewFill();break;
       case 'cancel-ocr':ocrAbort?.abort();break;
       case 'focus-image-paste':document.querySelector('#paste-image-zone')?.focus();toast('請按 Ctrl+V 貼上剛截取或複製的圖片。');break;
+      case 'paste-json':showJsonPasteDialog();break;
       case 'screenshot':await previewScreenshot();break;
       case 'export':{
         await editor.flush();const url=URL.createObjectURL(new Blob([JSON.stringify(exportCaseDocument(editor.data),null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='biometry-case.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('已匯出本次個案。');break;
       }
+      case 'export-parser':await editor.flush();downloadJson(exportParserDocument(editor.data),'biometry-parser.json');toast('已匯出 biometry-parser JSON。');break;
       case 'clear':{
         showDialog('建立空白個案',`<p>將清除所有分頁共用的雙眼與識別資料。其他懸浮窗會同步更新。</p><div class="dialog-actions"><button class="button" data-close>取消</button><button class="button danger" id="confirm-clear">清除並新增</button></div>`);
         document.querySelector('#confirm-clear').onclick=async()=>{try{await editor.clear();closeDialog();render();toast('已建立空白個案。');}catch(error){toast(error.message,true);}};break;
@@ -459,6 +464,29 @@ async function showMeasurementDialog(){
     }catch(error){toast(saved?'測量已保存，但未能切換；可從病人分頁重新帶入。':error.message,true);event.target.disabled=false;}
   };
 }
+async function importJsonText(content,{token=editor.token,guard=editor.guard}={}){
+  if(token!==editor.token||guard!==editor.guard)throw new Error('個案已變更，已取消這次匯入。');
+  if(content.length>JSON_IMPORT_LIMIT||new Blob([content]).size>JSON_IMPORT_LIMIT)throw new Error('JSON 檔案上限為 10 MB。');
+  let value;try{value=JSON.parse(content.replace(/^\uFEFF/,''));}catch{throw new Error('JSON 無法解析，未匯入。');}
+  if(value?.format==='biometry-lens-catalog'){
+    const catalog=parseLensCatalogDocument(value);await platform.saveLensCatalog(catalog);lensCatalog=await platform.loadLensCatalog();closeDialog();toast(`已匯入 ${catalog.sources.length} 站晶體選項、${catalog.entries.length} 筆精確對照。`);return;
+  }
+  const parsed=parseInterchange(value);
+  if(parsed.kind==='library'){
+    const result=await platform.importPatients(parsed.data.patients,library.revision);acceptLibrary(result.library);
+    if(token===editor.token&&guard===editor.guard){closeDialog();navigate('patients');}
+    toast(`已新增 ${result.imported.length} 位病人的測量，原有紀錄保留。`);
+  }else reviewCandidates(parsed.data,isParserDocument(value)?'匯入 biometry-parser':'JSON 測量匯入','',parsed.warnings,{parserDocument:isParserDocument(value),unverifiedFields:parsed.unverifiedFields,measurementDate:parsed.measurementDate});
+}
+function showJsonPasteDialog(){
+  const token=editor.token,guard=editor.guard;
+  showDialog('貼上 JSON',`<p class="small-note">貼上 biometry-parser 或 Biometry-Clip 匯出的 JSON，再按匯入。文字貼上不會自動讀取或儲存。</p><label class="field json-paste-field"><span>JSON 內容</span><textarea id="json-paste-content" rows="9" autocomplete="off" spellcheck="false" autocapitalize="off" aria-label="JSON 內容"></textarea></label><p class="small-note">JSON 檔案上限為 10 MB。</p><div class="dialog-actions"><button type="button" class="button" data-close>取消</button><button type="button" class="button primary" id="import-pasted-json">${icon('import',14)}匯入 JSON</button></div>`);
+  document.querySelector('#import-pasted-json').onclick=async event=>{
+    const button=event.currentTarget;button.disabled=true;
+    try{await importJsonText(document.querySelector('#json-paste-content').value,{token,guard});}catch(error){button.disabled=false;toast(error.message,true);}
+  };
+  document.querySelector('#json-paste-content').focus();
+}
 function showDialog(title,body){
   releaseReview();releaseReview=()=>{};
   const dialog=document.querySelector('#review-dialog');
@@ -503,23 +531,27 @@ async function readSite(){
   }finally{busy=false;render();}
 }
 function reviewCandidates(candidate,source,text='',warnings=[],context={}){
-  const clean=cleanCase({patient:candidate.patient||{},eyes:candidate.eyes||{OD:{},OS:{}}});
+  const clean=cleanCase({patient:candidate.patient||{},eyes:candidate.eyes||{OD:{},OS:{}},...(candidate.report?{report:candidate.report}:{})});
   const current=editor.data,rows=[],token=editor.token,guard=editor.guard;
   for(const key of PATIENT_FIELDS)if(clean.patient[key]!=='')rows.push({eye:'patient',key,value:clean.patient[key],old:current.patient[key]});
   for(const eye of ['OD','OS'])for(const key of EYE_FIELDS)if(clean.eyes[eye][key]!=null&&clean.eyes[eye][key]!=='')rows.push({eye,key,value:clean.eyes[eye][key],old:current.eyes[eye][key]});
   const sources=reviewSources(context.files,context.selection);
   for(const [index,row]of rows.entries()){
     row.index=index;row.confidence=candidate.fieldConfidence?.[`${row.eye}.${row.key}`];
+    row.unverified=context.unverifiedFields?.has(`${row.eye}.${row.key}`)===true;
     const evidence=(candidate.evidence||[]).filter(item=>item.eye===row.eye&&item.key===row.key&&item.fileIndex!=null);
     const chosen=evidence.find(item=>item.confidence===row.confidence)||evidence[0];
     if(chosen)row.source={fileIndex:chosen.fileIndex,pageNumber:chosen.pageNumber};
   }
   const messages=[...new Set([...warnings,...(candidate.warnings||[])])];
-  showDialog('核對並儲存',reviewMarkup({rows,messages,source,text,sources,sourceExpanded:!window.matchMedia?.('(max-width:650px)')?.matches}));
+  showDialog('核對並儲存',reviewMarkup({rows,messages,source,text,sources,report:clean.report,allowUnverifiedSelection:context.parserDocument===true,measurementDate:context.measurementDate,measurementDateUnverified:context.unverifiedFields?.has('measurementDate')===true,sourceExpanded:!window.matchMedia?.('(max-width:650px)')?.matches}));
   const dialog=document.querySelector('#review-dialog');dialog.classList.add('import-review-dialog');
   const duration=dialog.querySelector('#review-duration');if(duration&&Number.isFinite(context.elapsedMs))duration.textContent=`耗時 ${formatElapsed(context.elapsedMs)}`;
   releaseReview=bindReviewPreview(dialog,{sources,rows,loadSource:(item,{signal})=>loadReviewSource(item,{inspectPdf:context.inspectPdf,signal})});
   localize(dialog);
+  dialog.querySelector('#select-new-candidates')?.addEventListener('click',()=>{
+    for(const row of rows)if(row.old===undefined||row.old===null||row.old==='')dialog.querySelector(`[data-candidate="${row.index}"]`).checked=true;
+  });
   document.querySelector('#reparse-ocr')?.addEventListener('click',async()=>{const {parseBiometry}=await import('./ocr/index.js');const value=document.querySelector('#review-raw-text').value;reviewCandidates(parseBiometry(value),'原文重新解析',value,[],context);});
   document.querySelector('#apply-candidates').onclick=async event=>{
     if(token!==editor.token || guard!==editor.guard)return toast('共用資料已變更，請關閉後重新核對。',true);
@@ -527,7 +559,10 @@ function reviewCandidates(candidate,source,text='',warnings=[],context={}){
     rows.forEach((r,i)=>{const value=document.querySelector(`[data-candidate-value="${i}"]`).value;if(r.eye==='patient')clean.patient[r.key]=value;else clean.eyes[r.eye][r.key]=['toric','keratoconus'].includes(r.key)?value==='true':value;});
     const next=mergeCandidates(editor.data,clean,selections),errors=validateCase(next);
     if(errors.length)return toast(errors[0],true);
+    const sourcePatient=clean.report?.patient_id,sourceId=sourcePatient?.status==='verified'?sourcePatient.value:sourcePatient?.candidate_value;
+    if(selections.length&&clean.report&&next.patient.patientId.trim()&&typeof sourceId==='string'&&sourceId.trim()&&next.patient.patientId.trim()!==sourceId.trim())return toast('來源報告病人 ID 與工作副本不一致，請核對病人 ID 或清空工作副本後再匯入。',true);
     const patch={};for(const r of selections){if(r.eye==='patient')(patch.patient||={})[r.key]=next.patient[r.key];else((patch.eyes||={})[r.eye]||={})[r.key]=next.eyes[r.eye][r.key];}
+    if(selections.length&&clean.report)patch.report=clean.report;
     event.currentTarget.disabled=true;
     try{editor.edit(reconcileLensPatch(editor.data,patch));await editor.flush();draftSource=source;closeDialog();navigate('data');toast(`已帶入 ${selections.length} 項工作副本，可到另一分頁貼上或保存為測量。`);}catch(error){toast(error.message,true);event.target.disabled=false;}
   };

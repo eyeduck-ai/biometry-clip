@@ -62,6 +62,13 @@ async function fixture(t,{language='en',languageApi=true}={}){
 }
 function writes(f){return f.calls.filter(call=>call.type!=='save-language');}
 
+test('JSON paste dialog changes language without replacing or translating the pasted document',async t=>{
+  const f=await fixture(t);f.click('[data-route="import"]');f.click('[data-action="paste-json"]');
+  const input=f.find('#json-paste-content');input.value='{"patient_id":"設定","eyes":{"OD":{},"OS":{}}}';const before=input.value;
+  assert.match(f.find('#dialog-title').textContent,/Paste JSON/);assert.match(f.find('#import-pasted-json').textContent,/Import JSON/);
+  f.click('#language-toggle');assert.equal(f.find('#json-paste-content'),input);assert.equal(input.value,before);assert.equal(f.find('#dialog-title').textContent,'貼上 JSON');assert.equal(writes(f).length,0);
+});
+
 test('app without language persistence APIs still opens in English and protects synthetic patient/source labels',async t=>{
   const f=await fixture(t,{languageApi:false});
   assert.equal(f.dom.window.document.documentElement.lang,'en');

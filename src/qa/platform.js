@@ -27,7 +27,7 @@ async function request(area,operation,payload={}) {
 
 export async function loadData(){return {...await request('session','read'),settings:{...defaultSettings}};}
 export async function saveCase(data,{caseToken=knownSession?.caseToken,revision=knownSession?.revision}={}){return request('session','replace',{data,caseToken,revision});}
-export async function patchCase(patch,caseToken=knownSession?.caseToken){return request('session','patch',{patch,caseToken});}
+export async function patchCase(patch,caseToken=knownSession?.caseToken,revision=knownSession?.revision){return request('session','patch',{patch,caseToken,revision});}
 export async function clearCase(caseToken=knownSession?.caseToken){return request('session','clear',{caseToken});}
 export async function loadLibrary(){return request('library','read');}
 export async function createPatient(patient,expectedLibraryRevision){return request('library','create-patient',{patient,expectedLibraryRevision});}
